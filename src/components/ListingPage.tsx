@@ -26,23 +26,34 @@ import {
   Check,
   Images,
   X,
+  AlertTriangle,
+  AlertCircle,
+  UserPlus,
+  ShieldAlert,
+  ArrowUpRight,
 } from 'lucide-react';
 import { ListingDetails } from '../types';
 import { Button } from './ui/Button';
 
 interface ListingPageProps {
   listing: ListingDetails;
+  availableListings?: ListingDetails[];
+  onSelectListing?: (listing: ListingDetails) => void;
   onRequestTour: () => void;
   onMessageLandlord: () => void;
   onApplyNow: () => void;
+  onApplyWithCosigner?: () => void;
   onNotify: (msg: string) => void;
 }
 
 export const ListingPage: React.FC<ListingPageProps> = ({
   listing,
+  availableListings,
+  onSelectListing,
   onRequestTour,
   onMessageLandlord,
   onApplyNow,
+  onApplyWithCosigner,
   onNotify,
 }) => {
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
@@ -52,7 +63,16 @@ export const ListingPage: React.FC<ListingPageProps> = ({
   const [activeFeatureTab, setActiveFeatureTab] = useState(0);
   const [selectedTourDate, setSelectedTourDate] = useState('SUN 13 Sep, 10:30 AM');
   const [isSaved, setIsSaved] = useState(false);
-  const [activeMatchTier, setActiveMatchTier] = useState<'strong' | 'moderate' | 'neutral'>('strong');
+  const [activeMatchTier, setActiveMatchTier] = useState<'strong' | 'moderate' | 'low' | 'neutral'>(
+    listing.defaultMatchTier || 'strong'
+  );
+  const [simulateWithCosigner, setSimulateWithCosigner] = useState(false);
+
+  // Sync active match tier whenever listing changes
+  useEffect(() => {
+    setActiveMatchTier(listing.defaultMatchTier || 'strong');
+    setSimulateWithCosigner(false);
+  }, [listing.id, listing.defaultMatchTier]);
 
   // Tour sessions state matching the reference layout
   const [selectedSessionDateIdx, setSelectedSessionDateIdx] = useState(0);
@@ -219,6 +239,78 @@ export const ListingPage: React.FC<ListingPageProps> = ({
     <div className="pb-24 sm:pb-16 bg-[#FAFAFB] min-h-screen text-gray-900 font-sans">
       <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-5">
         
+        {/* ========================================================
+            SAMPLE LISTING SWITCHER (Compare High Match vs Low Match)
+           ======================================================== */}
+        {availableListings && availableListings.length > 1 && onSelectListing && (
+          <div className="mb-5 bg-white rounded-2xl p-3 sm:p-3.5 border border-gray-200 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0 font-bold text-xs">
+                <Building className="w-4 h-4 text-blue-600" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs font-black uppercase tracking-wider text-gray-700">Sample Listing Demonstration</span>
+                  {listing.defaultMatchTier === 'low' && (
+                    <span className="text-[10px] font-bold bg-rose-100 text-rose-800 px-2 py-0.5 rounded-md border border-rose-200">
+                      Not Good Match · Cosigner Needed
+                    </span>
+                  )}
+                  {listing.defaultMatchTier === 'strong' && (
+                    <span className="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md border border-emerald-200">
+                      High Match
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  Explore how different rent pricing and landlord criteria impact your qualification score:
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-1.5 bg-gray-100 p-1 rounded-xl text-xs shrink-0 flex-wrap">
+              {availableListings.map((l) => {
+                const isSelected = l.id === listing.id;
+                const isLow = l.defaultMatchTier === 'low';
+                return (
+                  <button
+                    key={l.id}
+                    type="button"
+                    id={`btn-select-sample-${l.id}`}
+                    onClick={() => {
+                      onSelectListing(l);
+                      onNotify(`Switched sample listing to: ${l.title}`);
+                    }}
+                    className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer flex items-center gap-2 ${
+                      isSelected
+                        ? 'bg-white text-gray-900 shadow-2xs ring-1 ring-black/5'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200/60'
+                    }`}
+                  >
+                    <span
+                      className={`w-2 h-2 rounded-full ${
+                        isLow ? 'bg-rose-500' : 'bg-emerald-500'
+                      }`}
+                    />
+                    <span>
+                      {l.title.split(' ')[0]} ({l.unit}) · ${l.rent.toLocaleString()}/mo
+                    </span>
+                    <span
+                      className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
+                        isLow
+                          ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                          : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                      }`}
+                    >
+                      {isLow ? 'Low Match' : 'High Match'}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* ========================================================
             TOP TITLE & ACTIONS BAR (Matching Reference Image)
            ======================================================== */}
@@ -580,138 +672,400 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 Specific color bands:
                 - Green: #DCFCE7 bg, #15803D text
                 - Amber: #FEF3C7 bg, #B45309 text
+                - Rose/Alert: #FFF1F2 bg, #9F1239 text
                 - Neutral Gray: #F1F5F9 bg, #64748B text
                 Verbatim disclaimer:
                 "An estimate based on this listing's published criteria — not a guarantee and not the landlord's decision."
                ======================================================== */}
-            <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-xs space-y-4">
-              <div className="flex items-center justify-between flex-wrap gap-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                    <Sparkles className="w-4 h-4 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-sm text-gray-900">Application Match Estimate</h3>
-                    <p className="text-[11px] text-gray-500">Compatibility against published leasing requirements</p>
-                  </div>
-                </div>
+            {(() => {
+              const userIncome = 6200; // Jordan Reed's verified monthly income
+              const incomeMultiplier = listing.minIncomeMultiplier || 3.0;
+              const requiredIncome = Math.round(listing.rent * incomeMultiplier);
+              const cosignerIncomeMultiplier = listing.cosignerIncomeMultiplier || 4.0;
+              const cosignerRequiredIncome = Math.round(listing.rent * cosignerIncomeMultiplier);
+              const effectiveTier = simulateWithCosigner ? 'strong' : activeMatchTier;
 
-                {/* Interactive Scenario Switcher for the Demo */}
-                <div className="flex items-center gap-1.5 bg-gray-100 p-1 rounded-xl text-xs">
-                  <button
-                    onClick={() => setActiveMatchTier('strong')}
-                    className={`px-3 py-1 rounded-lg font-semibold transition-colors cursor-pointer ${
-                      activeMatchTier === 'strong' ? 'bg-white text-gray-900 shadow-2xs' : 'text-gray-500 hover:text-gray-800'
-                    }`}
-                  >
-                    Strong (94%)
-                  </button>
-                  <button
-                    onClick={() => setActiveMatchTier('moderate')}
-                    className={`px-3 py-1 rounded-lg font-semibold transition-colors cursor-pointer ${
-                      activeMatchTier === 'moderate' ? 'bg-white text-gray-900 shadow-2xs' : 'text-gray-500 hover:text-gray-800'
-                    }`}
-                  >
-                    Moderate (76%)
-                  </button>
-                  <button
-                    onClick={() => setActiveMatchTier('neutral')}
-                    className={`px-3 py-1 rounded-lg font-semibold transition-colors cursor-pointer ${
-                      activeMatchTier === 'neutral' ? 'bg-white text-gray-900 shadow-2xs' : 'text-gray-500 hover:text-gray-800'
-                    }`}
-                  >
-                    Neutral
-                  </button>
-                </div>
-              </div>
+              return (
+                <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-xs space-y-4">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <Sparkles className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-sm text-gray-900">Application Match Estimate</h3>
+                        <p className="text-[11px] text-gray-500">Compatibility against published leasing requirements</p>
+                      </div>
+                    </div>
 
-              {/* Match Score Display with SPECIFIC COLOR BANDS */}
-              <div
-                className={`p-4 sm:p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 ${
-                  activeMatchTier === 'strong'
-                    ? 'bg-[#DCFCE7] border-[#86EFAC] text-[#15803D]'
-                    : activeMatchTier === 'moderate'
-                    ? 'bg-[#FEF3C7] border-[#FDE68A] text-[#B45309]'
-                    : 'bg-[#F1F5F9] border-[#CBD5E1] text-[#64748B]'
-                }`}
-              >
-                <div className="flex items-center gap-3.5">
+                    {/* Interactive Scenario Switcher for the Demo */}
+                    <div className="flex items-center gap-1.5 bg-gray-100 p-1 rounded-xl text-xs flex-wrap">
+                      <button
+                        onClick={() => {
+                          setActiveMatchTier('strong');
+                          setSimulateWithCosigner(false);
+                        }}
+                        className={`px-2.5 py-1 rounded-lg font-semibold transition-colors cursor-pointer ${
+                          activeMatchTier === 'strong' && !simulateWithCosigner
+                            ? 'bg-white text-gray-900 shadow-2xs'
+                            : 'text-gray-500 hover:text-gray-800'
+                        }`}
+                      >
+                        Strong (94%)
+                      </button>
+                      <button
+                        onClick={() => {
+                          setActiveMatchTier('moderate');
+                          setSimulateWithCosigner(false);
+                        }}
+                        className={`px-2.5 py-1 rounded-lg font-semibold transition-colors cursor-pointer ${
+                          activeMatchTier === 'moderate' && !simulateWithCosigner
+                            ? 'bg-white text-gray-900 shadow-2xs'
+                            : 'text-gray-500 hover:text-gray-800'
+                        }`}
+                      >
+                        Moderate (76%)
+                      </button>
+                      <button
+                        onClick={() => {
+                          setActiveMatchTier('low');
+                          setSimulateWithCosigner(false);
+                        }}
+                        className={`px-2.5 py-1 rounded-lg font-semibold transition-colors cursor-pointer ${
+                          activeMatchTier === 'low' && !simulateWithCosigner
+                            ? 'bg-white text-rose-700 font-bold shadow-2xs'
+                            : 'text-gray-500 hover:text-gray-800'
+                        }`}
+                      >
+                        Low · Needs Cosigner (41%)
+                      </button>
+                      <button
+                        onClick={() => {
+                          setActiveMatchTier('neutral');
+                          setSimulateWithCosigner(false);
+                        }}
+                        className={`px-2.5 py-1 rounded-lg font-semibold transition-colors cursor-pointer ${
+                          activeMatchTier === 'neutral' && !simulateWithCosigner
+                            ? 'bg-white text-gray-900 shadow-2xs'
+                            : 'text-gray-500 hover:text-gray-800'
+                        }`}
+                      >
+                        Neutral
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Match Score Display with SPECIFIC COLOR BANDS */}
                   <div
-                    className={`min-w-[58px] h-11 px-3 rounded-xl flex items-center justify-center font-black text-sm tracking-normal shadow-2xs shrink-0 ${
-                      activeMatchTier === 'strong'
-                        ? 'bg-emerald-600 text-white'
-                        : activeMatchTier === 'moderate'
-                        ? 'bg-amber-600 text-white'
-                        : 'bg-slate-600 text-white'
+                    className={`p-4 sm:p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 transition-colors ${
+                      effectiveTier === 'strong'
+                        ? 'bg-[#DCFCE7] border-[#86EFAC] text-[#15803D]'
+                        : effectiveTier === 'moderate'
+                        ? 'bg-[#FEF3C7] border-[#FDE68A] text-[#B45309]'
+                        : effectiveTier === 'low'
+                        ? 'bg-[#FFF1F2] border-[#FECDD3] text-[#9F1239]'
+                        : 'bg-[#F1F5F9] border-[#CBD5E1] text-[#64748B]'
                     }`}
                   >
-                    {activeMatchTier === 'strong' ? '94%' : activeMatchTier === 'moderate' ? '76%' : '—'}
-                  </div>
-                  <div>
-                    <span className="font-bold text-sm block leading-snug">
-                      {activeMatchTier === 'strong'
-                        ? 'High Compatibility Match'
-                        : activeMatchTier === 'moderate'
-                        ? 'Moderate Compatibility Match'
-                        : 'Standard Review Profile'}
-                    </span>
-                    <span className="text-xs opacity-90 block mt-1 leading-relaxed">
-                      {activeMatchTier === 'strong'
-                        ? 'Income meets 3x rent ratio ($6,450/mo required) · Excellent credit bracket · Preferred lease start'
-                        : activeMatchTier === 'moderate'
-                        ? 'Income meets 2.6x rent ratio · Cosigner recommended to reach top candidate tier'
-                        : 'Complete your profile to preview your personalized qualification likelihood'}
-                    </span>
-                  </div>
-                </div>
+                    <div className="flex items-center gap-3.5">
+                      <div
+                        className={`min-w-[58px] h-11 px-3 rounded-xl flex items-center justify-center font-black text-sm tracking-normal shadow-2xs shrink-0 ${
+                          effectiveTier === 'strong'
+                            ? 'bg-emerald-600 text-white'
+                            : effectiveTier === 'moderate'
+                            ? 'bg-amber-600 text-white'
+                            : effectiveTier === 'low'
+                            ? 'bg-rose-600 text-white'
+                            : 'bg-slate-600 text-white'
+                        }`}
+                      >
+                        {simulateWithCosigner
+                          ? '95%'
+                          : effectiveTier === 'strong'
+                          ? '94%'
+                          : effectiveTier === 'moderate'
+                          ? '76%'
+                          : effectiveTier === 'low'
+                          ? '41%'
+                          : '—'}
+                      </div>
+                      <div>
+                        <span className="font-bold text-sm block leading-snug flex items-center gap-2 flex-wrap">
+                          {simulateWithCosigner
+                            ? 'High Compatibility Match (Guarantor-Backed)'
+                            : effectiveTier === 'strong'
+                            ? 'High Compatibility Match'
+                            : effectiveTier === 'moderate'
+                            ? 'Moderate Compatibility Match'
+                            : effectiveTier === 'low'
+                            ? 'Low Compatibility Match · Cosigner Recommended'
+                            : 'Standard Review Profile'}
+                          {effectiveTier === 'low' && !simulateWithCosigner && (
+                            <span className="text-[10px] uppercase font-black bg-rose-200 text-rose-900 px-2 py-0.5 rounded">
+                              Action Suggested
+                            </span>
+                          )}
+                        </span>
+                        <span className="text-xs opacity-90 block mt-1 leading-relaxed">
+                          {simulateWithCosigner
+                            ? `Combined income ($20,700/mo) meets 5.4x rent · Cosigner meets the ${cosignerIncomeMultiplier}x rule ($${cosignerRequiredIncome.toLocaleString()}/mo) and elevates approval likelihood`
+                            : effectiveTier === 'strong'
+                            ? `Income meets 3x rent ratio ($${requiredIncome.toLocaleString()}/mo required) · Excellent credit bracket · Preferred lease start`
+                            : effectiveTier === 'moderate'
+                            ? 'Income meets 2.6x rent ratio · Cosigner recommended to reach top candidate tier'
+                            : effectiveTier === 'low'
+                            ? `Applicant income ($6,200/mo) is under the 3.0x threshold ($${requiredIncome.toLocaleString()}/mo required) · Adding a qualified cosigner satisfies the financial requirement`
+                            : 'Complete your profile to preview your personalized qualification likelihood'}
+                        </span>
+                      </div>
+                    </div>
 
-                <div className="shrink-0 text-right self-end sm:self-center">
-                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider block opacity-75">Criteria Score</span>
-                  <span className="font-extrabold text-xs sm:text-sm mt-0.5 block">
-                    {activeMatchTier === 'strong' ? '3 of 3 Met' : activeMatchTier === 'moderate' ? '2 of 3 Met' : 'Pending input'}
-                  </span>
-                </div>
-              </div>
+                    <div className="shrink-0 text-right self-end sm:self-center">
+                      <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider block opacity-75">Criteria Score</span>
+                      <span className="font-extrabold text-xs sm:text-sm mt-0.5 block">
+                        {simulateWithCosigner
+                          ? '3 of 3 Met (Guarantor)'
+                          : effectiveTier === 'strong'
+                          ? '3 of 3 Met'
+                          : effectiveTier === 'moderate'
+                          ? '2 of 3 Met'
+                          : effectiveTier === 'low'
+                          ? '1 of 3 Met'
+                          : 'Pending input'}
+                      </span>
+                    </div>
+                  </div>
 
-              {/* Requirement Checklist */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
-                <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                    <Check className="w-3.5 h-3.5" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-gray-900">Income 3x Rent</div>
-                    <div className="text-[11px] text-gray-500 mt-0.5">$6,450/mo minimum</div>
-                  </div>
-                </div>
-                <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                    <Check className="w-3.5 h-3.5" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-gray-900">Credit 650+</div>
-                    <div className="text-[11px] text-gray-500 mt-0.5">Soft check only</div>
-                  </div>
-                </div>
-                <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                    <Check className="w-3.5 h-3.5" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-gray-900">Clean History</div>
-                    <div className="text-[11px] text-gray-500 mt-0.5">No recent evictions</div>
-                  </div>
-                </div>
-              </div>
+                  {/* Requirement Checklist */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                    {/* Item 1: Income Ratio */}
+                    <div
+                      className={`p-3 rounded-xl border flex items-center gap-2.5 ${
+                        effectiveTier === 'low' && !simulateWithCosigner
+                          ? 'bg-rose-50/70 border-rose-200'
+                          : 'bg-gray-50 border-gray-100'
+                      }`}
+                    >
+                      <div
+                        className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
+                          effectiveTier === 'low' && !simulateWithCosigner
+                            ? 'bg-rose-200 text-rose-800'
+                            : 'bg-emerald-100 text-emerald-700'
+                        }`}
+                      >
+                        {effectiveTier === 'low' && !simulateWithCosigner ? (
+                          <X className="w-3.5 h-3.5 stroke-[2.5]" />
+                        ) : (
+                          <Check className="w-3.5 h-3.5" />
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="font-bold text-gray-900 truncate">
+                          Income 3x Rent (${requiredIncome.toLocaleString()}/mo)
+                        </div>
+                        <div
+                          className={`text-[11px] mt-0.5 ${
+                            effectiveTier === 'low' && !simulateWithCosigner
+                              ? 'text-rose-700 font-semibold'
+                              : 'text-gray-500'
+                          }`}
+                        >
+                          {effectiveTier === 'low' && !simulateWithCosigner
+                            ? `Current: $6,200/mo (-$${(requiredIncome - userIncome).toLocaleString()}/mo)`
+                            : simulateWithCosigner
+                            ? 'Combined: $20,700/mo (Met)'
+                            : `$${requiredIncome.toLocaleString()}/mo minimum · Met`}
+                        </div>
+                      </div>
+                    </div>
 
-              {/* MANDATORY VERBATIM DISCLAIMER */}
-              <div className="pt-2 border-t border-gray-100 flex items-start gap-1.5 text-[11px] text-gray-500">
-                <Info className="w-3.5 h-3.5 text-gray-400 shrink-0 mt-0.5" />
-                <p className="italic">
-                  An estimate based on this listing&apos;s published criteria — not a guarantee and not the landlord&apos;s decision.
-                </p>
-              </div>
-            </div>
+                    {/* Item 2: Credit Score */}
+                    <div
+                      className={`p-3 rounded-xl border flex items-center gap-2.5 ${
+                        effectiveTier === 'low' && !simulateWithCosigner
+                          ? 'bg-amber-50/70 border-amber-200'
+                          : 'bg-gray-50 border-gray-100'
+                      }`}
+                    >
+                      <div
+                        className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
+                          effectiveTier === 'low' && !simulateWithCosigner
+                            ? 'bg-amber-200 text-amber-800'
+                            : 'bg-emerald-100 text-emerald-700'
+                        }`}
+                      >
+                        {effectiveTier === 'low' && !simulateWithCosigner ? (
+                          <AlertTriangle className="w-3.5 h-3.5" />
+                        ) : (
+                          <Check className="w-3.5 h-3.5" />
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="font-bold text-gray-900 truncate">
+                          Credit {listing.minCreditScore || 700}+ Minimum
+                        </div>
+                        <div
+                          className={`text-[11px] mt-0.5 ${
+                            effectiveTier === 'low' && !simulateWithCosigner
+                              ? 'text-amber-800 font-semibold'
+                              : 'text-gray-500'
+                          }`}
+                        >
+                          {effectiveTier === 'low' && !simulateWithCosigner
+                            ? 'Reported: 680 · Cosigner overrides'
+                            : simulateWithCosigner
+                            ? 'Guarantor: 780 score'
+                            : 'Soft check only · Met'}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Item 3: Rental History */}
+                    <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-2.5">
+                      <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                        <Check className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="font-bold text-gray-900 truncate">Clean History</div>
+                        <div className="text-[11px] text-gray-500 mt-0.5">0 evictions · Verified</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* DEDICATED COSIGNER RECOMMENDATION CARD (Prominently shows why cosigner is needed) */}
+                  {(effectiveTier === 'low' || simulateWithCosigner) && (
+                    <div className="mt-4 p-4 sm:p-5 rounded-2xl bg-amber-50/90 border border-amber-200 text-amber-950 space-y-3.5">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5">
+                          <UserPlus className="w-5 h-5 text-amber-700" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-black uppercase tracking-wider bg-amber-200 text-amber-900 px-2 py-0.5 rounded-md">
+                              Cosigner Recommended
+                            </span>
+                            <span className="text-xs font-bold text-amber-800">
+                              Landlord Policy: Cosigners accepted with {cosignerIncomeMultiplier}x rent (${cosignerRequiredIncome.toLocaleString()}/mo)
+                            </span>
+                          </div>
+                          <h4 className="font-bold text-sm text-amber-950 mt-1">
+                            Why you might need a cosigner for this apartment
+                          </h4>
+                          <p className="text-xs sm:text-sm text-amber-900 mt-1 leading-relaxed">
+                            {listing.managementCompany} requires all applicants for {listing.title} to have a minimum gross income of <strong>${requiredIncome.toLocaleString()}/mo</strong> ({incomeMultiplier}x rent). Since your verified profile income is currently <strong>$6,200/mo (1.6x rent)</strong>, submitting solo does not meet published qualification thresholds. Adding a cosigner or guarantor will satisfy the financial requirement in full.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Side-by-Side Comparison Box */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        <div className="p-3 bg-white/95 rounded-xl border border-amber-200 shadow-2xs">
+                          <div className="flex items-center justify-between text-xs mb-1.5 pb-1 border-b border-gray-100">
+                            <span className="font-bold text-gray-800">Solo Application (Current)</span>
+                            <span className="font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                              41% Match
+                            </span>
+                          </div>
+                          <div className="text-xs text-gray-600 space-y-1">
+                            <div className="flex justify-between">
+                              <span>Applicant Income:</span>
+                              <span className="font-semibold text-gray-900">$6,200/mo</span>
+                            </div>
+                            <div className="flex justify-between text-rose-700">
+                              <span>Income Ratio:</span>
+                              <span className="font-bold">1.63x (Needs {incomeMultiplier}.0x)</span>
+                            </div>
+                            <div className="flex justify-between text-gray-500">
+                              <span>Approval Status:</span>
+                              <span className="font-semibold text-rose-600">Likely Requires Guarantor</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="p-3 bg-white/95 rounded-xl border border-emerald-300 shadow-2xs">
+                          <div className="flex items-center justify-between text-xs mb-1.5 pb-1 border-b border-gray-100">
+                            <span className="font-bold text-gray-800">With Cosigner / Guarantor</span>
+                            <span className="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                              95% Match
+                            </span>
+                          </div>
+                          <div className="text-xs text-gray-600 space-y-1">
+                            <div className="flex justify-between">
+                              <span>Combined Income:</span>
+                              <span className="font-semibold text-emerald-800">$20,700/mo</span>
+                            </div>
+                            <div className="flex justify-between text-emerald-700">
+                              <span>Income Ratio:</span>
+                              <span className="font-bold">5.45x (Exceeds {cosignerIncomeMultiplier}.0x)</span>
+                            </div>
+                            <div className="flex justify-between text-gray-500">
+                              <span>Approval Status:</span>
+                              <span className="font-semibold text-emerald-700">High Priority Tier</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Interactive Simulator Bar */}
+                      <div className="pt-2 border-t border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="text-xs text-amber-900">
+                          {simulateWithCosigner ? (
+                            <span className="flex items-center gap-1.5 font-bold text-emerald-800">
+                              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                              <span>Simulated Guarantor: Anil Sharma ($14,500/mo · 780 Credit) — Score elevated to 95%!</span>
+                            </span>
+                          ) : (
+                            <span>See how attaching a guarantor changes your compatibility score in real time:</span>
+                          )}
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <button
+                            type="button"
+                            id="btn-toggle-cosigner-sim"
+                            onClick={() => {
+                              setSimulateWithCosigner(!simulateWithCosigner);
+                              onNotify(
+                                !simulateWithCosigner
+                                  ? 'Guarantor simulated! Match score elevated from 41% to 95%.'
+                                  : 'Cosigner simulation reset.'
+                              );
+                            }}
+                            className="px-3 py-1.5 bg-white hover:bg-amber-100 text-amber-950 font-bold text-xs rounded-xl border border-amber-300 shadow-2xs transition-colors cursor-pointer"
+                          >
+                            {simulateWithCosigner ? 'Reset simulation' : 'Preview match with cosigner'}
+                          </button>
+
+                          <Button
+                            id="btn-apply-with-cosigner-estimate"
+                            variant="primary"
+                            size="sm"
+                            leftIcon={<UserPlus className="w-3.5 h-3.5" />}
+                            onClick={() => {
+                              if (onApplyWithCosigner) {
+                                onApplyWithCosigner();
+                              } else {
+                                onApplyNow();
+                              }
+                            }}
+                          >
+                            Apply with cosigner
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* MANDATORY VERBATIM DISCLAIMER */}
+                  <div className="pt-2 border-t border-gray-100 flex items-start gap-1.5 text-[11px] text-gray-500">
+                    <Info className="w-3.5 h-3.5 text-gray-400 shrink-0 mt-0.5" />
+                    <p className="italic">
+                      An estimate based on this listing&apos;s published criteria — not a guarantee and not the landlord&apos;s decision.
+                    </p>
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Description Section */}
             <div className="bg-white rounded-2xl p-5 sm:p-7 border border-gray-200 shadow-xs">
@@ -908,38 +1262,59 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 })}
               </div>
 
-              {/* Main "Apply Now" Primary Action Button - Clean, standard primary styling, NO AI icons */}
+              {/* Cosigner Callout if Low Match */}
+              {activeMatchTier === 'low' && !simulateWithCosigner && (
+                <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-xl space-y-1">
+                  <div className="flex items-center gap-1.5 font-bold text-xs text-amber-950">
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                    <span>Cosigner Recommended</span>
+                  </div>
+                  <p className="text-[11px] text-amber-800 leading-snug">
+                    Monthly rent (${listing.rent.toLocaleString()}) requires ${Math.round(listing.rent * (listing.minIncomeMultiplier || 3)).toLocaleString()}/mo income. Adding a cosigner or guarantor satisfies landlord criteria.
+                  </p>
+                </div>
+              )}
+
+              {/* Main Action Buttons in sticky rail:
+                  1. Book a tour (stands out the most - primary lg)
+                  2. Message (secondary md)
+                  3. Apply now (least dominant - outline md)
+              */}
               <div className="space-y-2.5">
+                {/* 1. Book a tour - Primary dominant action */}
                 <Button
-                  id="btn-apply-now-primary"
+                  id="btn-book-session"
                   variant="primary"
                   size="lg"
                   fullWidth
-                  onClick={onApplyNow}
-                >
-                  Apply now
-                </Button>
-
-                {/* Secondary Actions: Book Session & Message */}
-                <Button
-                  id="btn-book-session"
-                  variant="teal"
-                  size="md"
-                  fullWidth
+                  leftIcon={<Calendar className="w-4 h-4" />}
                   onClick={handleBookSession}
                 >
-                  Book session
+                  Book a tour
                 </Button>
 
+                {/* 2. Message landlord - Secondary action */}
                 <Button
                   id="btn-message-landlord-secondary"
                   variant="secondary"
                   size="md"
                   fullWidth
-                  leftIcon={<MessageSquare className="w-4 h-4 text-gray-500" />}
+                  leftIcon={<MessageSquare className="w-4 h-4 text-gray-700" />}
                   onClick={onMessageLandlord}
                 >
                   Message
+                </Button>
+
+                {/* 3. Apply now - Least dominant action */}
+                <Button
+                  id="btn-apply-now-primary"
+                  variant="outline"
+                  size="md"
+                  fullWidth
+                  className="border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 font-medium"
+                  onClick={onApplyNow}
+                >
+                  Apply now
                 </Button>
               </div>
 
@@ -992,31 +1367,32 @@ export const ListingPage: React.FC<ListingPageProps> = ({
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 p-3 z-20 shadow-lg">
         <div className="max-w-md mx-auto flex items-center gap-2">
           <Button
-            id="mobile-btn-apply"
+            id="mobile-btn-request-tour"
             variant="primary"
             size="md"
             className="flex-1"
-            onClick={onApplyNow}
-          >
-            Apply now
-          </Button>
-          <Button
-            id="mobile-btn-request-tour"
-            variant="secondary"
-            size="md"
             leftIcon={<Calendar className="w-4 h-4" />}
             onClick={onRequestTour}
           >
-            Request tour
+            Book a tour
           </Button>
           <Button
             id="mobile-btn-message"
             variant="secondary"
-            size="icon"
-            aria-label="Message landlord"
+            size="md"
+            leftIcon={<MessageSquare className="w-4 h-4 text-gray-700" />}
             onClick={onMessageLandlord}
           >
-            <MessageSquare className="w-4 h-4 text-gray-700" />
+            Message
+          </Button>
+          <Button
+            id="mobile-btn-apply"
+            variant="outline"
+            size="md"
+            onClick={onApplyNow}
+            className="border-gray-200 text-gray-600 font-medium"
+          >
+            Apply
           </Button>
         </div>
       </div>

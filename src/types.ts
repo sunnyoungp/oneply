@@ -40,6 +40,11 @@ export interface ListingDetails {
     url: string;
     caption: string;
   }[];
+  minIncomeMultiplier?: number;
+  minCreditScore?: number;
+  cosignerPolicy?: 'accepted' | 'required_if_under_income' | 'not_accepted';
+  defaultMatchTier?: 'strong' | 'moderate' | 'low' | 'neutral';
+  cosignerIncomeMultiplier?: number;
 }
 
 export type ApplicationType = 'solo' | 'group';

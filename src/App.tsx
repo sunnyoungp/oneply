@@ -17,7 +17,7 @@ import { SubmissionConfirmation } from './components/SubmissionConfirmation';
 import { ApplicationHistoryScreen } from './components/ApplicationHistoryScreen';
 import { ApplicationSetupModal } from './components/ApplicationSetupModal';
 import { Button } from './components/ui/Button';
-import { mockListing } from './mockData';
+import { mockListing, mockLowMatchListing, sampleListings } from './mockData';
 import {
   mockJordanSavedProfile,
   mockBlankProfile,
@@ -30,6 +30,7 @@ import {
   Roommate,
   ProfileFormData,
   CosignerData,
+  ListingDetails,
 } from './types';
 import {
   Calendar,
@@ -51,6 +52,7 @@ import {
 
 export default function App() {
   const [currentStep, setCurrentStep] = useState<AppStep>('step-1-listing');
+  const [currentListing, setCurrentListing] = useState<ListingDetails>(mockLowMatchListing);
   const [useSavedProfile, setUseSavedProfile] = useState<boolean>(true);
   const [applicationType, setApplicationType] = useState<ApplicationType>('solo');
   const [currentUser, setCurrentUser] = useState<string>('Jordan Reed');
@@ -123,6 +125,13 @@ export default function App() {
     setSetupModalInitialStep(1);
     setIsApplicationSetupModalOpen(true);
     triggerToast('Starting application setup: living arrangements');
+  };
+
+  const handleApplyWithCosigner = () => {
+    setCurrentStep('step-1-listing');
+    setSetupModalInitialStep(1);
+    setIsApplicationSetupModalOpen(true);
+    triggerToast('Starting application setup with cosigner recommendation.');
   };
 
   const handleStartProfileFromTour = () => {
@@ -241,10 +250,13 @@ export default function App() {
         {/* STEP 1: Listing Page (and background for Application Setup Modal) */}
         {(currentStep === 'step-1-listing' || currentStep === 'step-5-decision' || currentStep === 'step-6-group') && (
           <ListingPage
-            listing={mockListing}
+            listing={currentListing}
+            availableListings={sampleListings}
+            onSelectListing={(l) => setCurrentListing(l)}
             onRequestTour={handleRequestTour}
             onMessageLandlord={handleMessageLandlord}
             onApplyNow={handleApplyNow}
+            onApplyWithCosigner={handleApplyWithCosigner}
             onNotify={triggerToast}
           />
         )}
@@ -252,7 +264,7 @@ export default function App() {
         {/* STEP 3: Landlord Message Thread */}
         {currentStep === 'step-3-message' && (
           <MessageThread
-            listing={mockListing}
+            listing={currentListing}
             onBackToListing={() => setCurrentStep('step-1-listing')}
             onApplyNow={handleApplyNow}
             onNotify={triggerToast}
@@ -262,7 +274,7 @@ export default function App() {
         {/* STEP 7: Full Reusable Profile */}
         {currentStep === 'step-7-profile' && (
           <ProfileStep
-            listing={mockListing}
+            listing={currentListing}
             isSavedProfile={useSavedProfile}
             formData={profileFormData}
             onChangeFormData={setProfileFormData}
@@ -285,7 +297,7 @@ export default function App() {
         {/* STEP 8: Cosigner Preview View (Minimal Recipient Screen) */}
         {currentStep === 'step-8-cosigner-preview' && profileFormData.cosigner && (
           <CosignerReviewScreen
-            listing={mockListing}
+            listing={currentListing}
             applicantName={currentUser}
             cosignerData={profileFormData.cosigner}
             onConfirmAndSign={handleConfirmCosignerGuarantee}
@@ -297,7 +309,7 @@ export default function App() {
         {/* STEP 9: Individual Review & Submit */}
         {currentStep === 'step-9-submit' && (
           <SubmissionStep
-            listing={mockListing}
+            listing={currentListing}
             formData={profileFormData}
             applicationType={applicationType}
             roommates={roommates}
@@ -311,7 +323,7 @@ export default function App() {
         {/* STEP 10: Group Status Dashboard (Group path only) */}
         {currentStep === 'step-10-group-status' && (
           <GroupStatusDashboard
-            listing={mockListing}
+            listing={currentListing}
             applicantName={currentUser}
             applicantCosigner={profileFormData.cosigner}
             roommates={roommates}
@@ -324,7 +336,7 @@ export default function App() {
         {/* STEP 11: Submission Confirmation & Match Likelihood */}
         {currentStep === 'step-11-confirmation' && (
           <SubmissionConfirmation
-            listing={mockListing}
+            listing={currentListing}
             applicationType={applicationType}
             formData={profileFormData}
             onViewApplications={() => setCurrentStep('step-12-history')}
@@ -336,12 +348,12 @@ export default function App() {
         {/* STEP 12: Application History Screen */}
         {currentStep === 'step-12-history' && (
           <ApplicationHistoryScreen
-            listing={mockListing}
+            listing={currentListing}
             currentSubmission={{
-              address: mockListing.address,
-              unit: mockListing.unit,
-              management: mockListing.managementCompany,
-              rent: mockListing.rent,
+              address: currentListing.address,
+              unit: currentListing.unit,
+              management: currentListing.managementCompany,
+              rent: currentListing.rent,
               applicants:
                 applicationType === 'solo'
                   ? [currentUser]
@@ -357,7 +369,7 @@ export default function App() {
 
       {/* Step 2: Tour Request Modal with "Start profile" vs "Not now" */}
       <TourRequestModal
-        listing={mockListing}
+        listing={currentListing}
         isOpen={isTourModalOpen}
         onClose={() => setIsTourModalOpen(false)}
         onStartProfile={handleStartProfileFromTour}
@@ -368,7 +380,7 @@ export default function App() {
       <ApplicationSetupModal
         isOpen={isApplicationSetupModalOpen}
         onClose={() => setIsApplicationSetupModalOpen(false)}
-        listing={mockListing}
+        listing={currentListing}
         initialStep={setupModalInitialStep}
         applicationType={applicationType}
         onUpdateApplicationType={setApplicationType}
@@ -384,7 +396,7 @@ export default function App() {
 
       {/* Step 8: Cosigner Draft Modal */}
       <CosignerDraftModal
-        listing={mockListing}
+        listing={currentListing}
         initialData={profileFormData.cosigner}
         applicantName={currentUser}
         isOpen={isCosignerDraftOpen}
@@ -513,6 +525,34 @@ export default function App() {
                     }`}
                   >
                     Group
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-[11px]">
+                <span className="text-gray-500 font-medium">Listing Sample:</span>
+                <div className="flex gap-1">
+                  <button
+                    onClick={() => {
+                      setCurrentListing(mockLowMatchListing);
+                      triggerToast('Switched to The Highline Penthouse (Low Match · Needs Cosigner)');
+                    }}
+                    className={`px-2 py-0.5 rounded font-bold transition-colors cursor-pointer ${
+                      currentListing.id === mockLowMatchListing.id ? 'bg-rose-600 text-white' : 'bg-gray-200 text-gray-700'
+                    }`}
+                  >
+                    Low Match (Cosigner)
+                  </button>
+                  <button
+                    onClick={() => {
+                      setCurrentListing(mockListing);
+                      triggerToast('Switched to Meyran Modern Flats (High Match)');
+                    }}
+                    className={`px-2 py-0.5 rounded font-bold transition-colors cursor-pointer ${
+                      currentListing.id === mockListing.id ? 'bg-emerald-600 text-white' : 'bg-gray-200 text-gray-700'
+                    }`}
+                  >
+                    High Match
                   </button>
                 </div>
               </div>
