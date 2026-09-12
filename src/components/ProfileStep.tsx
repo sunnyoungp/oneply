@@ -13,6 +13,11 @@ import {
 } from 'lucide-react';
 import { ListingDetails, ProfileFormData, ApplicationType, Roommate } from '../types';
 import { Button } from './ui/Button';
+import { Input, Select } from './ui/Input';
+import { FieldLabel, HelpText } from './ui/FieldLabel';
+import { Pill } from './ui/Pill';
+import { Card } from './ui/Card';
+import { Badge } from './ui/Badge';
 
 interface ProfileStepProps {
   listing: ListingDetails;
@@ -29,12 +34,6 @@ interface ProfileStepProps {
   onBack: () => void;
   onNotify: (msg: string) => void;
 }
-
-const inputClass =
-  'w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-sm text-gray-900 font-medium placeholder:text-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-[#006AFF]';
-
-const labelClass = 'block text-sm font-semibold text-gray-800 mb-1.5';
-const helpClass = 'block text-xs text-gray-500 mt-1.5 leading-relaxed';
 
 function initialsFromName(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -171,16 +170,6 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
     onNotify('Application saved. Your answers will carry over to your next visit.');
   };
 
-  const pillClass = (active: boolean, tone: 'yes' | 'no') => {
-    const base = 'px-5 py-2 text-sm font-bold rounded-xl cursor-pointer transition-colors min-h-[38px]';
-    if (!active) {
-      return `${base} text-gray-800 bg-white border border-gray-300 hover:bg-gray-50`;
-    }
-    return tone === 'yes'
-      ? `${base} text-amber-950 bg-amber-50 border-2 border-amber-500`
-      : `${base} text-white bg-[#006AFF] border-2 border-[#006AFF]`;
-  };
-
   const navItemClass = (active?: boolean) =>
     `flex flex-col items-center gap-1 w-full py-1 text-[11px] font-semibold no-underline hover:no-underline ${
       active ? 'text-[#006AFF] font-bold' : 'text-gray-800 hover:text-[#006AFF]'
@@ -310,46 +299,41 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                     <h2 className="m-0 mb-1 text-xl font-bold text-gray-900">1. About you</h2>
                     <p className="m-0 text-[15px] text-gray-600">Used for your identity and credit check. Only the landlord sees it.</p>
                   </div>
-                  <span className="flex-none text-xs font-bold text-emerald-800 bg-emerald-50 rounded-lg px-2.5 py-1.5">
-                    Verified
-                  </span>
+                  <Badge tone="success" className="flex-none">Verified</Badge>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <label className="block">
-                    <span className={labelClass}>Full legal name</span>
-                    <input
+                    <FieldLabel>Full legal name</FieldLabel>
+                    <Input
                       type="text"
                       value={formData.fullName}
                       onChange={(e) => updateField('fullName', e.target.value)}
-                      className={inputClass}
                     />
                   </label>
                   <label className="block">
-                    <span className={labelClass}>Date of birth</span>
-                    <input
+                    <FieldLabel>Date of birth</FieldLabel>
+                    <Input
                       type="date"
                       value={formData.dob}
                       onChange={(e) => updateField('dob', e.target.value)}
-                      className={inputClass}
                     />
                   </label>
                   <label className="block">
-                    <span className={labelClass}>Driver&apos;s license or passport number</span>
-                    <input
+                    <FieldLabel>Driver&apos;s license or passport number</FieldLabel>
+                    <Input
                       type="text"
                       value={formData.govIdNumber}
                       onChange={(e) => updateField('govIdNumber', e.target.value)}
-                      className={inputClass}
                     />
                   </label>
                   <label className="block">
-                    <span className={labelClass}>Last 4 of your SSN</span>
-                    <input
+                    <FieldLabel>Last 4 of your SSN</FieldLabel>
+                    <Input
                       type="password"
                       maxLength={4}
                       value={formData.ssnLastFour}
                       onChange={(e) => updateField('ssnLastFour', e.target.value)}
-                      className={`${inputClass} tracking-[0.2em]`}
+                      className="tracking-[0.2em]"
                     />
                   </label>
                 </div>
@@ -358,9 +342,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                     <div className="text-[15px] font-semibold text-gray-900">Credit and background check authorization</div>
                     <div className="text-sm text-gray-600 mt-0.5">A soft pull — it won&apos;t affect your credit score.</div>
                   </div>
-                  <span className="text-xs font-bold text-emerald-800 bg-emerald-50 rounded-lg px-2.5 py-1.5">
-                    {formData.creditCheckAuthSigned ? 'Signed' : 'Required'}
-                  </span>
+                  <Badge tone="success">{formData.creditCheckAuthSigned ? 'Signed' : 'Required'}</Badge>
                 </div>
               </section>
 
@@ -372,29 +354,27 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <label className="block">
-                    <span className={labelClass}>Everyone moving in</span>
-                    <input
+                    <FieldLabel>Everyone moving in</FieldLabel>
+                    <Input
                       type="text"
                       value={formData.occupantsNames}
                       onChange={(e) => updateField('occupantsNames', e.target.value)}
                       placeholder="Names of everyone 18 or older"
-                      className={inputClass}
                     />
-                    <span className={helpClass}>Include anyone 18 or older — they&apos;ll each get their own check.</span>
+                    <HelpText>Include anyone 18 or older — they&apos;ll each get their own check.</HelpText>
                   </label>
                   <label className="block">
-                    <span className={labelClass}>Adults on the lease</span>
-                    <input
+                    <FieldLabel>Adults on the lease</FieldLabel>
+                    <Input
                       type="number"
                       min={1}
                       value={formData.occupantsCount}
                       onChange={(e) => updateField('occupantsCount', Number(e.target.value))}
-                      className={inputClass}
                     />
                   </label>
                   <label className="block">
-                    <span className={labelClass}>Pets</span>
-                    <input
+                    <FieldLabel>Pets</FieldLabel>
+                    <Input
                       type="text"
                       value={formData.petDetails}
                       onChange={(e) => {
@@ -405,34 +385,31 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                           hasPets: value.trim() !== '' && value.trim().toLowerCase() !== 'none',
                         });
                       }}
-                      className={inputClass}
                     />
                     <span className="block text-xs text-emerald-700 font-medium mt-1.5">
                       Allowed here — pet rent may apply.
                     </span>
                   </label>
                   <label className="block">
-                    <span className={labelClass}>Preferred move-in date</span>
-                    <input
+                    <FieldLabel>Preferred move-in date</FieldLabel>
+                    <Input
                       type="date"
                       value={formData.desiredMoveIn}
                       onChange={(e) => updateField('desiredMoveIn', e.target.value)}
-                      className={inputClass}
                     />
                   </label>
                   <label className="block">
-                    <span className={labelClass}>Lease length</span>
-                    <select
+                    <FieldLabel>Lease length</FieldLabel>
+                    <Select
                       value={formData.leaseTermMonths}
                       onChange={(e) => updateField('leaseTermMonths', Number(e.target.value))}
-                      className={inputClass}
                     >
                       <option value={12}>12 months</option>
                       <option value={15}>15 months</option>
                       <option value={18}>18 months</option>
                       <option value={24}>24 months</option>
                       <option value={1}>Month to month</option>
-                    </select>
+                    </Select>
                   </label>
                 </div>
               </section>
@@ -452,15 +429,13 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                     </p>
                   </div>
                   {incomeSectionNeedsUpdate && (
-                    <span className="flex-none text-xs font-bold text-amber-900 bg-amber-50 rounded-lg px-2.5 py-1.5">
-                      Needs an update
-                    </span>
+                    <Badge tone="warning" className="flex-none">Needs an update</Badge>
                   )}
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <label className="block">
-                    <span className={labelClass}>Current employer</span>
-                    <input
+                    <FieldLabel>Current employer</FieldLabel>
+                    <Input
                       type="text"
                       value={formData.employer}
                       onBlur={handleEmployerBlur}
@@ -468,11 +443,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                         updateField('employer', e.target.value);
                         setIsEmployerUpdated(true);
                       }}
-                      className={
-                        employerNeedsUpdate
-                          ? 'w-full rounded-xl px-3 py-2.5 text-sm font-medium bg-amber-50 border-2 border-amber-600 text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber-500'
-                          : inputClass
-                      }
+                      attention={employerNeedsUpdate}
                     />
                     {employerNeedsUpdate && (
                       <span className="block text-xs font-semibold text-amber-900 mt-1.5">
@@ -481,14 +452,13 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                     )}
                   </label>
                   <label className="block">
-                    <span className={labelClass}>Gross monthly income</span>
-                    <input
+                    <FieldLabel>Gross monthly income</FieldLabel>
+                    <Input
                       type="number"
                       value={formData.monthlyIncome || ''}
                       onChange={(e) => updateField('monthlyIncome', Number(e.target.value))}
-                      className={inputClass}
                     />
-                    <span className={helpClass}>
+                    <HelpText>
                       {incomeRatio > 0
                         ? `${incomeRatio.toFixed(1)}× the $${formatMoney(listing.rent)} rent${
                             needsCosignerForIncome
@@ -496,7 +466,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                               : ` — meets the ${incomeMultiplier}× income guideline.`
                           }`
                         : `Listing rent is $${formatMoney(listing.rent)}/mo (${incomeMultiplier}× income guideline).`}
-                    </span>
+                    </HelpText>
                   </label>
                 </div>
                 <div className="flex items-center justify-between gap-4 flex-wrap mt-4 px-4 py-3.5 bg-gray-50 rounded-xl">
@@ -544,32 +514,29 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                   <p className="m-0 text-[15px] text-gray-600">The last two years, plus someone who can vouch for you.</p>
                 </div>
                 <label className="block mb-4">
-                  <span className={labelClass}>Previous address</span>
-                  <input
+                  <FieldLabel>Previous address</FieldLabel>
+                  <Input
                     type="text"
                     value={formData.pastAddress}
                     onChange={(e) => updateField('pastAddress', e.target.value)}
-                    className={inputClass}
                   />
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <label className="block">
-                    <span className={labelClass}>Landlord or property manager</span>
-                    <input
+                    <FieldLabel>Landlord or property manager</FieldLabel>
+                    <Input
                       type="text"
                       value={formData.pastLandlord}
                       onChange={(e) => updateField('pastLandlord', e.target.value)}
-                      className={inputClass}
                     />
-                    <span className={helpClass}>We&apos;ll only contact them if your application moves forward.</span>
+                    <HelpText>We&apos;ll only contact them if your application moves forward.</HelpText>
                   </label>
                   <label className="block">
-                    <span className={labelClass}>Why you&apos;re moving</span>
-                    <input
+                    <FieldLabel>Why you&apos;re moving</FieldLabel>
+                    <Input
                       type="text"
                       value={formData.reasonForLeaving}
                       onChange={(e) => updateField('reasonForLeaving', e.target.value)}
-                      className={inputClass}
                     />
                   </label>
                 </div>
@@ -584,9 +551,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                       Answer honestly — a &quot;yes&quot; isn&apos;t automatically disqualifying, and you can explain.
                     </p>
                   </div>
-                  <span className="flex-none text-xs font-bold text-emerald-800 bg-emerald-50 rounded-lg px-2.5 py-1.5">
-                    Answered
-                  </span>
+                  <Badge tone="success" className="flex-none">Answered</Badge>
                 </div>
                 <div className="flex flex-col">
                   {disclosureDefs.map((q) => (
@@ -596,20 +561,20 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                     >
                       <span className="text-[15px] text-gray-900">{q.label}</span>
                       <div className="flex gap-2 flex-none">
-                        <button
-                          type="button"
-                          className={pillClass(formData[q.key] === 'no', 'no')}
+                        <Pill
+                          active={formData[q.key] === 'no'}
+                          tone="brand"
                           onClick={() => updateField(q.key, 'no')}
                         >
                           No
-                        </button>
-                        <button
-                          type="button"
-                          className={pillClass(formData[q.key] === 'yes', 'yes')}
+                        </Pill>
+                        <Pill
+                          active={formData[q.key] === 'yes'}
+                          tone="caution"
                           onClick={() => updateField(q.key, 'yes')}
                         >
                           Yes
-                        </button>
+                        </Pill>
                       </div>
                     </div>
                   ))}
@@ -624,30 +589,27 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <label className="block">
-                    <span className={labelClass}>Name</span>
-                    <input
+                    <FieldLabel>Name</FieldLabel>
+                    <Input
                       type="text"
                       value={formData.emergencyName}
                       onChange={(e) => updateField('emergencyName', e.target.value)}
-                      className={inputClass}
                     />
                   </label>
                   <label className="block">
-                    <span className={labelClass}>Phone</span>
-                    <input
+                    <FieldLabel>Phone</FieldLabel>
+                    <Input
                       type="tel"
                       value={formData.emergencyPhone}
                       onChange={(e) => updateField('emergencyPhone', e.target.value)}
-                      className={inputClass}
                     />
                   </label>
                   <label className="block">
-                    <span className={labelClass}>Relationship to you</span>
-                    <input
+                    <FieldLabel>Relationship to you</FieldLabel>
+                    <Input
                       type="text"
                       value={formData.emergencyRelation}
                       onChange={(e) => updateField('emergencyRelation', e.target.value)}
-                      className={inputClass}
                     />
                   </label>
                 </div>
@@ -743,30 +705,27 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                 {cosignerOpen && !hasCosigner && (
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 pt-4 border-t border-gray-100">
                     <label className="block">
-                      <span className={labelClass}>Cosigner&apos;s name</span>
-                      <input
+                      <FieldLabel>Cosigner&apos;s name</FieldLabel>
+                      <Input
                         placeholder="Full legal name"
                         value={inlineCosigner.fullName}
                         onChange={(e) => setInlineCosigner((s) => ({ ...s, fullName: e.target.value }))}
-                        className={inputClass}
                       />
                     </label>
                     <label className="block">
-                      <span className={labelClass}>Email</span>
-                      <input
+                      <FieldLabel>Email</FieldLabel>
+                      <Input
                         placeholder="name@email.com"
                         value={inlineCosigner.email}
                         onChange={(e) => setInlineCosigner((s) => ({ ...s, email: e.target.value }))}
-                        className={inputClass}
                       />
                     </label>
                     <label className="block">
-                      <span className={labelClass}>Relationship to you</span>
-                      <input
+                      <FieldLabel>Relationship to you</FieldLabel>
+                      <Input
                         placeholder="Parent, partner, friend"
                         value={inlineCosigner.relationship}
                         onChange={(e) => setInlineCosigner((s) => ({ ...s, relationship: e.target.value }))}
-                        className={inputClass}
                       />
                     </label>
                     <div className="sm:col-span-3">
