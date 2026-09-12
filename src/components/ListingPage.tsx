@@ -245,8 +245,8 @@ export const ListingPage: React.FC<ListingPageProps> = ({
         {availableListings && availableListings.length > 1 && onSelectListing && (
           <div className="mb-5 bg-white rounded-2xl p-3 sm:p-3.5 border border-gray-200 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0 font-bold text-xs">
-                <Building className="w-4 h-4 text-blue-600" />
+              <div className="w-8 h-8 rounded-xl bg-[#EFF6FF] text-[#1D4ED8] flex items-center justify-center shrink-0 font-bold text-xs">
+                <Building className="w-4 h-4 text-[#1D4ED8]" />
               </div>
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
@@ -419,7 +419,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
               className="w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-300"
             />
             {/* Bottom-left Pill: Photo 1 of 18 */}
-            <div className="absolute bottom-4 left-4 bg-black/75 backdrop-blur-xs text-white text-xs font-medium px-3.5 py-1.5 rounded-lg shadow-sm pointer-events-none">
+            <div className="absolute bottom-4 left-4 bg-black/75 backdrop-blur-xs text-white text-xs font-medium px-3.5 py-1.5 rounded-lg shadow-xs pointer-events-none">
               Photo 1 of {listing.photos.length}
             </div>
           </div>
@@ -559,7 +559,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                   onClick={() => setLightboxIdx(idx)}
                   className={`h-14 w-20 shrink-0 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
                     lightboxIdx === idx
-                      ? 'border-[#006AFF] ring-2 ring-blue-400 scale-105 opacity-100'
+                      ? 'border-[#006AFF] ring-2 ring-[#BFDBFE] scale-105 opacity-100'
                       : 'border-transparent opacity-60 hover:opacity-100'
                   }`}
                   title={photo.caption}
@@ -604,19 +604,19 @@ export const ListingPage: React.FC<ListingPageProps> = ({
 
                 <div className="flex items-center gap-4 text-sm text-gray-600 bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
                   <div className="flex items-center gap-1.5">
-                    <Bed className="w-4 h-4 text-blue-600" />
+                    <Bed className="w-4 h-4 text-[#006AFF]" />
                     <span className="font-bold text-gray-900">{listing.beds}</span>
                     <span className="text-xs text-gray-500">beds</span>
                   </div>
                   <span className="text-gray-300">•</span>
                   <div className="flex items-center gap-1.5">
-                    <Bath className="w-4 h-4 text-blue-600" />
+                    <Bath className="w-4 h-4 text-[#006AFF]" />
                     <span className="font-bold text-gray-900">{listing.baths}</span>
                     <span className="text-xs text-gray-500">baths</span>
                   </div>
                   <span className="text-gray-300">•</span>
                   <div className="flex items-center gap-1.5">
-                    <Maximize2 className="w-4 h-4 text-blue-600" />
+                    <Maximize2 className="w-4 h-4 text-[#006AFF]" />
                     <span className="font-bold text-gray-900">{listing.sqft.toLocaleString()}</span>
                     <span className="text-xs text-gray-500">sqft</span>
                   </div>
@@ -630,7 +630,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                     {listing.address}, {listing.unit}
                   </h2>
                   <p className="text-gray-600 text-xs sm:text-sm flex items-center gap-1.5 mt-0.5">
-                    <MapPin className="w-4 h-4 text-blue-600 shrink-0" />
+                    <MapPin className="w-4 h-4 text-[#006AFF] shrink-0" />
                     <span>
                       {listing.neighborhood ? `${listing.neighborhood}, ` : ''}{listing.city}, {listing.state} {listing.zip}
                     </span>
@@ -639,7 +639,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 <button
                   id="btn-view-map"
                   onClick={() => onNotify('Simulating neighborhood map for Pittsburgh, PA')}
-                  className="text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1 self-start sm:self-auto cursor-pointer"
+                  className="text-xs font-semibold text-[#006AFF] hover:text-blue-700 hover:underline flex items-center gap-1 self-start sm:self-auto cursor-pointer"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                   <span>View neighborhood map</span>
@@ -689,8 +689,8 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-xs space-y-4">
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                        <Sparkles className="w-4 h-4 text-blue-600" />
+                      <div className="w-8 h-8 rounded-lg bg-[#EFF6FF] text-[#006AFF] flex items-center justify-center">
+                        <Sparkles className="w-4 h-4 text-[#006AFF]" />
                       </div>
                       <div>
                         <h3 className="font-bold text-sm text-gray-900">Application Match Estimate</h3>
@@ -1141,7 +1141,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
               - Primary "Request a tour", Secondary "Message landlord", Tertiary "Apply now"
              ======================================================== */}
           <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-[112px] z-10 self-start w-full">
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-sm relative">
+            <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200/90 shadow-xs relative">
               
               {/* Header section matching reference */}
               <div className="mb-5">
@@ -1405,14 +1405,15 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 <h3 className="text-lg font-black text-[#0F172A]">All Available Sessions</h3>
                 <p className="text-xs text-gray-500 mt-0.5">Select a date to preview open time slots</p>
               </div>
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon"
                 onClick={() => setIsAllDatesModalOpen(false)}
-                className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
-              </button>
+              </Button>
             </div>
 
             <div className="grid grid-cols-3 gap-2.5 py-5">
@@ -1447,13 +1448,14 @@ export const ListingPage: React.FC<ListingPageProps> = ({
             </div>
 
             <div className="pt-3 border-t border-gray-100 flex justify-end">
-              <button
+              <Button
                 type="button"
+                variant="outline"
+                size="sm"
                 onClick={() => setIsAllDatesModalOpen(false)}
-                className="px-4 py-2 rounded-xl border border-gray-200 text-gray-700 text-xs font-bold hover:bg-gray-50 cursor-pointer"
               >
                 Close
-              </button>
+              </Button>
             </div>
           </div>
         </div>
