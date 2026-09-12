@@ -13,6 +13,7 @@ import {
   Check,
 } from 'lucide-react';
 import { ListingDetails } from '../types';
+import { Button } from './ui/Button';
 
 interface ProfileDecisionStepProps {
   listing: ListingDetails;
@@ -55,14 +56,15 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between p-4 sm:p-8 font-sans">
       {/* Top Header */}
       <div className="max-w-3xl w-full mx-auto flex items-center justify-between">
-        <button
+        <Button
           id="btn-back-to-listing"
+          variant="secondary"
+          size="sm"
+          leftIcon={<ArrowLeft className="w-4 h-4" />}
           onClick={onBack}
-          className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back</span>
-        </button>
+          Back
+        </Button>
 
         <div className="flex items-center gap-1.5 text-xs text-[#1D4ED8] bg-[#EFF6FF] border border-[#BFDBFE] px-3 py-1 rounded-full font-bold">
           <ShieldCheck className="w-3.5 h-3.5 text-[#1D4ED8]" />
@@ -96,7 +98,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
             onClick={() => handleCardClick('saved')}
             className={`rounded-2xl p-6 transition-all cursor-pointer flex flex-col justify-between group relative overflow-hidden ${
               selectedChoice === 'saved'
-                ? 'bg-white border-2 border-[#006AFF] ring-4 ring-blue-100 shadow-lg'
+                ? 'bg-white border-2 border-[#006AFF] ring-4 ring-[#BFDBFE] shadow-xs'
                 : 'bg-white border-2 border-gray-200 hover:border-gray-300 shadow-xs'
             }`}
           >
@@ -108,7 +110,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
 
             <div>
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 text-[#006AFF] flex items-center justify-center group-hover:scale-105 transition-transform">
+                <div className="w-12 h-12 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] text-[#006AFF] flex items-center justify-center group-hover:scale-105 transition-transform">
                   <FileText className="w-6 h-6 text-[#006AFF]" />
                 </div>
                 {/* Radio Indicator */}
@@ -165,7 +167,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
             onClick={() => handleCardClick('new')}
             className={`rounded-2xl p-6 transition-all cursor-pointer flex flex-col justify-between group ${
               selectedChoice === 'new'
-                ? 'bg-white border-2 border-[#006AFF] ring-4 ring-blue-100 shadow-lg'
+                ? 'bg-white border-2 border-[#006AFF] ring-4 ring-[#BFDBFE] shadow-xs'
                 : 'bg-white border-2 border-gray-200 hover:border-gray-300 shadow-xs'
             }`}
           >
@@ -220,14 +222,16 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
 
         {/* Phase 3 Explicit Continue Action (Second Tap) */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <button
+          <Button
             id="btn-continue-profile-decision"
+            variant="primary"
+            size="lg"
+            className="w-full sm:w-auto min-w-[280px]"
+            rightIcon={<ArrowRight className="w-4 h-4" />}
             onClick={handleContinue}
-            className="w-full sm:w-auto min-w-[280px] py-3.5 px-8 rounded-xl bg-[#006AFF] hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer group"
           >
-            <span>Continue</span>
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </button>
+            Continue
+          </Button>
         </div>
 
         {/* Explanatory note */}

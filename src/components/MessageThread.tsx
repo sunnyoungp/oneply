@@ -65,7 +65,7 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
             {/* Landlord Identity */}
             <div className="flex items-center gap-2.5">
               <div className="relative">
-                <div className="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm ring-2 ring-blue-100">
+                <div className="w-10 h-10 rounded-full bg-[#006AFF] text-white font-bold flex items-center justify-center text-sm ring-2 ring-[#BFDBFE]">
                   SJ
                 </div>
                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white" />
@@ -73,7 +73,7 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
               <div>
                 <div className="flex items-center gap-1.5">
                   <h2 className="font-bold text-gray-900 text-sm">{listing.contactPerson}</h2>
-                  <span className="text-[11px] bg-blue-50 text-blue-700 font-semibold px-1.5 py-0.2 rounded border border-blue-200">
+                  <span className="text-[11px] bg-[#EFF6FF] text-[#1D4ED8] font-semibold px-1.5 py-0.2 rounded border border-[#BFDBFE]">
                     Host
                   </span>
                 </div>
@@ -85,7 +85,7 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
           <button
             id="btn-view-listing-summary"
             onClick={onBackToListing}
-            className="hidden sm:flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium hover:underline cursor-pointer"
+            className="hidden sm:flex items-center gap-1 text-xs text-[#006AFF] hover:text-blue-700 font-medium hover:underline cursor-pointer"
           >
             <span>View listing</span>
             <ExternalLink className="w-3.5 h-3.5" />
@@ -129,18 +129,18 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
 
         {/* Message 1: Renter inquiry */}
         <div className="flex flex-col items-end">
-          <div className="max-w-md bg-blue-600 text-white rounded-2xl rounded-tr-xs px-4 py-3 shadow-xs text-sm">
+          <div className="max-w-md bg-[#006AFF] text-white rounded-2xl rounded-tr-xs px-4 py-3 shadow-xs text-sm">
             <p>Hi Sarah! Is 4720 Centre Ave Apt 304 still available for move-in next month?</p>
           </div>
           <div className="flex items-center gap-1 text-[11px] text-gray-400 mt-1 mr-1">
             <span>2:15 PM</span>
-            <CheckCheck className="w-3.5 h-3.5 text-blue-600" />
+            <CheckCheck className="w-3.5 h-3.5 text-[#006AFF]" />
           </div>
         </div>
 
         {/* Message 2: Landlord reply */}
         <div className="flex items-start gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-1">
+          <div className="w-8 h-8 rounded-full bg-[#006AFF] text-white text-xs font-bold flex items-center justify-center shrink-0 mt-1">
             SJ
           </div>
           <div>
@@ -162,22 +162,22 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
 
         {/* Message 3: Renter tour follow-up */}
         <div className="flex flex-col items-end">
-          <div className="max-w-md bg-blue-600 text-white rounded-2xl rounded-tr-xs px-4 py-3 shadow-xs text-sm">
+          <div className="max-w-md bg-[#006AFF] text-white rounded-2xl rounded-tr-xs px-4 py-3 shadow-xs text-sm">
             <p>Just finished the tour with you, loved the natural lighting and the quiet street! Definitely interested.</p>
           </div>
           <div className="flex items-center gap-1 text-[11px] text-gray-400 mt-1 mr-1">
             <span>4:45 PM</span>
-            <CheckCheck className="w-3.5 h-3.5 text-blue-600" />
+            <CheckCheck className="w-3.5 h-3.5 text-[#006AFF]" />
           </div>
         </div>
 
         {/* Message 4: Landlord final invite WITH EMBEDDED APPLY BUTTON (Step 3 Requirement) */}
         <div className="flex items-start gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-1">
+          <div className="w-8 h-8 rounded-full bg-[#006AFF] text-white text-xs font-bold flex items-center justify-center shrink-0 mt-1">
             SJ
           </div>
           <div className="max-w-lg w-full">
-            <div className="bg-white text-gray-900 rounded-2xl rounded-tl-xs p-4 shadow-sm border border-gray-200 text-sm space-y-3">
+            <div className="bg-white text-gray-900 rounded-2xl rounded-tl-xs p-4 shadow-xs border border-gray-200 text-sm space-y-3">
               <p className="leading-relaxed">
                 Great meeting you Jordan! Feel free to apply whenever you&apos;re ready. You can submit your application directly below:
               </p>
@@ -185,10 +185,10 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
               {/* Embedded Apply Card directly under the message */}
               <div
                 id="embedded-apply-card"
-                className="bg-linear-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-4 shadow-xs"
+                className="bg-[#EFF6FF] border-2 border-[#BFDBFE] rounded-xl p-4 shadow-xs"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-blue-700 flex items-center gap-1">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#1D4ED8] flex items-center gap-1">
                     <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                     Direct Rental Application
                   </span>
@@ -225,12 +225,12 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
         {/* Any live simulated messages added by user */}
         {customMessages.map((msg, index) => (
           <div key={index} className="flex flex-col items-end">
-            <div className="max-w-md bg-blue-600 text-white rounded-2xl rounded-tr-xs px-4 py-3 shadow-xs text-sm">
+            <div className="max-w-md bg-[#006AFF] text-white rounded-2xl rounded-tr-xs px-4 py-3 shadow-xs text-sm">
               <p>{msg.text}</p>
             </div>
             <div className="flex items-center gap-1 text-[11px] text-gray-400 mt-1 mr-1">
               <span>{msg.time}</span>
-              <CheckCheck className="w-3.5 h-3.5 text-blue-600" />
+              <CheckCheck className="w-3.5 h-3.5 text-[#006AFF]" />
             </div>
           </div>
         ))}
@@ -264,7 +264,7 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
             <button
               id="btn-quick-apply-link"
               onClick={onApplyNow}
-              className="text-blue-600 font-semibold hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-[#006AFF] font-semibold hover:underline flex items-center gap-1 cursor-pointer"
             >
               <span>Apply now ➔</span>
             </button>

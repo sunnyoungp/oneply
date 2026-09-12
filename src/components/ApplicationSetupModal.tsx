@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { ListingDetails, Roommate, ApplicationType, ProfileFormData } from '../types';
 import { Button } from './ui/Button';
+import { Input } from './ui/Input';
 
 interface ApplicationSetupModalProps {
   isOpen: boolean;
@@ -166,24 +167,25 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
 
           <div className="flex items-center gap-3">
             {/* Step Counter Badge */}
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold">
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] text-[#1D4ED8] text-xs font-bold">
               <span>Step {modalStep} of 2</span>
-              <span className="text-blue-300">·</span>
+              <span className="text-[#BFDBFE]">·</span>
               <span className="hidden sm:inline">
                 {modalStep === 1 ? 'Living arrangements' : 'Profile source'}
               </span>
             </div>
 
             {/* Close Button */}
-            <button
+            <Button
               id="btn-close-application-modal"
               type="button"
+              variant="ghost"
+              size="icon"
               onClick={onClose}
-              className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-200/60 transition-colors cursor-pointer"
               title="Close setup modal"
             >
               <X className="w-5 h-5" />
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -216,7 +218,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                   }}
                   className={`p-4 sm:p-5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between group relative ${
                     selectedShape === 'solo'
-                      ? 'border-[#006AFF] bg-blue-50/40 shadow-sm'
+                      ? 'border-[#006AFF] bg-[#EFF6FF]/40 shadow-xs'
                       : 'border-gray-200 hover:border-gray-300 bg-white'
                   }`}
                 >
@@ -261,7 +263,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                   }}
                   className={`p-4 sm:p-5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between group relative ${
                     selectedShape === 'group'
-                      ? 'border-[#006AFF] bg-blue-50/40 shadow-sm'
+                      ? 'border-[#006AFF] bg-[#EFF6FF]/40 shadow-xs'
                       : 'border-gray-200 hover:border-gray-300 bg-white'
                   }`}
                 >
@@ -304,7 +306,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                   <div className="flex items-center justify-between">
                     <div>
                       <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
-                        <Users className="w-4 h-4 text-blue-600" />
+                        <Users className="w-4 h-4 text-[#006AFF]" />
                         <span>Roommate group ({roommates.length})</span>
                       </h4>
                       <p className="text-[11px] text-gray-500">
@@ -367,19 +369,19 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                   <form onSubmit={handleAddRoommate} className="pt-2 border-t border-gray-200/80">
                     <div className="text-xs font-bold text-gray-700 mb-2">Add a co-tenant:</div>
                     <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
-                      <input
+                      <Input
                         type="text"
                         placeholder="Full name"
                         value={newRoommateName}
                         onChange={(e) => setNewRoommateName(e.target.value)}
-                        className="sm:col-span-2 bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="sm:col-span-2"
                       />
-                      <input
+                      <Input
                         type="email"
                         placeholder="Email address"
                         value={newRoommateEmail}
                         onChange={(e) => setNewRoommateEmail(e.target.value)}
-                        className="sm:col-span-2 bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="sm:col-span-2"
                       />
                       <Button
                         type="submit"
@@ -404,8 +406,8 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
             <div className="space-y-6">
               {/* Header */}
               <div className="text-center sm:text-left">
-                <div className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full mb-2 border border-blue-200">
-                  <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+                <div className="inline-flex items-center gap-1.5 bg-[#EFF6FF] text-[#1D4ED8] text-xs font-bold px-2.5 py-1 rounded-full mb-2 border border-[#BFDBFE]">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#1D4ED8]" />
                   <span>Verified Profile Available</span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
@@ -427,13 +429,13 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                   }}
                   className={`p-5 rounded-2xl border-2 transition-all cursor-pointer relative ${
                     selectedProfileMode === 'saved'
-                      ? 'border-[#006AFF] bg-white ring-4 ring-blue-50 shadow-md'
+                      ? 'border-[#006AFF] bg-white ring-4 ring-[#EFF6FF] shadow-xs'
                       : 'border-gray-200 hover:border-gray-300 bg-white'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 text-[#006AFF] flex items-center justify-center shrink-0 font-bold">
+                      <div className="w-10 h-10 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] text-[#006AFF] flex items-center justify-center shrink-0 font-bold">
                         <FileText className="w-5 h-5 text-[#006AFF]" />
                       </div>
                       <div>
@@ -513,7 +515,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                   }}
                   className={`p-5 rounded-2xl border-2 transition-all cursor-pointer relative ${
                     selectedProfileMode === 'new'
-                      ? 'border-[#006AFF] bg-white ring-4 ring-blue-50 shadow-md'
+                      ? 'border-[#006AFF] bg-white ring-4 ring-[#EFF6FF] shadow-xs'
                       : 'border-gray-200 hover:border-gray-300 bg-white'
                   }`}
                 >
