@@ -1,113 +1,120 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Home,
-  Search,
-  Heart,
-  Share2,
+  Menu,
+  Building2,
+  Users,
   ChevronRight,
-  Info,
-  CheckCircle,
 } from 'lucide-react';
 
 interface ZillowNavbarProps {
   onNotify: (msg: string) => void;
+  onOpenGroupFlow?: () => void;
 }
 
-export const ZillowNavbar: React.FC<ZillowNavbarProps> = ({ onNotify }) => {
-  const [activeTab, setActiveTab] = useState('Rent');
-  const [saved, setSaved] = useState(false);
-
-  const handleNavClick = (name: string) => {
-    setActiveTab(name);
-    onNotify(`Navigated simulated category: ${name}`);
-  };
-
-  const handleSaveToggle = () => {
-    setSaved(!saved);
-    onNotify(!saved ? 'Saved listing to your mock Zillow favorites!' : 'Removed from saved favorites.');
-  };
-
-  const handleShare = () => {
-    onNotify('Listing link copied to clipboard: zillow.com/homedetails/centre-4720-304');
-  };
-
+export const ZillowNavbar: React.FC<ZillowNavbarProps> = ({ onNotify, onOpenGroupFlow }) => {
   return (
-    <header className="border-b border-gray-200 bg-white sticky top-0 z-30 shadow-xs">
-      {/* Main Zillow Nav */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        {/* Left Nav items */}
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-1.5 text-blue-600 font-extrabold text-2xl tracking-tight cursor-pointer" onClick={() => onNotify('Zillow Home Page')}>
-            <Home className="w-7 h-7 fill-blue-600 text-blue-600" />
-            <span>Zillow</span>
-          </div>
+    <header className="border-b border-gray-200 bg-white sticky top-0 z-30 shadow-2xs">
+      {/* Main Zillow Rentals Nav */}
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        {/* Left: Hamburger & Zillow Rentals Logo */}
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => onNotify('Opened main menu')}
+            className="p-1.5 -ml-1.5 rounded-lg text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer"
+            aria-label="Main menu"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
 
-          <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-gray-700">
-            {['Buy', 'Rent', 'Sell', 'Home Loans', 'Agent finder'].map((tab) => (
-              <button
-                key={tab}
-                id={`nav-tab-${tab.toLowerCase().replace(/\s+/g, '-')}`}
-                onClick={() => handleNavClick(tab)}
-                className={`px-3 py-1.5 rounded-md transition-colors ${
-                  activeTab === tab
-                    ? 'text-blue-600 font-semibold bg-blue-50'
-                    : 'hover:text-blue-600 hover:bg-gray-50'
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </nav>
+          <div
+            className="flex items-center gap-2 cursor-pointer select-none"
+            onClick={() => onNotify('Zillow Rentals Home')}
+          >
+            <div className="w-8 h-8 rounded-lg bg-[#006AFF] text-white flex items-center justify-center font-black text-xl shadow-xs">
+              Z
+            </div>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-2xl font-black text-[#006AFF] tracking-tight">zillow</span>
+              <span className="text-sm font-semibold text-gray-600">Rentals</span>
+            </div>
+          </div>
         </div>
 
-        {/* Right Nav items */}
-        <div className="flex items-center gap-3">
+        {/* Right: Landlord Portal, Group Application, User Avatar */}
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          {/* Landlord Portal (Rental Manager) */}
           <button
-            id="btn-save-top"
-            onClick={handleSaveToggle}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md border transition-colors ${
-              saved
-                ? 'border-red-300 text-red-600 bg-red-50'
-                : 'border-gray-300 text-gray-700 hover:bg-gray-50'
-            }`}
+            id="btn-landlord-portal"
+            onClick={() => onNotify('Landlord Portal (Rental Manager) simulated')}
+            className="hidden md:flex items-center gap-2 border border-gray-300 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-gray-800 bg-white hover:bg-gray-50 transition-colors cursor-pointer shadow-2xs"
           >
-            <Heart className={`w-4 h-4 ${saved ? 'fill-red-600 text-red-600' : ''}`} />
-            <span className="hidden sm:inline">{saved ? 'Saved' : 'Save'}</span>
+            <Building2 className="w-4 h-4 text-gray-600" />
+            <span>Landlord Portal (Rental Manager)</span>
+            <span className="bg-[#006AFF] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider">
+              NEW
+            </span>
           </button>
 
+          {/* Group Application */}
           <button
-            id="btn-share-top"
-            onClick={handleShare}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
+            id="btn-nav-group-app"
+            onClick={() => {
+              if (onOpenGroupFlow) {
+                onOpenGroupFlow();
+              } else {
+                onNotify('Group Application mode active');
+              }
+            }}
+            className="flex items-center gap-2 border border-blue-200 bg-blue-50/70 text-[#006AFF] hover:bg-blue-100 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-colors cursor-pointer shadow-2xs"
           >
-            <Share2 className="w-4 h-4" />
-            <span className="hidden sm:inline">Share</span>
+            <Users className="w-4 h-4 text-[#006AFF]" />
+            <span>Group Application</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           </button>
 
-          <button
-            id="btn-sign-in-top"
-            onClick={() => onNotify('Logged in as verified renter: Jordan Hayes (jordan.hayes@example.com)')}
-            className="text-sm font-semibold text-blue-600 hover:text-blue-800 px-2 py-1"
+          {/* User Avatar */}
+          <div
+            onClick={() => onNotify('User Profile: MP (Morgan Price)')}
+            className="w-9 h-9 rounded-full bg-[#006AFF] text-white font-bold text-xs flex items-center justify-center shadow-xs cursor-pointer hover:ring-2 hover:ring-blue-300 transition-all select-none"
+            title="Signed in as MP"
           >
-            Sign in
-          </button>
+            MP
+          </div>
         </div>
       </div>
 
-      {/* Breadcrumb row */}
-      <div className="bg-gray-50 border-t border-gray-200 px-4 sm:px-6 py-2 text-xs text-gray-500 flex items-center justify-between">
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="hover:underline cursor-pointer" onClick={() => onNotify('Navigated: PA')}>PA</span>
-          <ChevronRight className="w-3 h-3 text-gray-400" />
-          <span className="hover:underline cursor-pointer" onClick={() => onNotify('Navigated: Pittsburgh')}>Pittsburgh</span>
-          <ChevronRight className="w-3 h-3 text-gray-400" />
-          <span className="hover:underline cursor-pointer" onClick={() => onNotify('Navigated: Bloomfield/Shadyside')}>Bloomfield / Shadyside</span>
-          <ChevronRight className="w-3 h-3 text-gray-400" />
-          <span className="text-gray-900 font-medium truncate max-w-[220px] sm:max-w-none">4720 Centre Ave Apt 304</span>
+      {/* Breadcrumbs Sub-bar */}
+      <div className="bg-[#F9FAFB] border-t border-gray-200 px-4 sm:px-6 lg:px-8 py-2 text-xs text-gray-600 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span
+            className="hover:underline cursor-pointer font-medium text-gray-700"
+            onClick={() => onNotify('Navigated to PA')}
+          >
+            PA
+          </span>
+          <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+          <span
+            className="hover:underline cursor-pointer font-medium text-gray-700"
+            onClick={() => onNotify('Navigated to Pittsburgh')}
+          >
+            Pittsburgh
+          </span>
+          <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+          <span
+            className="hover:underline cursor-pointer font-medium text-gray-700"
+            onClick={() => onNotify('Navigated to Apartments For Rent')}
+          >
+            Apartments For Rent
+          </span>
         </div>
-        <div className="flex items-center gap-2 text-emerald-700 font-medium">
-          <CheckCircle className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Verified Rental</span>
+
+        <div className="flex items-center gap-3 text-xs text-gray-500">
+          <span>Listing ID: #3928190 · Updated 3 hours ago</span>
+          <span className="hidden sm:inline text-gray-300">•</span>
+          <span className="flex items-center gap-1.5 font-medium text-[#006AFF]">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block shrink-0" />
+            <span>Participating Zillow Application Rental</span>
+          </span>
         </div>
       </div>
     </header>

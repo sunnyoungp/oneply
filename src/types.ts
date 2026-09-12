@@ -14,9 +14,11 @@ export type AppStep =
 
 export interface ListingDetails {
   id: string;
+  listingId?: string;
   title: string;
   address: string;
   unit: string;
+  neighborhood?: string;
   city: string;
   state: string;
   zip: string;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   MapPin,
   Bed,
@@ -25,6 +25,7 @@ import {
   Info,
   Check,
   Images,
+  X,
 } from 'lucide-react';
 import { ListingDetails } from '../types';
 
@@ -44,27 +45,162 @@ export const ListingPage: React.FC<ListingPageProps> = ({
   onNotify,
 }) => {
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxIdx, setLightboxIdx] = useState(0);
   const [showFullDesc, setShowFullDesc] = useState(false);
   const [activeFeatureTab, setActiveFeatureTab] = useState(0);
-  const [selectedTourDate, setSelectedTourDate] = useState('Tomorrow, 2:30 PM');
+  const [selectedTourDate, setSelectedTourDate] = useState('SUN 13 Sep, 10:30 AM');
   const [isSaved, setIsSaved] = useState(false);
   const [activeMatchTier, setActiveMatchTier] = useState<'strong' | 'moderate' | 'neutral'>('strong');
 
-  const tourDateOptions = [
-    { label: 'Tomorrow', time: '2:30 PM' },
-    { label: 'Saturday', time: '11:00 AM' },
-    { label: 'Saturday', time: '3:00 PM' },
-    { label: 'Sunday', time: '1:00 PM' },
-  ];
+  // Tour sessions state matching the reference layout
+  const [selectedSessionDateIdx, setSelectedSessionDateIdx] = useState(0);
+  const [selectedSessionTime, setSelectedSessionTime] = useState('10:30 AM');
+  const [timeSlotPage, setTimeSlotPage] = useState(0);
+  const [showAllDates, setShowAllDates] = useState(false);
 
-  const handleNextPhoto = (e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    setActivePhotoIdx((prev) => (prev === listing.photos.length - 1 ? 0 : prev + 1));
+  const openLightbox = (index: number) => {
+    setLightboxIdx(index);
+    setIsLightboxOpen(true);
   };
 
-  const handlePrevPhoto = (e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    setActivePhotoIdx((prev) => (prev === 0 ? listing.photos.length - 1 : prev - 1));
+  const closeLightbox = () => {
+    setIsLightboxOpen(false);
+  };
+
+  const handleNextLightbox = () => {
+    setLightboxIdx((prev) => (prev === listing.photos.length - 1 ? 0 : prev + 1));
+  };
+
+  const handlePrevLightbox = () => {
+    setLightboxIdx((prev) => (prev === 0 ? listing.photos.length - 1 : prev - 1));
+  };
+
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') handleNextLightbox();
+      if (e.key === 'ArrowLeft') handlePrevLightbox();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isLightboxOpen, listing.photos.length]);
+
+  const tourSessionDates = [
+    {
+      day: 'SUN',
+      date: '13 Sep',
+      fullDate: '13 Sep 2026',
+      slots: 12,
+      times: [
+        '10:30 AM', '10:45 AM', '11:00 AM',
+        '11:15 AM', '11:30 AM', '11:45 AM',
+        '1:00 PM', '1:15 PM', '1:30 PM',
+        '2:00 PM', '2:30 PM', '3:00 PM',
+      ],
+    },
+    {
+      day: 'SAT',
+      date: '19 Sep',
+      fullDate: '19 Sep 2026',
+      slots: 40,
+      times: [
+        '10:00 AM', '10:15 AM', '10:30 AM',
+        '10:45 AM', '11:00 AM', '11:30 AM',
+        '12:00 PM', '12:30 PM', '1:00 PM',
+        '1:30 PM', '2:00 PM', '2:30 PM',
+      ],
+    },
+    {
+      day: 'SUN',
+      date: '20 Sep',
+      fullDate: '20 Sep 2026',
+      slots: 54,
+      times: [
+        '10:30 AM', '10:45 AM', '11:00 AM',
+        '11:15 AM', '11:30 AM', '11:45 AM',
+        '1:00 PM', '1:30 PM', '2:00 PM',
+        '2:30 PM', '3:00 PM', '3:30 PM',
+      ],
+    },
+    {
+      day: 'SAT',
+      date: '26 Sep',
+      fullDate: '26 Sep 2026',
+      slots: 40,
+      times: [
+        '10:30 AM', '10:45 AM', '11:00 AM',
+        '11:15 AM', '11:30 AM', '11:45 AM',
+        '1:00 PM', '1:30 PM', '2:00 PM',
+        '2:30 PM', '3:00 PM', '3:30 PM',
+      ],
+    },
+    {
+      day: 'SUN',
+      date: '27 Sep',
+      fullDate: '27 Sep 2026',
+      slots: 36,
+      times: [
+        '10:00 AM', '10:30 AM', '11:00 AM',
+        '11:30 AM', '12:00 PM', '1:00 PM',
+        '1:30 PM', '2:00 PM', '2:30 PM',
+        '3:00 PM', '3:30 PM', '4:00 PM',
+      ],
+    },
+    {
+      day: 'SAT',
+      date: '3 Oct',
+      fullDate: '3 Oct 2026',
+      slots: 28,
+      times: [
+        '10:30 AM', '11:00 AM', '11:30 AM',
+        '12:00 PM', '1:00 PM', '1:30 PM',
+        '2:00 PM', '2:30 PM', '3:00 PM',
+        '3:30 PM', '4:00 PM', '4:30 PM',
+      ],
+    },
+  ];
+
+  const currentSessionDate = tourSessionDates[selectedSessionDateIdx] || tourSessionDates[0];
+  const SLOTS_PER_PAGE = 6;
+  const totalTimePages = Math.ceil(currentSessionDate.times.length / SLOTS_PER_PAGE);
+  const visibleTimeSlots = currentSessionDate.times.slice(
+    timeSlotPage * SLOTS_PER_PAGE,
+    (timeSlotPage + 1) * SLOTS_PER_PAGE
+  );
+
+  const handleSelectDate = (idx: number) => {
+    setSelectedSessionDateIdx(idx);
+    setTimeSlotPage(0);
+    const newDate = tourSessionDates[idx];
+    if (!newDate.times.includes(selectedSessionTime)) {
+      setSelectedSessionTime(newDate.times[0] || '10:30 AM');
+    }
+    onNotify(`Selected date: ${newDate.day}, ${newDate.date}`);
+  };
+
+  const handlePrevTimePage = () => {
+    if (timeSlotPage > 0) {
+      setTimeSlotPage((prev) => prev - 1);
+    }
+  };
+
+  const handleNextTimePage = () => {
+    if (timeSlotPage < totalTimePages - 1) {
+      setTimeSlotPage((prev) => prev + 1);
+    }
+  };
+
+  const handleSelectTime = (time: string) => {
+    setSelectedSessionTime(time);
+    onNotify(`Selected time: ${time}`);
+  };
+
+  const handleBookSession = () => {
+    const fullScheduleStr = `${currentSessionDate.day} ${currentSessionDate.date}, ${selectedSessionTime}`;
+    setSelectedTourDate(fullScheduleStr);
+    onRequestTour();
   };
 
   const handleToggleHeart = (e: React.MouseEvent) => {
@@ -75,216 +211,273 @@ export const ListingPage: React.FC<ListingPageProps> = ({
 
   const handleShareClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onNotify('Listing link copied to clipboard: zillow.com/homedetails/centre-4720-304');
+    onNotify(`Listing link copied to clipboard: zillow.com/homedetails/${listing.id}`);
   };
 
   return (
     <div className="pb-24 sm:pb-16 bg-[#FAFAFB] min-h-screen text-gray-900 font-sans">
-      <div className="w-full max-w-[1600px] mx-auto px-0 sm:px-4 lg:px-6 pt-0 sm:pt-4">
+      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-5">
         
         {/* ========================================================
-            PHOTO GALLERY: Responsive Split
-            Mobile: <768px Full-bleed 16:10 hero with tap-to-cycle & overlays
-            Desktop: ≥768px Large Image Left + Vertical Gallery Preview Right
+            TOP TITLE & ACTIONS BAR (Matching Reference Image)
+           ======================================================== */}
+        <div className="mb-4">
+          {/* Status Badges */}
+          <div className="flex items-center gap-2 mb-2">
+            <span className="bg-[#DCFCE7] text-[#15803D] font-extrabold text-xs px-2.5 py-0.5 rounded-md tracking-wider uppercase">
+              FOR RENT
+            </span>
+            <span className="text-gray-500 text-xs font-medium">
+              Verified Zillow Rental
+            </span>
+          </div>
+
+          {/* Title & Save/Share Row */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-tight">
+                {listing.address}, {listing.unit}
+              </h1>
+              <p className="text-gray-600 text-xs sm:text-sm flex items-center gap-1.5 mt-1 font-medium">
+                <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
+                <span>
+                  {listing.neighborhood || 'Central Oakland'}, {listing.city}, {listing.state} {listing.zip}
+                </span>
+              </p>
+            </div>
+
+            {/* Save & Share Buttons */}
+            <div className="flex items-center gap-2.5 shrink-0 self-start sm:self-auto">
+              <button
+                id="btn-listing-save"
+                onClick={handleToggleHeart}
+                className={`flex items-center gap-2 border rounded-xl px-4 py-2 text-sm font-semibold transition-colors cursor-pointer shadow-2xs ${
+                  isSaved
+                    ? 'border-red-300 text-red-600 bg-red-50'
+                    : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
+                }`}
+              >
+                <Heart className={`w-4 h-4 ${isSaved ? 'fill-red-600 text-red-600' : 'text-gray-600'}`} />
+                <span>{isSaved ? 'Saved' : 'Save'}</span>
+              </button>
+
+              <button
+                id="btn-listing-share"
+                onClick={handleShareClick}
+                className="flex items-center gap-2 border border-gray-300 rounded-xl px-4 py-2 text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 shadow-2xs transition-colors cursor-pointer"
+              >
+                <Share2 className="w-4 h-4 text-gray-600" />
+                <span>Share</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ========================================================
+            PHOTO GALLERY: 3-Column Layout (Matching Reference Image)
+            Left: Main large photo (50% width / 2 cols)
+            Middle: 2 stacked photos (25% width / 1 col)
+            Right: 2 stacked photos (25% width / 1 col with 'View all 18 photos')
            ======================================================== */}
 
         {/* --- MOBILE GALLERY (< 768px / md:hidden) --- */}
-        <div className="md:hidden relative aspect-16/10 bg-gray-900 w-full overflow-hidden select-none cursor-pointer" onClick={() => handleNextPhoto()}>
-          <img
-            key={activePhotoIdx}
-            src={listing.photos[activePhotoIdx].url}
-            alt={listing.photos[activePhotoIdx].caption}
-            referrerPolicy="no-referrer"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).src =
-                'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1000&q=80';
-            }}
-            className="w-full h-full object-cover transition-opacity duration-200"
-          />
-
-          {/* Top Overlays: Back, Heart, Share */}
-          <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-auto">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onNotify('Navigated back');
-              }}
-              className="w-9 h-9 rounded-full bg-black/40 backdrop-blur-xs text-white flex items-center justify-center drop-shadow-md"
-              aria-label="Back"
-            >
-              <ArrowLeft className="w-5 h-5 text-white" />
-            </button>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleToggleHeart}
-                className="w-9 h-9 rounded-full bg-black/40 backdrop-blur-xs text-white flex items-center justify-center drop-shadow-md"
-                aria-label="Save"
-              >
-                <Heart className={`w-5 h-5 transition-colors ${isSaved ? 'fill-red-500 text-red-500' : 'text-white'}`} />
-              </button>
-              <button
-                onClick={handleShareClick}
-                className="w-9 h-9 rounded-full bg-black/40 backdrop-blur-xs text-white flex items-center justify-center drop-shadow-md"
-                aria-label="Share"
-              >
-                <Share2 className="w-5 h-5 text-white" />
-              </button>
-            </div>
-          </div>
-
-          {/* Bottom Overlays: Verified Tag & Spec 1/12 Count Badge */}
-          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-            <span className="text-[11px] font-semibold bg-black/60 text-white px-2.5 py-1 rounded-full backdrop-blur-xs">
-              Verified Rental
-            </span>
-            {/* Mobile spec: 1 / 12 count badge bottom-right, 12px white text, black 60% overlay, 999px radius, 8px padding */}
-            <span className="text-[12px] font-medium text-white bg-black/60 backdrop-blur-xs rounded-full px-3 py-1 shadow-sm">
-              {activePhotoIdx + 1} / {listing.photos.length}
-            </span>
-          </div>
-        </div>
-
-        {/* --- DESKTOP GALLERY (md:flex) --- */}
-        <div className="hidden md:flex gap-3 mb-6 h-[460px] lg:h-[520px] xl:h-[580px] w-full items-stretch">
-          {/* Large Main Image on Left (fills horizontal space) */}
-          <div className="flex-1 relative rounded-2xl overflow-hidden bg-gray-950 shadow-md group h-full">
+        <div className="md:hidden mb-6">
+          <div
+            onClick={() => openLightbox(0)}
+            className="relative aspect-16/10 rounded-2xl overflow-hidden bg-gray-900 shadow-2xs cursor-pointer group"
+          >
             <img
-              key={activePhotoIdx}
-              src={listing.photos[activePhotoIdx].url}
-              alt={listing.photos[activePhotoIdx].caption}
+              src={listing.photos[0].url}
+              alt={listing.photos[0].caption}
               referrerPolicy="no-referrer"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).src =
-                  'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1400&q=80';
+                  'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1000&q=80';
               }}
-              className="w-full h-full object-cover transition-all duration-300 group-hover:scale-[1.008]"
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
-
-            {/* Badges Top Left & Save/Share Top Right */}
-            <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-              <div className="flex items-center gap-2 pointer-events-auto">
-                <span className="bg-[#006AFF] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
-                  Verified Listing
-                </span>
-                <span className="bg-black/60 text-white text-xs font-medium px-3 py-1 rounded-full backdrop-blur-xs flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5 text-blue-300" />
-                  Updated 4 hours ago
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2 pointer-events-auto">
-                <button
-                  id="btn-desktop-save"
-                  onClick={handleToggleHeart}
-                  className="p-2.5 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-md text-white transition-all shadow-md cursor-pointer"
-                  title={isSaved ? 'Saved' : 'Save listing'}
-                >
-                  <Heart className={`w-4 h-4 transition-colors ${isSaved ? 'fill-rose-500 text-rose-500' : 'text-white'}`} />
-                </button>
-                <button
-                  id="btn-desktop-share"
-                  onClick={handleShareClick}
-                  className="p-2.5 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-md text-white transition-all shadow-md cursor-pointer"
-                  title="Share listing"
-                >
-                  <Share2 className="w-4 h-4 text-white" />
-                </button>
-              </div>
-            </div>
-
-            {/* Bottom Bar: Caption & 1/12 Count Badge */}
-            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-              <span className="bg-black/60 text-white text-xs px-3 py-1.5 rounded-lg backdrop-blur-xs max-w-[70%] truncate shadow-sm">
-                {listing.photos[activePhotoIdx].caption}
+            {/* Bottom Overlays */}
+            <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+              <span className="text-xs font-medium bg-black/75 text-white px-3 py-1.5 rounded-lg backdrop-blur-xs">
+                Photo 1 of {listing.photos.length}
               </span>
-              <span className="text-[12px] font-medium text-white bg-black/60 backdrop-blur-xs rounded-full px-3 py-1 shadow-sm">
-                {activePhotoIdx + 1} / {listing.photos.length}
-              </span>
-            </div>
-
-            {/* Hover ‹ › Arrows */}
-            <button
-              id="btn-desktop-prev-photo"
-              onClick={handlePrevPhoto}
-              aria-label="Previous photo"
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-gray-900 flex items-center justify-center shadow-lg transition-opacity opacity-0 group-hover:opacity-100 cursor-pointer"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            <button
-              id="btn-desktop-next-photo"
-              onClick={handleNextPhoto}
-              aria-label="Next photo"
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-gray-900 flex items-center justify-center shadow-lg transition-opacity opacity-0 group-hover:opacity-100 cursor-pointer"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
-          </div>
-
-          {/* Gallery Preview Vertically on Right */}
-          <div className="w-64 lg:w-72 xl:w-80 shrink-0 h-full bg-white rounded-2xl border border-gray-200 shadow-xs p-3 flex flex-col justify-between overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between pb-2.5 mb-2 border-b border-gray-100">
-              <div className="flex items-center gap-1.5">
-                <Images className="w-4 h-4 text-[#006AFF]" />
-                <span className="text-xs font-bold text-gray-900">Gallery Preview</span>
-              </div>
-              <span className="text-[11px] font-semibold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
-                {activePhotoIdx + 1} of {listing.photos.length}
-              </span>
-            </div>
-
-            {/* Vertical Scrollable Preview Grid */}
-            <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin">
-              <div className="grid grid-cols-2 gap-2">
-                {listing.photos.map((photo, idx) => {
-                  const isActive = activePhotoIdx === idx;
-                  return (
-                    <button
-                      key={photo.url + idx}
-                      id={`btn-thumb-vertical-${idx}`}
-                      onClick={() => setActivePhotoIdx(idx)}
-                      className={`group relative rounded-xl overflow-hidden aspect-16/10 cursor-pointer transition-all ${
-                        isActive
-                          ? 'border-2 border-[#006AFF] ring-2 ring-blue-100 shadow-sm opacity-100'
-                          : 'border border-gray-200 opacity-75 hover:opacity-100 hover:border-gray-400'
-                      }`}
-                      title={photo.caption}
-                    >
-                      <img
-                        src={photo.url}
-                        alt={photo.caption}
-                        referrerPolicy="no-referrer"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).src =
-                            'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=300&q=80';
-                        }}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                      />
-                      <span
-                        className={`absolute bottom-1 right-1 text-[10px] font-bold px-1.5 py-0.2 rounded backdrop-blur-xs ${
-                          isActive ? 'bg-[#006AFF] text-white' : 'bg-black/60 text-white'
-                        }`}
-                      >
-                        {idx + 1}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Bottom active caption info */}
-            <div className="pt-2 mt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-500">
-              <span className="truncate max-w-[190px] font-medium text-gray-700">
-                {listing.photos[activePhotoIdx].caption}
-              </span>
-              <span className="text-[#006AFF] font-bold shrink-0">
-                {activePhotoIdx + 1}/{listing.photos.length}
+              <span className="text-xs font-bold bg-black/75 text-white px-3.5 py-1.5 rounded-lg backdrop-blur-xs">
+                View all {listing.photos.length} photos
               </span>
             </div>
           </div>
         </div>
+
+        {/* --- DESKTOP GALLERY (md:grid) --- */}
+        <div className="hidden md:grid grid-cols-4 gap-3 h-[460px] lg:h-[520px] xl:h-[580px] mb-8 w-full">
+          {/* Column 1: Main Large Photo (col-span-2) */}
+          <div
+            id="gallery-main-photo"
+            onClick={() => openLightbox(0)}
+            className="col-span-2 relative h-full rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 shadow-2xs"
+          >
+            <img
+              src={listing.photos[0].url}
+              alt={listing.photos[0].caption}
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src =
+                  'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1600&q=80';
+              }}
+              className="w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-300"
+            />
+            {/* Bottom-left Pill: Photo 1 of 18 */}
+            <div className="absolute bottom-4 left-4 bg-black/75 backdrop-blur-xs text-white text-xs font-medium px-3.5 py-1.5 rounded-lg shadow-sm pointer-events-none">
+              Photo 1 of {listing.photos.length}
+            </div>
+          </div>
+
+          {/* Column 2: 2 Stacked Photos (col-span-1) */}
+          <div className="col-span-1 flex flex-col gap-3 h-full">
+            <div
+              id="gallery-photo-1"
+              onClick={() => openLightbox(1)}
+              className="flex-1 relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 shadow-2xs"
+            >
+              <img
+                src={listing.photos[1]?.url || listing.photos[0].url}
+                alt={listing.photos[1]?.caption}
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src =
+                    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1000&q=80';
+                }}
+                className="w-full h-full object-cover group-hover:scale-[1.025] transition-transform duration-300"
+              />
+            </div>
+            <div
+              id="gallery-photo-2"
+              onClick={() => openLightbox(2)}
+              className="flex-1 relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 shadow-2xs"
+            >
+              <img
+                src={listing.photos[2]?.url || listing.photos[0].url}
+                alt={listing.photos[2]?.caption}
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src =
+                    'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1000&q=80';
+                }}
+                className="w-full h-full object-cover group-hover:scale-[1.025] transition-transform duration-300"
+              />
+            </div>
+          </div>
+
+          {/* Column 3: 2 Stacked Photos (col-span-1) */}
+          <div className="col-span-1 flex flex-col gap-3 h-full">
+            <div
+              id="gallery-photo-3"
+              onClick={() => openLightbox(3)}
+              className="flex-1 relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 shadow-2xs"
+            >
+              <img
+                src={listing.photos[3]?.url || listing.photos[0].url}
+                alt={listing.photos[3]?.caption}
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src =
+                    'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=80';
+                }}
+                className="w-full h-full object-cover group-hover:scale-[1.025] transition-transform duration-300"
+              />
+            </div>
+            <div
+              id="gallery-photo-4"
+              onClick={() => openLightbox(4)}
+              className="flex-1 relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 shadow-2xs"
+            >
+              <img
+                src={listing.photos[4]?.url || listing.photos[0].url}
+                alt={listing.photos[4]?.caption}
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src =
+                    'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1000&q=80';
+                }}
+                className="w-full h-full object-cover group-hover:scale-[1.025] transition-transform duration-300"
+              />
+              {/* Dark overlay with centered "View all 18 photos" */}
+              <div className="absolute inset-0 bg-black/55 group-hover:bg-black/65 transition-colors flex items-center justify-center p-4 text-center">
+                <span className="text-white font-bold text-base lg:text-lg drop-shadow-md">
+                  View all {listing.photos.length} photos
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* --- FULLSCREEN PHOTO LIGHTBOX MODAL --- */}
+        {isLightboxOpen && (
+          <div className="fixed inset-0 z-50 bg-black/95 flex flex-col justify-between p-4 backdrop-blur-xs">
+            {/* Header */}
+            <div className="flex items-center justify-between text-white py-2 px-2 sm:px-6">
+              <div>
+                <div className="text-base font-bold">
+                  {listing.address}, {listing.unit}
+                </div>
+                <div className="text-xs text-gray-400 mt-0.5">
+                  Photo {lightboxIdx + 1} of {listing.photos.length} · {listing.photos[lightboxIdx].caption}
+                </div>
+              </div>
+              <button
+                onClick={closeLightbox}
+                className="p-2.5 rounded-full hover:bg-white/10 text-white transition-colors cursor-pointer"
+                aria-label="Close photo gallery"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Main Image Area with Previous / Next Arrows */}
+            <div className="flex-1 relative flex items-center justify-center min-h-0 py-4">
+              <button
+                onClick={handlePrevLightbox}
+                className="absolute left-2 sm:left-6 p-3 rounded-full bg-black/60 hover:bg-black/80 text-white transition-colors cursor-pointer z-10 shadow-lg"
+                aria-label="Previous photo"
+              >
+                <ChevronLeft className="w-7 h-7" />
+              </button>
+
+              <img
+                src={listing.photos[lightboxIdx].url}
+                alt={listing.photos[lightboxIdx].caption}
+                referrerPolicy="no-referrer"
+                className="max-h-full max-w-full object-contain rounded-xl select-none shadow-2xl"
+              />
+
+              <button
+                onClick={handleNextLightbox}
+                className="absolute right-2 sm:right-6 p-3 rounded-full bg-black/60 hover:bg-black/80 text-white transition-colors cursor-pointer z-10 shadow-lg"
+                aria-label="Next photo"
+              >
+                <ChevronRight className="w-7 h-7" />
+              </button>
+            </div>
+
+            {/* Thumbnail Strip */}
+            <div className="h-16 flex items-center gap-2 overflow-x-auto py-1 px-4 max-w-5xl mx-auto scrollbar-thin">
+              {listing.photos.map((photo, idx) => (
+                <button
+                  key={photo.url + idx}
+                  onClick={() => setLightboxIdx(idx)}
+                  className={`h-14 w-20 shrink-0 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
+                    lightboxIdx === idx
+                      ? 'border-[#006AFF] ring-2 ring-blue-400 scale-105 opacity-100'
+                      : 'border-transparent opacity-60 hover:opacity-100'
+                  }`}
+                  title={photo.caption}
+                >
+                  <img src={photo.url} alt="" referrerPolicy="no-referrer" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Main Content Layout Container */}
@@ -338,16 +531,16 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 </div>
               </div>
 
-              {/* Address */}
+              {/* Address & Neighborhood */}
               <div className="border-t border-gray-100 pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <h1 className="text-xl sm:text-2xl font-black text-gray-900">
+                  <h2 className="text-xl sm:text-2xl font-black text-gray-900">
                     {listing.address}, {listing.unit}
-                  </h1>
+                  </h2>
                   <p className="text-gray-600 text-xs sm:text-sm flex items-center gap-1.5 mt-0.5">
                     <MapPin className="w-4 h-4 text-blue-600 shrink-0" />
                     <span>
-                      {listing.city}, {listing.state} {listing.zip} · Bloomfield / Shadyside Corridor
+                      {listing.neighborhood ? `${listing.neighborhood}, ` : ''}{listing.city}, {listing.state} {listing.zip}
                     </span>
                   </p>
                 </div>
@@ -594,103 +787,156 @@ export const ListingPage: React.FC<ListingPageProps> = ({
               - Primary "Request a tour", Secondary "Message landlord", Tertiary "Apply now"
              ======================================================== */}
           <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-6 self-start w-full">
-            <div className="bg-white rounded-2xl p-5 sm:p-6 border-2 border-blue-100 shadow-xl relative">
+            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-sm relative">
               
-              {/* "Powered by Rental Pass" Top Badge */}
-              <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
-                <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#1D4ED8] bg-[#EFF6FF] border border-[#BFDBFE] px-2.5 py-1 rounded-full">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#1D4ED8]" />
-                  <span>Powered by Rental Pass</span>
-                </div>
-                <span className="text-[11px] text-gray-500 font-medium">Verified Property</span>
-              </div>
-
-              {/* Landlord Info */}
-              <div className="mb-4">
-                <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">
-                  Offered by
-                </div>
-                <div className="text-base font-black text-gray-900">
-                  {listing.managementCompany}
-                </div>
-                <div className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
-                  <Clock className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Direct landlord response · Avg. reply &lt; 1 hr</span>
-                </div>
-              </div>
-
-              {/* Usable Tour Date Selector Chips */}
-              <div className="mb-5 bg-gray-50 p-3.5 rounded-xl border border-gray-200">
-                <div className="flex items-center justify-between text-xs font-bold text-gray-800 mb-2">
-                  <span className="flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-[#006AFF]" />
-                    <span>Select In-Person Tour Time:</span>
+              {/* Header section matching reference */}
+              <div className="mb-5">
+                <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-gray-100">
+                  <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#1D4ED8] bg-[#EFF6FF] border border-[#BFDBFE] px-2.5 py-1 rounded-full">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#1D4ED8]" />
+                    <span>Powered by Rental Pass</span>
+                  </div>
+                  <span className="text-[11px] text-gray-400 font-medium truncate max-w-[150px]">
+                    {listing.managementCompany}
                   </span>
-                  <span className="text-[11px] font-semibold text-blue-600">Free</span>
                 </div>
-                
-                <div className="grid grid-cols-2 gap-2">
-                  {tourDateOptions.map((opt) => {
-                    const fullDateStr = `${opt.label}, ${opt.time}`;
-                    const isSelected = selectedTourDate === fullDateStr;
-                    return (
-                      <button
-                        key={fullDateStr}
-                        type="button"
-                        id={`btn-tour-slot-${opt.label.toLowerCase()}-${opt.time.replace(/[:\s]/g, '')}`}
-                        onClick={() => {
-                          setSelectedTourDate(fullDateStr);
-                          onNotify(`Selected tour date: ${fullDateStr}`);
-                        }}
-                        className={`p-2 rounded-lg text-left transition-all cursor-pointer border ${
-                          isSelected
-                            ? 'bg-[#EFF6FF] border-[#1D4ED8] text-[#1D4ED8] shadow-2xs'
-                            : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
-                        }`}
-                      >
-                        <div className="text-[11px] font-bold">{opt.label}</div>
-                        <div className="text-[11px] opacity-80">{opt.time}</div>
-                      </button>
-                    );
-                  })}
+
+                <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight">
+                  Available sessions
+                </h2>
+                <p className="text-xs sm:text-sm text-gray-500 font-normal mt-1 leading-relaxed">
+                  Book 1:1 sessions from the options based on your needs
+                </p>
+              </div>
+
+              {/* Date Options Row with "View all" link */}
+              <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-1 scrollbar-none mb-5">
+                {(showAllDates ? tourSessionDates : tourSessionDates.slice(0, 4)).map((item, idx) => {
+                  const isSelected = selectedSessionDateIdx === idx;
+                  return (
+                    <button
+                      key={item.date}
+                      type="button"
+                      id={`btn-session-date-${item.day.toLowerCase()}-${item.date.replace(/\s+/g, '')}`}
+                      onClick={() => handleSelectDate(idx)}
+                      className={`flex flex-col items-center justify-center py-2.5 px-2.5 sm:px-3 rounded-xl min-w-[70px] sm:min-w-[74px] transition-all cursor-pointer ${
+                        isSelected
+                          ? 'border-2 border-gray-900 bg-white shadow-xs'
+                          : 'border border-gray-200 bg-white hover:border-gray-300'
+                      }`}
+                    >
+                      <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                        {item.day}
+                      </span>
+                      <span className="text-sm sm:text-base font-black text-gray-900 mt-0.5 whitespace-nowrap">
+                        {item.date}
+                      </span>
+                      <span className="text-[11px] font-bold text-[#16A34A] mt-1 whitespace-nowrap">
+                        {item.slots} slots
+                      </span>
+                    </button>
+                  );
+                })}
+
+                <button
+                  type="button"
+                  id="btn-toggle-all-dates"
+                  onClick={() => {
+                    setShowAllDates(!showAllDates);
+                    onNotify(!showAllDates ? 'Viewing all available session dates' : 'Showing standard session dates');
+                  }}
+                  className="text-[#087F7B] hover:text-[#066562] font-bold text-xs sm:text-sm flex items-center gap-0.5 shrink-0 ml-1 cursor-pointer select-none transition-colors"
+                >
+                  <span>{showAllDates ? 'Show less' : 'View all'}</span>
+                  <ChevronRight className={`w-3.5 h-3.5 transition-transform ${showAllDates ? 'rotate-90' : ''}`} />
+                </button>
+              </div>
+
+              {/* Available Time Slots Header & Pagination */}
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-base font-bold text-[#0F172A]">Available time slots</h3>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    id="btn-time-slots-prev"
+                    onClick={handlePrevTimePage}
+                    disabled={timeSlotPage === 0}
+                    className="p-1 rounded text-gray-400 hover:text-gray-800 disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed transition-colors"
+                    aria-label="Previous time slots"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    id="btn-time-slots-next"
+                    onClick={handleNextTimePage}
+                    disabled={timeSlotPage >= totalTimePages - 1}
+                    className="p-1 rounded text-gray-400 hover:text-gray-800 disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed transition-colors"
+                    aria-label="Next time slots"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
 
-              {/* ACTION BUTTONS */}
-              <div className="space-y-2.5">
-                {/* 1. Request a tour (PRIMARY) */}
-                <button
-                  id="btn-request-tour-primary"
-                  onClick={onRequestTour}
-                  className="w-full py-3.5 px-4 rounded-xl bg-[#006AFF] hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer group"
-                >
-                  <Calendar className="w-4 h-4 transition-transform group-hover:scale-110" />
-                  <span>Request a tour ({selectedTourDate.split(',')[0]})</span>
-                </button>
+              {/* Divider line */}
+              <div className="border-t border-gray-100 mb-4" />
 
-                {/* 2. Message landlord (Secondary outline) */}
+              {/* Time Slots Grid (3 columns x 2 rows) */}
+              <div className="grid grid-cols-3 gap-2.5 sm:gap-3 mb-5">
+                {visibleTimeSlots.map((time) => {
+                  const isSelected = selectedSessionTime === time;
+                  return (
+                    <button
+                      key={time}
+                      type="button"
+                      id={`btn-time-slot-${time.replace(/[:\s]/g, '')}`}
+                      onClick={() => handleSelectTime(time)}
+                      className={`py-3 px-1 sm:px-2 rounded-xl text-center text-xs sm:text-sm font-extrabold transition-all cursor-pointer ${
+                        isSelected
+                          ? 'border-2 border-gray-900 bg-white text-gray-900 shadow-2xs'
+                          : 'border border-gray-200 bg-white text-gray-900 hover:border-gray-400'
+                      }`}
+                    >
+                      {time}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Primary Booking Button matching reference image */}
+              <button
+                type="button"
+                id="btn-book-session"
+                onClick={handleBookSession}
+                className="w-full py-3.5 sm:py-4 px-4 rounded-xl bg-[#087F7B] hover:bg-[#066562] active:bg-[#05504E] text-white font-bold text-sm sm:text-base shadow-sm shadow-[#087F7B]/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>Book Session for {currentSessionDate.date} 2026</span>
+              </button>
+
+              {/* Secondary actions */}
+              <div className="mt-4 pt-3.5 border-t border-gray-100 space-y-2">
                 <button
                   id="btn-message-landlord-secondary"
                   onClick={onMessageLandlord}
-                  className="w-full py-2.5 px-4 rounded-xl border-2 border-[#006AFF] text-[#006AFF] hover:bg-blue-50 active:bg-blue-100 font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-2.5 px-4 rounded-xl border border-gray-200 hover:border-gray-300 text-gray-700 hover:bg-gray-50 font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <MessageSquare className="w-4 h-4" />
+                  <MessageSquare className="w-4 h-4 text-gray-500" />
                   <span>Message property manager</span>
                 </button>
 
-                {/* 3. Direct Apply now with Rental Pass */}
                 <button
                   id="btn-apply-now-secondary"
                   onClick={onApplyNow}
-                  className="w-full py-2.5 px-3 rounded-xl bg-gray-50 hover:bg-gray-100 border border-gray-300 text-gray-800 font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="w-full py-2.5 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-[#006AFF] font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#006AFF]" />
                   <span>Apply with Rental Pass</span>
                 </button>
               </div>
 
               {/* Trust badges footer */}
-              <div className="mt-4 pt-3.5 border-t border-gray-100 text-center space-y-1.5">
+              <div className="mt-3.5 pt-3 border-t border-gray-100 text-center space-y-1">
                 <p className="text-[11px] text-gray-500 flex items-center justify-center gap-1 font-medium">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Soft credit inquiry only · Reusable for 30 days</span>
