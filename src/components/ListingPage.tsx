@@ -236,7 +236,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
   };
 
   return (
-    <div className="pb-24 sm:pb-16 bg-[#FAFAFB] min-h-screen text-gray-900 font-sans">
+    <div className="pb-24 sm:pb-16 bg-white min-h-screen text-gray-900 font-sans">
       <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-5">
         
         {/* ========================================================
@@ -246,11 +246,11 @@ export const ListingPage: React.FC<ListingPageProps> = ({
           <div className="mb-5 bg-white rounded-2xl p-3 sm:p-3.5 border border-gray-200 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0 font-bold text-xs">
-                <Building className="w-4 h-4 text-blue-600" />
+                <Building className="w-4 h-4 text-[#006AFF]" />
               </div>
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs font-black uppercase tracking-wider text-gray-700">Sample Listing Demonstration</span>
+                  <span className="text-xs font-bold uppercase tracking-wider text-gray-700">Sample Listing Demonstration</span>
                   {listing.defaultMatchTier === 'low' && (
                     <span className="text-[10px] font-bold bg-rose-100 text-rose-800 px-2 py-0.5 rounded-md border border-rose-200">
                       Not Good Match · Cosigner Needed
@@ -317,7 +317,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
         <div className="mb-4">
           {/* Status Badges */}
           <div className="flex items-center gap-2 mb-2">
-            <span className="bg-[#DCFCE7] text-[#15803D] font-extrabold text-xs px-2.5 py-0.5 rounded-md tracking-wider uppercase">
+            <span className="bg-emerald-50 text-emerald-800 font-bold text-xs px-2.5 py-0.5 rounded-md tracking-wider uppercase">
               FOR RENT
             </span>
             <span className="text-gray-500 text-xs font-medium">
@@ -328,7 +328,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
           {/* Title & Save/Share Row */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight">
                 {listing.address}, {listing.unit}
               </h1>
               <p className="text-gray-600 text-xs sm:text-sm flex items-center gap-1.5 mt-1 font-medium">
@@ -419,7 +419,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
               className="w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-300"
             />
             {/* Bottom-left Pill: Photo 1 of 18 */}
-            <div className="absolute bottom-4 left-4 bg-black/75 backdrop-blur-xs text-white text-xs font-medium px-3.5 py-1.5 rounded-lg shadow-sm pointer-events-none">
+            <div className="absolute bottom-4 left-4 bg-black/75 backdrop-blur-xs text-white text-xs font-medium px-3.5 py-1.5 rounded-lg shadow-xs pointer-events-none">
               Photo 1 of {listing.photos.length}
             </div>
           </div>
@@ -495,7 +495,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
               />
               {/* Dark overlay with centered "View all 18 photos" */}
               <div className="absolute inset-0 bg-black/55 group-hover:bg-black/65 transition-colors flex items-center justify-center p-4 text-center">
-                <span className="text-white font-bold text-base lg:text-lg drop-shadow-md">
+                <span className="text-white font-bold text-base lg:text-lg drop-shadow-xs">
                   View all {listing.photos.length} photos
                 </span>
               </div>
@@ -529,7 +529,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
             <div className="flex-1 relative flex items-center justify-center min-h-0 py-4">
               <button
                 onClick={handlePrevLightbox}
-                className="absolute left-2 sm:left-6 p-3 rounded-full bg-black/60 hover:bg-black/80 text-white transition-colors cursor-pointer z-10 shadow-lg"
+                className="absolute left-2 sm:left-6 p-3 rounded-full bg-black/60 hover:bg-black/80 text-white transition-colors cursor-pointer z-10 shadow-xs"
                 aria-label="Previous photo"
               >
                 <ChevronLeft className="w-7 h-7" />
@@ -539,12 +539,12 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 src={listing.photos[lightboxIdx].url}
                 alt={listing.photos[lightboxIdx].caption}
                 referrerPolicy="no-referrer"
-                className="max-h-full max-w-full object-contain rounded-xl select-none shadow-2xl"
+                className="max-h-full max-w-full object-contain rounded-xl select-none shadow-xs"
               />
 
               <button
                 onClick={handleNextLightbox}
-                className="absolute right-2 sm:right-6 p-3 rounded-full bg-black/60 hover:bg-black/80 text-white transition-colors cursor-pointer z-10 shadow-lg"
+                className="absolute right-2 sm:right-6 p-3 rounded-full bg-black/60 hover:bg-black/80 text-white transition-colors cursor-pointer z-10 shadow-xs"
                 aria-label="Next photo"
               >
                 <ChevronRight className="w-7 h-7" />
@@ -589,7 +589,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
               <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 mb-4">
                 <div>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
+                    <span className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
                       ${listing.rent.toLocaleString()}
                     </span>
                     <span className="text-gray-500 font-medium text-lg">/mo</span>
@@ -604,19 +604,19 @@ export const ListingPage: React.FC<ListingPageProps> = ({
 
                 <div className="flex items-center gap-4 text-sm text-gray-600 bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
                   <div className="flex items-center gap-1.5">
-                    <Bed className="w-4 h-4 text-blue-600" />
+                    <Bed className="w-4 h-4 text-[#006AFF]" />
                     <span className="font-bold text-gray-900">{listing.beds}</span>
                     <span className="text-xs text-gray-500">beds</span>
                   </div>
                   <span className="text-gray-300">•</span>
                   <div className="flex items-center gap-1.5">
-                    <Bath className="w-4 h-4 text-blue-600" />
+                    <Bath className="w-4 h-4 text-[#006AFF]" />
                     <span className="font-bold text-gray-900">{listing.baths}</span>
                     <span className="text-xs text-gray-500">baths</span>
                   </div>
                   <span className="text-gray-300">•</span>
                   <div className="flex items-center gap-1.5">
-                    <Maximize2 className="w-4 h-4 text-blue-600" />
+                    <Maximize2 className="w-4 h-4 text-[#006AFF]" />
                     <span className="font-bold text-gray-900">{listing.sqft.toLocaleString()}</span>
                     <span className="text-xs text-gray-500">sqft</span>
                   </div>
@@ -626,11 +626,11 @@ export const ListingPage: React.FC<ListingPageProps> = ({
               {/* Address & Neighborhood */}
               <div className="border-t border-gray-100 pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-gray-900">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
                     {listing.address}, {listing.unit}
                   </h2>
                   <p className="text-gray-600 text-xs sm:text-sm flex items-center gap-1.5 mt-0.5">
-                    <MapPin className="w-4 h-4 text-blue-600 shrink-0" />
+                    <MapPin className="w-4 h-4 text-[#006AFF] shrink-0" />
                     <span>
                       {listing.neighborhood ? `${listing.neighborhood}, ` : ''}{listing.city}, {listing.state} {listing.zip}
                     </span>
@@ -639,7 +639,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 <button
                   id="btn-view-map"
                   onClick={() => onNotify('Simulating neighborhood map for Pittsburgh, PA')}
-                  className="text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1 self-start sm:self-auto cursor-pointer"
+                  className="text-xs font-semibold text-[#006AFF] hover:text-blue-700 hover:underline flex items-center gap-1 self-start sm:self-auto cursor-pointer"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                   <span>View neighborhood map</span>
@@ -670,7 +670,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
             {/* ========================================================
                 MATCH ESTIMATE CARD (Spec Requirement)
                 Specific color bands:
-                - Green: #DCFCE7 bg, #15803D text
+                - Green: emerald-50 bg, emerald-800 text
                 - Amber: #FEF3C7 bg, #B45309 text
                 - Rose/Alert: #FFF1F2 bg, #9F1239 text
                 - Neutral Gray: #F1F5F9 bg, #64748B text
@@ -689,8 +689,8 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-xs space-y-4">
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                        <Sparkles className="w-4 h-4 text-blue-600" />
+                      <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#006AFF] flex items-center justify-center">
+                        <Sparkles className="w-4 h-4 text-[#006AFF]" />
                       </div>
                       <div>
                         <h3 className="font-bold text-sm text-gray-900">Application Match Estimate</h3>
@@ -759,7 +759,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                   <div
                     className={`p-4 sm:p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 transition-colors ${
                       effectiveTier === 'strong'
-                        ? 'bg-[#DCFCE7] border-[#86EFAC] text-[#15803D]'
+                        ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
                         : effectiveTier === 'moderate'
                         ? 'bg-[#FEF3C7] border-[#FDE68A] text-[#B45309]'
                         : effectiveTier === 'low'
@@ -769,14 +769,14 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                   >
                     <div className="flex items-center gap-3.5">
                       <div
-                        className={`min-w-[58px] h-11 px-3 rounded-xl flex items-center justify-center font-black text-sm tracking-normal shadow-2xs shrink-0 ${
+                        className={`min-w-[58px] h-11 px-3 rounded-xl flex items-center justify-center font-bold text-sm tracking-normal shadow-2xs shrink-0 ${
                           effectiveTier === 'strong'
                             ? 'bg-emerald-600 text-white'
                             : effectiveTier === 'moderate'
                             ? 'bg-amber-600 text-white'
                             : effectiveTier === 'low'
                             ? 'bg-rose-600 text-white'
-                            : 'bg-slate-600 text-white'
+                            : 'bg-gray-600 text-white'
                         }`}
                       >
                         {simulateWithCosigner
@@ -801,7 +801,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                             ? 'Low Compatibility Match · Cosigner Recommended'
                             : 'Standard Review Profile'}
                           {effectiveTier === 'low' && !simulateWithCosigner && (
-                            <span className="text-[10px] uppercase font-black bg-rose-200 text-rose-900 px-2 py-0.5 rounded">
+                            <span className="text-[10px] uppercase font-bold bg-rose-200 text-rose-900 px-2 py-0.5 rounded">
                               Action Suggested
                             </span>
                           )}
@@ -822,7 +822,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
 
                     <div className="shrink-0 text-right self-end sm:self-center">
                       <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider block opacity-75">Criteria Score</span>
-                      <span className="font-extrabold text-xs sm:text-sm mt-0.5 block">
+                      <span className="font-bold text-xs sm:text-sm mt-0.5 block">
                         {simulateWithCosigner
                           ? '3 of 3 Met (Guarantor)'
                           : effectiveTier === 'strong'
@@ -941,7 +941,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-xs font-black uppercase tracking-wider bg-amber-200 text-amber-900 px-2 py-0.5 rounded-md">
+                            <span className="text-xs font-bold uppercase tracking-wider bg-amber-200 text-amber-900 px-2 py-0.5 rounded-md">
                               Cosigner Recommended
                             </span>
                             <span className="text-xs font-bold text-amber-800">
@@ -1069,7 +1069,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
 
             {/* Description Section */}
             <div className="bg-white rounded-2xl p-5 sm:p-7 border border-gray-200 shadow-xs">
-              <h2 className="text-lg font-black text-gray-900 mb-3">About this rental</h2>
+              <h2 className="text-lg font-bold text-gray-900 mb-3">About this rental</h2>
               <p
                 className={`text-gray-700 leading-relaxed text-xs sm:text-sm ${
                   !showFullDesc ? 'line-clamp-3' : ''
@@ -1089,7 +1089,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
 
             {/* Features & Amenities Tabs */}
             <div className="bg-white rounded-2xl p-5 sm:p-7 border border-gray-200 shadow-xs">
-              <h2 className="text-lg font-black text-gray-900 mb-4">Amenities & Highlights</h2>
+              <h2 className="text-lg font-bold text-gray-900 mb-4">Amenities & Highlights</h2>
               
               <div className="flex border-b border-gray-200 mb-4 gap-2 overflow-x-auto">
                 {listing.features.map((cat, idx) => (
@@ -1141,7 +1141,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
               - Primary "Request a tour", Secondary "Message landlord", Tertiary "Apply now"
              ======================================================== */}
           <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-[112px] z-10 self-start w-full">
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-sm relative">
+            <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200/90 shadow-xs relative">
               
               {/* Header section matching reference */}
               <div className="mb-5">
@@ -1155,7 +1155,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                   </span>
                 </div>
 
-                <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
                   Available sessions
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-500 font-normal mt-1 leading-relaxed">
@@ -1186,7 +1186,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                       <span className="text-[10px] sm:text-[11px] font-bold text-gray-400 uppercase tracking-wider leading-none">
                         {item.day}
                       </span>
-                      <span className="text-xs sm:text-sm font-black text-gray-900 mt-1 whitespace-nowrap leading-tight">
+                      <span className="text-xs sm:text-sm font-bold text-gray-900 mt-1 whitespace-nowrap leading-tight">
                         {item.date}
                       </span>
                       <span className="text-[10px] sm:text-[11px] font-bold text-[#16A34A] mt-1 whitespace-nowrap leading-none">
@@ -1203,7 +1203,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                     setIsAllDatesModalOpen(true);
                     onNotify('Opened all available session dates');
                   }}
-                  className="shrink-0 flex items-center gap-0.5 text-[#087F7B] hover:text-[#066562] font-bold text-xs sm:text-xs md:text-sm pl-1 sm:pl-2 pr-0.5 py-2 cursor-pointer select-none transition-colors"
+                  className="shrink-0 flex items-center gap-0.5 text-[#006AFF] hover:text-blue-700 font-bold text-xs sm:text-xs md:text-sm pl-1 sm:pl-2 pr-0.5 py-2 cursor-pointer select-none transition-colors"
                 >
                   <span className="whitespace-nowrap text-xs font-bold">View all</span>
                   <ChevronRight className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -1212,7 +1212,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
 
               {/* Available Time Slots Header & Pagination */}
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-base font-bold text-[#0F172A]">Available time slots</h3>
+                <h3 className="text-base font-bold text-gray-900">Available time slots</h3>
                 <div className="flex items-center gap-1">
                   <button
                     type="button"
@@ -1250,7 +1250,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                       type="button"
                       id={`btn-time-slot-${time.replace(/[:\s]/g, '')}`}
                       onClick={() => handleSelectTime(time)}
-                      className={`py-3 px-1 sm:px-2 rounded-xl text-center text-xs sm:text-sm font-extrabold transition-all cursor-pointer ${
+                      className={`py-3 px-1 sm:px-2 rounded-xl text-center text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                         isSelected
                           ? 'border-2 border-gray-900 bg-white text-gray-900 shadow-2xs'
                           : 'border border-gray-200 bg-white text-gray-900 hover:border-gray-400'
@@ -1364,7 +1364,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
       </div>
 
       {/* Mobile Sticky Bottom Action Bar (< lg) */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 p-3 z-20 shadow-lg">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 p-3 z-20 shadow-xs">
         <div className="max-w-md mx-auto flex items-center gap-2">
           <Button
             id="mobile-btn-request-tour"
@@ -1399,10 +1399,10 @@ export const ListingPage: React.FC<ListingPageProps> = ({
       {/* All Available Sessions Modal Dialog */}
       {isAllDatesModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xs border border-gray-100 animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between pb-4 border-b border-gray-100">
               <div>
-                <h3 className="text-lg font-black text-[#0F172A]">All Available Sessions</h3>
+                <h3 className="text-lg font-bold text-gray-900">All Available Sessions</h3>
                 <p className="text-xs text-gray-500 mt-0.5">Select a date to preview open time slots</p>
               </div>
               <button
@@ -1435,7 +1435,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                     <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
                       {item.day}
                     </span>
-                    <span className="text-base font-black text-gray-900 mt-0.5">
+                    <span className="text-base font-bold text-gray-900 mt-0.5">
                       {item.date}
                     </span>
                     <span className="text-xs font-bold text-[#16A34A] mt-1">

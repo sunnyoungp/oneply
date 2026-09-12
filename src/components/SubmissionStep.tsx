@@ -56,7 +56,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between p-4 sm:p-8 font-sans">
+    <div className="min-h-screen bg-white flex flex-col justify-between p-4 sm:p-8 font-sans">
       {/* Top Bar */}
       <div className="max-w-3xl w-full mx-auto flex items-center justify-between pb-4 border-b border-gray-200">
         <Button
@@ -72,14 +72,14 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
 
       {/* Main Review Card */}
       <div className="max-w-2xl w-full mx-auto my-auto py-6">
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-xl">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-gray-200 shadow-xs">
           {/* Header */}
           <div className="text-center mb-6">
             <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
               <span>Profile Complete</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
               Review and submit
             </h1>
             <p className="text-xs sm:text-sm text-gray-600 mt-1 max-w-md mx-auto">
@@ -94,7 +94,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
             <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-2">
               <div className="flex items-center justify-between text-gray-700 font-bold">
                 <span className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-blue-600" />
+                  <User className="w-4 h-4 text-[#006AFF]" />
                   <span>Applicant: {formData.fullName}</span>
                 </span>
                 <span className="text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-lg text-xs font-semibold">
@@ -111,10 +111,10 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
 
             {/* Cosigner Summary if present */}
             {formData.cosigner && (
-              <div className="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1 text-indigo-950">
+              <div className="p-4 rounded-2xl bg-blue-50 border border-blue-200 space-y-1 text-gray-900">
                 <div className="flex items-center justify-between font-bold">
                   <span className="flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4 text-indigo-600" />
+                    <ShieldCheck className="w-4 h-4 text-[#006AFF]" />
                     <span>Cosigner: {formData.cosigner.fullName} ({formData.cosigner.relationship})</span>
                   </span>
                   <span
@@ -127,7 +127,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
                     {formData.cosigner.status === 'confirmed' ? 'Confirmed ✓' : 'Pending'}
                   </span>
                 </div>
-                <div className="text-[11px] text-indigo-700">
+                <div className="text-[11px] text-gray-600">
                   Income: ${formData.cosigner.monthlyIncome.toLocaleString()}/mo · Soft credit check authorized
                 </div>
               </div>
@@ -135,7 +135,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
 
             {/* Branching routing indicator */}
             <div className="p-4 rounded-2xl bg-blue-50/60 border border-blue-200 flex items-start gap-3">
-              <Sparkles className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+              <Sparkles className="w-5 h-5 text-[#006AFF] shrink-0 mt-0.5" />
               <div className="text-xs text-blue-950 leading-relaxed">
                 {applicationType === 'solo' ? (
                   <div>
@@ -144,7 +144,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
                   </div>
                 ) : (
                   <div>
-                    <strong className="text-indigo-900 font-bold block mb-0.5">Group Application ({roommates.length + 1} Renters):</strong>
+                    <strong className="text-gray-900 font-bold block mb-0.5">Group Application ({roommates.length + 1} Renters):</strong>
                     Once you submit, you can track your roommates&apos; status before the final packet is sent to {listing.managementCompany}.
                   </div>
                 )}
@@ -158,7 +158,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
               type="checkbox"
               checked={agreedToTerms}
               onChange={(e) => setAgreedToTerms(e.target.checked)}
-              className="mt-0.5 rounded text-blue-600 focus:ring-blue-500 h-4 w-4"
+              className="mt-0.5 rounded text-[#006AFF] focus:ring-blue-500 h-4 w-4"
             />
             <span className="leading-snug">
               I certify that this information is accurate and authorize {listing.managementCompany} to review my application.

@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { ListingDetails, ProfileFormData, ApplicationType, Roommate } from '../types';
 import { Button } from './ui/Button';
+import { helpClass, inputClass, labelClass } from './ui/tokens';
 
 interface ProfileStepProps {
   listing: ListingDetails;
@@ -29,12 +30,6 @@ interface ProfileStepProps {
   onBack: () => void;
   onNotify: (msg: string) => void;
 }
-
-const inputClass =
-  'w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-sm text-gray-900 font-medium placeholder:text-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-[#006AFF]';
-
-const labelClass = 'block text-sm font-semibold text-gray-800 mb-1.5';
-const helpClass = 'block text-xs text-gray-500 mt-1.5 leading-relaxed';
 
 function initialsFromName(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);

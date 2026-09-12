@@ -43,7 +43,7 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
       status: 'submitted' as 'submitted' | 'pending' | 'not_started',
       cosignerStatus: applicantCosigner ? applicantCosigner.status : 'none',
       cosignerName: applicantCosigner?.fullName,
-      avatarBg: 'bg-blue-600',
+      avatarBg: 'bg-[#006AFF]',
     },
     {
       id: 'rm-priya',
@@ -90,7 +90,7 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between p-4 sm:p-8 font-sans">
+    <div className="min-h-screen bg-white flex flex-col justify-between p-4 sm:p-8 font-sans">
       {/* Top Bar */}
       <div className="max-w-3xl w-full mx-auto flex items-center justify-between pb-4 border-b border-gray-200">
         <Button
@@ -106,15 +106,15 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
 
       {/* Main Dashboard Container */}
       <div className="max-w-2xl w-full mx-auto my-auto py-6">
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-xl">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-gray-200 shadow-xs">
           {/* Header */}
           <div className="flex items-center justify-between flex-wrap gap-3 mb-6 pb-4 border-b border-gray-100">
             <div>
-              <div className="inline-flex items-center gap-1.5 bg-indigo-100/80 text-indigo-800 text-xs font-semibold px-3 py-0.5 rounded-full mb-1">
+              <div className="inline-flex items-center gap-1.5 bg-blue-50 text-[#006AFF] text-xs font-semibold px-3 py-0.5 rounded-full mb-1">
                 <Users className="w-3.5 h-3.5" />
                 <span>Group Status</span>
               </div>
-              <h1 className="text-xl sm:text-2xl font-black text-gray-900">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
                 Group application progress
               </h1>
               <p className="text-xs text-gray-600 mt-1 max-w-lg">
@@ -183,7 +183,7 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
                 {member.cosignerStatus !== 'none' && (
                   <div className="ml-12 p-2.5 bg-white rounded-xl border border-gray-200/80 flex items-center justify-between text-[11px]">
                     <div className="flex items-center gap-1.5 text-gray-700">
-                      <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-[#006AFF]" />
                       <span>
                         Cosigner: <strong>{member.cosignerName || 'Guarantor'}</strong>
                       </span>

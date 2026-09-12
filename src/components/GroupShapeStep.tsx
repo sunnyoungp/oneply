@@ -121,7 +121,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between p-4 sm:p-8 font-sans">
+    <div className="min-h-screen bg-white flex flex-col justify-between p-4 sm:p-8 font-sans">
       {/* Top Bar Navigation (Zero Dead Ends) */}
       <div className="max-w-3xl w-full mx-auto flex items-center justify-between">
         <button
@@ -140,7 +140,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
         </button>
 
         <div className="flex items-center gap-1.5 text-xs text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-medium">
-          <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+          <ShieldCheck className="w-3.5 h-3.5 text-[#006AFF]" />
           <span>Roommate Setup</span>
         </div>
       </div>
@@ -152,10 +152,10 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
           <div>
             <div className="text-center mb-8">
               <div className="inline-flex items-center gap-2 bg-blue-100/80 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
-                <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                <Sparkles className="w-3.5 h-3.5 text-[#006AFF]" />
                 <span>Application Type</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
                 Who will be living with you?
               </h2>
               <p className="text-sm text-gray-600 mt-2 max-w-lg mx-auto">
@@ -172,7 +172,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
                 onClick={() => handleSelectShape('solo')}
                 className={`rounded-2xl p-6 transition-all cursor-pointer flex flex-col justify-between group ${
                   selectedShape === 'solo'
-                    ? 'bg-white border-2 border-[#006AFF] ring-4 ring-blue-100 shadow-lg'
+                    ? 'bg-white border-2 border-[#006AFF] shadow-xs'
                     : 'bg-white border-2 border-gray-200 hover:border-gray-300 shadow-xs'
                 }`}
               >
@@ -193,7 +193,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
                     </div>
                   </div>
 
-                  <h3 className="text-lg font-black text-gray-900 mb-1">Applying alone</h3>
+                  <h3 className="text-lg font-bold text-gray-900 mb-1">Applying alone</h3>
                   <p className="text-xs text-gray-600 mb-4 leading-relaxed">
                     You are the only person on this lease. No roommate invites needed.
                   </p>
@@ -223,19 +223,19 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
                 onClick={() => handleSelectShape('roommates')}
                 className={`rounded-2xl p-6 transition-all cursor-pointer flex flex-col justify-between group relative ${
                   selectedShape === 'roommates'
-                    ? 'bg-white border-2 border-[#006AFF] ring-4 ring-blue-100 shadow-lg'
+                    ? 'bg-white border-2 border-[#006AFF] shadow-xs'
                     : 'bg-white border-2 border-gray-200 hover:border-gray-300 shadow-xs'
                 }`}
               >
                 <div className="absolute top-0 right-0 flex items-center">
-                  <span className="bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-bl-lg">
+                  <span className="bg-[#006AFF] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-lg">
                     Multi-Tenant
                   </span>
                 </div>
 
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#006AFF] flex items-center justify-center group-hover:scale-105 transition-transform">
                       <Users className="w-6 h-6" />
                     </div>
                     {/* Radio Indicator */}
@@ -250,24 +250,24 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
                     </div>
                   </div>
 
-                  <h3 className="text-lg font-black text-gray-900 mb-1">Applying with roommates</h3>
+                  <h3 className="text-lg font-bold text-gray-900 mb-1">Applying with roommates</h3>
                   <p className="text-xs text-gray-600 mb-4 leading-relaxed">
                     Apply together and track everyone&apos;s progress in one place.
                   </p>
 
-                  <div className="bg-indigo-50/70 p-3 rounded-xl border border-indigo-100 text-xs space-y-1 text-indigo-950">
-                    <div className="flex items-center gap-1.5 font-bold text-indigo-900">
-                      <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                  <div className="bg-blue-50 p-3 rounded-xl border border-blue-200 text-xs space-y-1 text-gray-900">
+                    <div className="flex items-center gap-1.5 font-bold text-gray-900">
+                      <Sparkles className="w-3.5 h-3.5 text-[#006AFF]" />
                       <span>Group coordination</span>
                     </div>
-                    <p className="text-[11px] text-indigo-700 leading-normal">
+                    <p className="text-[11px] text-gray-600 leading-normal">
                       We&apos;ll bundle everyone&apos;s applications together for the landlord.
                     </p>
                   </div>
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs">
-                  <span className="text-indigo-600 font-medium">Group dashboard</span>
+                  <span className="text-[#006AFF] font-medium">Group dashboard</span>
                   <span className={`font-bold ${selectedShape === 'roommates' ? 'text-[#006AFF]' : 'text-gray-500'}`}>
                     {selectedShape === 'roommates' ? 'Selected' : 'Select'}
                   </span>
@@ -280,7 +280,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
               <button
                 id="btn-continue-group-choice"
                 onClick={handleContinueChoice}
-                className="w-full sm:w-auto min-w-[280px] py-3.5 px-8 rounded-xl bg-[#006AFF] hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer group"
+                className="w-full sm:w-auto min-w-[280px] py-3.5 px-8 rounded-xl bg-[#006AFF] hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer group"
               >
                 <span>Continue</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -289,13 +289,13 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
           </div>
         ) : (
           /* SUB-VIEW 2: ROOMMATE INVITE SCREEN */
-          <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border border-gray-200">
+          <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xs border border-gray-200">
             <div className="mb-6">
-              <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5 mb-1">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#006AFF] flex items-center gap-1.5 mb-1">
                 <Users className="w-4 h-4" />
                 Roommate Invitations
               </span>
-              <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
                 Invite your roommates
               </h2>
               <p className="text-xs sm:text-sm text-gray-600 mt-1">
@@ -312,7 +312,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
               {/* Primary User (Current applicant) */}
               <div className="flex items-center justify-between p-3.5 rounded-xl bg-blue-50/60 border border-blue-200 text-xs">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs">
+                  <div className="w-9 h-9 rounded-full bg-[#006AFF] text-white font-bold flex items-center justify-center text-xs">
                     You
                   </div>
                   <div>
@@ -370,7 +370,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
               className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6"
             >
               <div className="text-xs font-semibold text-gray-800 mb-3 flex items-center gap-1.5">
-                <Plus className="w-3.5 h-3.5 text-blue-600" />
+                <Plus className="w-3.5 h-3.5 text-[#006AFF]" />
                 <span>Add another roommate</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
@@ -399,15 +399,15 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
             </form>
 
             {/* Quick Share Link */}
-            <div className="flex items-center justify-between p-3 bg-indigo-50/50 rounded-xl border border-indigo-100 mb-6 text-xs">
-              <div className="flex items-center gap-2 text-indigo-900">
-                <Share2 className="w-4 h-4 text-indigo-600 shrink-0" />
+            <div className="flex items-center justify-between p-3 bg-blue-50 rounded-xl border border-blue-200 mb-6 text-xs">
+              <div className="flex items-center gap-2 text-gray-900">
+                <Share2 className="w-4 h-4 text-[#006AFF] shrink-0" />
                 <span className="truncate">Shareable link: rentalpass.app/join/lease-4720-centre</span>
               </div>
               <button
                 type="button"
                 onClick={handleCopyInviteLink}
-                className="flex items-center gap-1 text-xs font-semibold text-indigo-700 hover:text-indigo-900 bg-white px-2.5 py-1 rounded-lg border border-indigo-200 hover:bg-indigo-50 transition-colors shrink-0 cursor-pointer"
+                className="flex items-center gap-1 text-xs font-semibold text-gray-600 hover:text-gray-900 bg-white px-2.5 py-1 rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors shrink-0 cursor-pointer"
               >
                 {copiedLink ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedLink ? 'Copied' : 'Copy link'}</span>
@@ -428,7 +428,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
                 id="btn-send-invites-and-continue"
                 type="button"
                 onClick={handleSendInvitesAndContinue}
-                className="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md shadow-indigo-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer group"
+                className="w-full sm:w-auto px-6 py-3 bg-[#006AFF] hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer group"
               >
                 <span>Continue</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

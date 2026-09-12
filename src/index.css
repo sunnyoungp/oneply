@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+/* Design tokens from Rental Application Profile (v2) */
+:root {
+  --color-brand: #006aff;
+  --color-brand-hover: #0d5cb0;
+  --color-text: #111827;
+  --color-text-muted: #4b5563;
+  --color-border: #e5e7eb;
+  --color-surface: #ffffff;
+  --radius-card: 1rem; /* rounded-2xl */
+  --radius-control: 0.75rem; /* rounded-xl */
+}

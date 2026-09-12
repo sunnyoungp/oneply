@@ -241,7 +241,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans antialiased text-gray-900">
+    <div className="min-h-screen bg-white flex flex-col font-sans antialiased text-gray-900">
       {/* Show Zillow Top Navigation only on Zillow listing view */}
       {currentStep === 'step-1-listing' && <ZillowNavbar onNotify={triggerToast} />}
 
@@ -411,7 +411,7 @@ export default function App() {
           <button
             id="btn-open-flow-debugger"
             onClick={() => setIsDebuggerOpen(true)}
-            className="bg-gray-900/95 hover:bg-gray-900 text-white shadow-xl hover:shadow-2xl border border-gray-700/80 px-3.5 py-2 rounded-full flex items-center gap-2.5 text-xs font-semibold cursor-pointer transition-all hover:scale-105 backdrop-blur-md group"
+            className="bg-gray-900/95 hover:bg-gray-900 text-white shadow-xs hover:shadow-xs border border-gray-700/80 px-3.5 py-2 rounded-full flex items-center gap-2.5 text-xs font-semibold cursor-pointer transition-all hover:scale-105 backdrop-blur-md group"
             title="Open Demo Flow Navigator & State Inspector"
           >
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -420,7 +420,7 @@ export default function App() {
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           </button>
         ) : (
-          <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-4 sm:p-5 w-[92vw] sm:w-96 text-xs text-gray-800 animate-in fade-in slide-in-from-bottom-3 duration-200">
+          <div className="bg-white rounded-2xl shadow-xs border border-gray-200 p-4 sm:p-5 w-[92vw] sm:w-96 text-xs text-gray-800 animate-in fade-in slide-in-from-bottom-3 duration-200">
             {/* Header */}
             <div className="flex items-center justify-between pb-3 mb-3 border-b border-gray-100">
               <div className="flex items-center gap-2">
@@ -615,7 +615,7 @@ export default function App() {
 
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-4 right-4 sm:right-6 z-50 bg-gray-900 text-white text-xs px-4 py-3 rounded-xl shadow-xl border border-gray-700 flex items-center gap-2 animate-in slide-in-from-bottom-2 duration-200">
+        <div className="fixed bottom-4 right-4 sm:right-6 z-50 bg-gray-900 text-white text-xs px-4 py-3 rounded-xl shadow-xs border border-gray-700 flex items-center gap-2 animate-in slide-in-from-bottom-2 duration-200">
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
           <button

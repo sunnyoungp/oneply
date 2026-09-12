@@ -141,10 +141,10 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
     >
       <div
         id="modal-application-setup-container"
-        className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-gray-100 overflow-hidden relative my-auto max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-200"
+        className="bg-white rounded-2xl max-w-2xl w-full shadow-xs border border-gray-200 overflow-hidden relative my-auto max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-200"
       >
         {/* Top Progress & Navigation Bar */}
-        <div className="bg-slate-50 border-b border-gray-200 px-6 py-3.5 flex items-center justify-between shrink-0">
+        <div className="bg-gray-50 border-b border-gray-200 px-6 py-3.5 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
             {modalStep === 2 ? (
               <Button
@@ -196,7 +196,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
             <div className="space-y-6">
               {/* Header */}
               <div className="text-center sm:text-left">
-                <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
                   Who will be living with you?
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-600 mt-1">
@@ -216,7 +216,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                   }}
                   className={`p-4 sm:p-5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between group relative ${
                     selectedShape === 'solo'
-                      ? 'border-[#006AFF] bg-blue-50/40 shadow-sm'
+                      ? 'border-[#006AFF] bg-blue-50/40 shadow-xs'
                       : 'border-gray-200 hover:border-gray-300 bg-white'
                   }`}
                 >
@@ -241,7 +241,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                         {selectedShape === 'solo' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </div>
                     </div>
-                    <h3 className="text-base font-black text-gray-900 mb-1">Applying alone</h3>
+                    <h3 className="text-base font-bold text-gray-900 mb-1">Applying alone</h3>
                     <p className="text-xs text-gray-600 leading-relaxed">
                       Just you on the lease. Only your income and background checks will be evaluated.
                     </p>
@@ -261,7 +261,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                   }}
                   className={`p-4 sm:p-5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between group relative ${
                     selectedShape === 'group'
-                      ? 'border-[#006AFF] bg-blue-50/40 shadow-sm'
+                      ? 'border-[#006AFF] bg-blue-50/40 shadow-xs'
                       : 'border-gray-200 hover:border-gray-300 bg-white'
                   }`}
                 >
@@ -286,7 +286,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                         {selectedShape === 'group' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </div>
                     </div>
-                    <h3 className="text-base font-black text-gray-900 mb-1">Applying with roommates</h3>
+                    <h3 className="text-base font-bold text-gray-900 mb-1">Applying with roommates</h3>
                     <p className="text-xs text-gray-600 leading-relaxed">
                       Group application. Each co-tenant submits their verified credentials into one combined package.
                     </p>
@@ -300,11 +300,11 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
 
               {/* Roommate invitations sub-section if "Applying with roommates" is selected */}
               {selectedShape === 'group' && (
-                <div className="bg-slate-50 border border-gray-200 rounded-2xl p-5 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="bg-white border border-gray-200 rounded-2xl p-5 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
-                        <Users className="w-4 h-4 text-blue-600" />
+                      <h4 className="text-sm font-bold text-gray-900 flex items-center gap-1.5">
+                        <Users className="w-4 h-4 text-[#006AFF]" />
                         <span>Roommate group ({roommates.length})</span>
                       </h4>
                       <p className="text-[11px] text-gray-500">
@@ -405,10 +405,10 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
               {/* Header */}
               <div className="text-center sm:text-left">
                 <div className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full mb-2 border border-blue-200">
-                  <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#006AFF]" />
                   <span>Verified Profile Available</span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
                   Choose your profile source
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-600 mt-1">
@@ -427,7 +427,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                   }}
                   className={`p-5 rounded-2xl border-2 transition-all cursor-pointer relative ${
                     selectedProfileMode === 'saved'
-                      ? 'border-[#006AFF] bg-white ring-4 ring-blue-50 shadow-md'
+                      ? 'border-[#006AFF] bg-white shadow-xs'
                       : 'border-gray-200 hover:border-gray-300 bg-white'
                   }`}
                 >
@@ -438,8 +438,8 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <h3 className="text-base font-black text-gray-900">Use my saved profile</h3>
-                          <span className="bg-[#006AFF] text-white text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full">
+                          <h3 className="text-base font-bold text-gray-900">Use my saved profile</h3>
+                          <span className="bg-[#006AFF] text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">
                             Recommended
                           </span>
                         </div>
@@ -461,7 +461,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                   </div>
 
                   {/* PREVIEW CARD OF SAVED PROFILE INFORMATION */}
-                  <div className="bg-slate-50 border border-gray-200 rounded-xl p-3.5 text-xs space-y-2.5">
+                  <div className="bg-white border border-gray-200 rounded-xl p-3.5 text-xs space-y-2.5">
                     <div className="flex items-center justify-between pb-2 border-b border-gray-200">
                       <span className="font-bold text-gray-800">Saved Applicant Record</span>
                       <span className="text-[11px] text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md font-bold flex items-center gap-1">
@@ -513,7 +513,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                   }}
                   className={`p-5 rounded-2xl border-2 transition-all cursor-pointer relative ${
                     selectedProfileMode === 'new'
-                      ? 'border-[#006AFF] bg-white ring-4 ring-blue-50 shadow-md'
+                      ? 'border-[#006AFF] bg-white shadow-xs'
                       : 'border-gray-200 hover:border-gray-300 bg-white'
                   }`}
                 >
@@ -523,7 +523,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                         <FileText className="w-5 h-5 text-gray-600" />
                       </div>
                       <div>
-                        <h3 className="text-base font-black text-gray-900">
+                        <h3 className="text-base font-bold text-gray-900">
                           Start a new application with a blank form
                         </h3>
                         <p className="text-xs text-gray-500">

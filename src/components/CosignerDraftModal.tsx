@@ -71,7 +71,7 @@ export const CosignerDraftModal: React.FC<CosignerDraftModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200 font-sans">
-      <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-7 shadow-2xl border border-gray-200 relative my-8">
+      <div className="bg-white rounded-2xl max-w-xl w-full p-6 sm:p-7 shadow-xs border border-gray-200 relative my-8">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -88,7 +88,7 @@ export const CosignerDraftModal: React.FC<CosignerDraftModalProps> = ({
             <span>Delegated Cosigner Flow · Core Differentiator</span>
           </div>
 
-          <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
             Pre-fill draft for your cosigner
           </h2>
           <p className="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed">
@@ -100,23 +100,23 @@ export const CosignerDraftModal: React.FC<CosignerDraftModalProps> = ({
         <form onSubmit={handleSend} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">Cosigner Full Name</label>
+              <label className="block text-sm font-semibold text-gray-800 mb-1.5">Cosigner Full Name</label>
               <input
                 type="text"
                 required
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="e.g. Elena Reed"
-                className="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-xs text-gray-900 font-medium focus:bg-white focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-sm text-gray-900 font-medium focus:bg-white focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">Relationship to You</label>
+              <label className="block text-sm font-semibold text-gray-800 mb-1.5">Relationship to You</label>
               <select
                 value={relationship}
                 onChange={(e) => setRelationship(e.target.value)}
-                className="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-xs text-gray-900 font-medium focus:bg-white focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-sm text-gray-900 font-medium focus:bg-white focus:ring-2 focus:ring-blue-500"
               >
                 <option value="Mother">Parent / Mother</option>
                 <option value="Father">Parent / Father</option>
@@ -127,7 +127,7 @@ export const CosignerDraftModal: React.FC<CosignerDraftModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">Cosigner Email Address</label>
+              <label className="block text-sm font-semibold text-gray-800 mb-1.5">Cosigner Email Address</label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
                 <input
@@ -136,13 +136,13 @@ export const CosignerDraftModal: React.FC<CosignerDraftModalProps> = ({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="cosigner@email.com"
-                  className="w-full bg-gray-50 border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-900 font-medium focus:bg-white focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-3 py-2.5 text-sm text-gray-900 font-medium focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-[#006AFF]"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">Phone Number</label>
+              <label className="block text-sm font-semibold text-gray-800 mb-1.5">Phone Number</label>
               <div className="relative">
                 <Phone className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
                 <input
@@ -150,7 +150,7 @@ export const CosignerDraftModal: React.FC<CosignerDraftModalProps> = ({
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="(412) 555-0192"
-                  className="w-full bg-gray-50 border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-900 font-medium focus:bg-white focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-3 py-2.5 text-sm text-gray-900 font-medium focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-[#006AFF]"
                 />
               </div>
             </div>
@@ -158,7 +158,7 @@ export const CosignerDraftModal: React.FC<CosignerDraftModalProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2 border-t border-gray-100">
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">Cosigner Employer</label>
+              <label className="block text-sm font-semibold text-gray-800 mb-1.5">Cosigner Employer</label>
               <div className="relative">
                 <Briefcase className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
                 <input
@@ -166,13 +166,13 @@ export const CosignerDraftModal: React.FC<CosignerDraftModalProps> = ({
                   value={employer}
                   onChange={(e) => setEmployer(e.target.value)}
                   placeholder="Employer Name & Title"
-                  className="w-full bg-gray-50 border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-900 font-medium focus:bg-white focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-3 py-2.5 text-sm text-gray-900 font-medium focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-[#006AFF]"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">Estimated Monthly Income ($)</label>
+              <label className="block text-sm font-semibold text-gray-800 mb-1.5">Estimated Monthly Income ($)</label>
               <div className="relative">
                 <DollarSign className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
                 <input
@@ -180,7 +180,7 @@ export const CosignerDraftModal: React.FC<CosignerDraftModalProps> = ({
                   value={monthlyIncome}
                   onChange={(e) => setMonthlyIncome(Number(e.target.value))}
                   placeholder="10000"
-                  className="w-full bg-gray-50 border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-900 font-medium focus:bg-white focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-3 py-2.5 text-sm text-gray-900 font-medium focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-[#006AFF]"
                 />
               </div>
             </div>
@@ -209,8 +209,8 @@ export const CosignerDraftModal: React.FC<CosignerDraftModalProps> = ({
           </div>
 
           {/* Value Proposition Explainer Note */}
-          <div className="bg-indigo-50/70 border border-indigo-100 rounded-xl p-3 text-xs text-indigo-950 flex items-start gap-2">
-            <ShieldCheck className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs text-gray-900 flex items-start gap-2">
+            <ShieldCheck className="w-4 h-4 text-[#006AFF] shrink-0 mt-0.5" />
             <p className="leading-relaxed">
               When you click <strong>&quot;Send to {fullName || 'Cosigner'}&quot;</strong>, a secure one-time link is generated. Your cosigner will only need to verify this pre-filled draft and provide their legal signature.
             </p>

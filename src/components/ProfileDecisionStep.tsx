@@ -52,7 +52,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between p-4 sm:p-8 font-sans">
+    <div className="min-h-screen bg-white flex flex-col justify-between p-4 sm:p-8 font-sans">
       {/* Top Header */}
       <div className="max-w-3xl w-full mx-auto flex items-center justify-between">
         <button
@@ -79,7 +79,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
             <span>Saved Profile Available</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
             Apply with your saved profile?
           </h2>
           <p className="text-xs sm:text-sm text-gray-600 mt-2 max-w-lg mx-auto">
@@ -96,7 +96,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
             onClick={() => handleCardClick('saved')}
             className={`rounded-2xl p-6 transition-all cursor-pointer flex flex-col justify-between group relative overflow-hidden ${
               selectedChoice === 'saved'
-                ? 'bg-white border-2 border-[#006AFF] ring-4 ring-blue-100 shadow-lg'
+                ? 'bg-white border-2 border-[#006AFF] shadow-xs'
                 : 'bg-white border-2 border-gray-200 hover:border-gray-300 shadow-xs'
             }`}
           >
@@ -123,7 +123,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
                 </div>
               </div>
 
-              <h3 className="text-base sm:text-lg font-black text-gray-900 mb-1">
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1">
                 Use saved profile
               </h3>
 
@@ -165,7 +165,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
             onClick={() => handleCardClick('new')}
             className={`rounded-2xl p-6 transition-all cursor-pointer flex flex-col justify-between group ${
               selectedChoice === 'new'
-                ? 'bg-white border-2 border-[#006AFF] ring-4 ring-blue-100 shadow-lg'
+                ? 'bg-white border-2 border-[#006AFF] shadow-xs'
                 : 'bg-white border-2 border-gray-200 hover:border-gray-300 shadow-xs'
             }`}
           >
@@ -186,7 +186,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
                 </div>
               </div>
 
-              <h3 className="text-base sm:text-lg font-black text-gray-900 mb-1">
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1">
                 Start fresh
               </h3>
 
@@ -223,7 +223,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
           <button
             id="btn-continue-profile-decision"
             onClick={handleContinue}
-            className="w-full sm:w-auto min-w-[280px] py-3.5 px-8 rounded-xl bg-[#006AFF] hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer group"
+            className="w-full sm:w-auto min-w-[280px] py-3.5 px-8 rounded-xl bg-[#006AFF] hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer group"
           >
             <span>Continue</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

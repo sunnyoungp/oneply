@@ -63,7 +63,7 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-gray-900 flex flex-col justify-between p-4 sm:p-8 font-sans">
+    <div className="min-h-screen bg-white text-gray-900 flex flex-col justify-between p-4 sm:p-8 font-sans">
       {/* Top Navigation & Simulation Indicator */}
       <div className="max-w-3xl w-full mx-auto flex items-center justify-between flex-wrap gap-3">
         <Button
@@ -84,7 +84,7 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
 
       {/* Main Review Container */}
       <div className="max-w-2xl w-full mx-auto my-auto py-6 sm:py-8">
-        <div className="bg-white rounded-3xl border border-gray-200 p-6 sm:p-8 shadow-sm">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-xs">
           {/* Header */}
           <div className="mb-6 pb-5 border-b border-gray-100">
             <div className="inline-flex items-center gap-1.5 bg-[#EFF6FF] text-[#1D4ED8] text-xs font-bold px-3 py-1 rounded-full mb-3 border border-[#BFDBFE]">
@@ -92,7 +92,7 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
               <span>Guarantor Sign-Off</span>
             </div>
 
-            <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
               Review your cosigner guarantee
             </h1>
             <p className="text-xs sm:text-sm text-gray-600 mt-1.5 leading-relaxed">
@@ -138,7 +138,7 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
                       type="text"
                       value={editedEmployer}
                       onChange={(e) => setEditedEmployer(e.target.value)}
-                      className="bg-white border border-gray-300 focus:border-[#006AFF] focus:ring-1 focus:ring-[#006AFF] rounded-lg px-2.5 py-1.5 text-xs text-gray-900 w-full mt-1 outline-none"
+                      className="bg-white border border-gray-300 focus:border-[#006AFF] focus:ring-2 focus:ring-blue-500 rounded-xl px-3 py-2.5 text-sm text-gray-900 w-full mt-1 outline-none"
                     />
                   ) : (
                     <span className="font-bold text-gray-900 text-sm mt-0.5 block">{editedEmployer}</span>
@@ -151,7 +151,7 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
                       type="number"
                       value={editedIncome}
                       onChange={(e) => setEditedIncome(Number(e.target.value))}
-                      className="bg-white border border-gray-300 focus:border-[#006AFF] focus:ring-1 focus:ring-[#006AFF] rounded-lg px-2.5 py-1.5 text-xs text-gray-900 w-full mt-1 outline-none"
+                      className="bg-white border border-gray-300 focus:border-[#006AFF] focus:ring-2 focus:ring-blue-500 rounded-xl px-3 py-2.5 text-sm text-gray-900 w-full mt-1 outline-none"
                     />
                   ) : (
                     <span className="font-bold text-emerald-700 text-sm mt-0.5 block">
@@ -243,7 +243,7 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
                   value={typedSignature}
                   onChange={(e) => setTypedSignature(e.target.value)}
                   placeholder="Your full name..."
-                  className="w-full bg-white border-2 border-[#006AFF] rounded-xl px-4 py-2.5 text-base font-serif italic text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-100 tracking-wider shadow-xs"
+                  className="w-full bg-white border-2 border-[#006AFF] rounded-xl px-4 py-2.5 text-base font-serif italic text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-50 tracking-wider shadow-xs"
                 />
                 <span className="absolute right-3 top-3 text-[10px] bg-blue-100 text-[#006AFF] font-bold px-2 py-0.5 rounded font-mono">
                   E-SIGNED

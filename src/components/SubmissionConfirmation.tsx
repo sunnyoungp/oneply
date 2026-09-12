@@ -35,7 +35,7 @@ export const SubmissionConfirmation: React.FC<SubmissionConfirmationProps> = ({
   onNotify,
 }) => {
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between p-4 sm:p-8 font-sans">
+    <div className="min-h-screen bg-white flex flex-col justify-between p-4 sm:p-8 font-sans">
       {/* Top Bar */}
       <div className="max-w-3xl w-full mx-auto flex items-center justify-between pb-4 border-b border-gray-200">
         <Button
@@ -51,13 +51,13 @@ export const SubmissionConfirmation: React.FC<SubmissionConfirmationProps> = ({
 
       {/* Main Confirmation Card */}
       <div className="max-w-2xl w-full mx-auto my-auto py-6">
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-xl text-center">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-gray-200 shadow-xs text-center">
           {/* Animated Success Badge */}
           <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl mx-auto flex items-center justify-center mb-5 ring-8 ring-emerald-50 animate-bounce duration-1000">
             <CheckCircle2 className="w-8 h-8" />
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-black text-gray-900 mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             Application submitted!
           </h1>
           <p className="text-xs sm:text-sm text-gray-600 max-w-md mx-auto mb-6 leading-relaxed">
@@ -98,7 +98,7 @@ export const SubmissionConfirmation: React.FC<SubmissionConfirmationProps> = ({
             id="match-likelihood-box"
             className="bg-blue-50/80 border border-blue-200 rounded-2xl p-4 text-xs text-left mb-6 flex items-start gap-3"
           >
-            <TrendingUp className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+            <TrendingUp className="w-5 h-5 text-[#006AFF] shrink-0 mt-0.5" />
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="font-bold text-blue-950 text-sm">

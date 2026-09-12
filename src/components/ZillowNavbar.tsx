@@ -13,9 +13,9 @@ interface ZillowNavbarProps {
 
 export const ZillowNavbar: React.FC<ZillowNavbarProps> = ({ onNotify, onOpenGroupFlow }) => {
   return (
-    <header className="border-b border-gray-200 bg-white sticky top-0 z-30 shadow-2xs">
+    <header className="border-b border-gray-200 bg-white sticky top-0 z-30">
       {/* Main Zillow Rentals Nav */}
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-[60px] flex items-center justify-between">
         {/* Left: Hamburger & Zillow Rentals Logo */}
         <div className="flex items-center gap-4">
           <button
@@ -30,11 +30,11 @@ export const ZillowNavbar: React.FC<ZillowNavbarProps> = ({ onNotify, onOpenGrou
             className="flex items-center gap-2 cursor-pointer select-none"
             onClick={() => onNotify('Zillow Rentals Home')}
           >
-            <div className="w-8 h-8 rounded-lg bg-[#006AFF] text-white flex items-center justify-center font-black text-xl shadow-xs">
+            <div className="w-8 h-8 rounded-xl bg-[#006AFF] text-white flex items-center justify-center font-bold text-xl">
               Z
             </div>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-2xl font-black text-[#006AFF] tracking-tight">zillow</span>
+              <span className="text-2xl font-bold text-[#006AFF] tracking-tight">zillow</span>
               <span className="text-sm font-semibold text-gray-600">Rentals</span>
             </div>
           </div>
@@ -50,7 +50,7 @@ export const ZillowNavbar: React.FC<ZillowNavbarProps> = ({ onNotify, onOpenGrou
           >
             <Building2 className="w-4 h-4 text-gray-600" />
             <span>Rental Manager</span>
-            <span className="bg-[#006AFF] text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+            <span className="bg-[#006AFF] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-lg uppercase tracking-wider">
               NEW
             </span>
           </button>
@@ -84,7 +84,7 @@ export const ZillowNavbar: React.FC<ZillowNavbarProps> = ({ onNotify, onOpenGrou
       </div>
 
       {/* Breadcrumbs Sub-bar */}
-      <div className="bg-[#F9FAFB] border-t border-gray-200 px-4 sm:px-6 lg:px-8 py-2 text-xs text-gray-600 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+      <div className="bg-gray-50 border-t border-gray-200 px-4 sm:px-6 lg:px-8 py-2 text-xs text-gray-600 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
         <div className="flex items-center gap-2 flex-wrap">
           <span
             className="hover:underline cursor-pointer font-medium text-gray-700"
