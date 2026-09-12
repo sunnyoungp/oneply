@@ -41,12 +41,12 @@ export const SubmissionConfirmation: React.FC<SubmissionConfirmationProps> = ({
           className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
         >
           <Home className="w-4 h-4" />
-          <span>Back to Listing Details (Step 1)</span>
+          <span>Back to Listing Details</span>
         </button>
 
         <div className="flex items-center gap-1.5 text-xs text-emerald-800 bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-full font-medium">
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-          <span>Rental Pass · Step 11: Application Sent</span>
+          <span>Rental Pass · Application Sent</span>
         </div>
       </div>
 
@@ -59,10 +59,10 @@ export const SubmissionConfirmation: React.FC<SubmissionConfirmationProps> = ({
           </div>
 
           <h1 className="text-2xl sm:text-3xl font-black text-gray-900 mb-2">
-            Application successfully sent!
+            Application submitted!
           </h1>
           <p className="text-xs sm:text-sm text-gray-600 max-w-md mx-auto mb-6 leading-relaxed">
-            Your Rental Pass packet has been transmitted directly to{' '}
+            Sent directly to{' '}
             <strong className="text-gray-900">{listing.managementCompany}</strong> for{' '}
             <strong className="text-gray-900">{listing.address}, {listing.unit}</strong>.
           </p>
@@ -70,21 +70,21 @@ export const SubmissionConfirmation: React.FC<SubmissionConfirmationProps> = ({
           {/* Submission Info Box */}
           <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200 text-xs text-left mb-6 space-y-2.5">
             <div className="flex items-center justify-between border-b border-gray-200 pb-2">
-              <span className="text-gray-500">Submission Type:</span>
+              <span className="text-gray-500">Application:</span>
               <span className="font-bold text-gray-800 uppercase tracking-wide">
-                {applicationType === 'solo' ? 'Solo Leaseholder' : 'Joint Group Application (3 Applicants)'}
+                {applicationType === 'solo' ? 'Solo' : 'Group (3 Roommates)'}
               </span>
             </div>
 
             <div className="flex items-center justify-between border-b border-gray-200 pb-2">
-              <span className="text-gray-500">Transmission Timestamp:</span>
+              <span className="text-gray-500">Submitted:</span>
               <span className="font-medium text-gray-800">
                 September 12, 2026 · {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} EDT
               </span>
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-gray-500">Leasing Point of Contact:</span>
+              <span className="text-gray-500">Contact:</span>
               <span className="font-medium text-gray-800">
                 {listing.contactPerson} ({listing.managementCompany})
               </span>
@@ -103,17 +103,17 @@ export const SubmissionConfirmation: React.FC<SubmissionConfirmationProps> = ({
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="font-bold text-blue-950 text-sm">
-                  Match Likelihood: Strong Fit (94% Compatibility)
+                  Match Fit: Strong (94%)
                 </span>
                 <span className="text-[10px] bg-blue-200/70 text-blue-900 font-semibold px-2 py-0.5 rounded">
                   ESTIMATE ONLY
                 </span>
               </div>
               <p className="text-blue-900 leading-relaxed text-xs">
-                Based on this listing’s stated requirements (3x rent-to-income ratio, pet guidelines, verified credit authorization, and complete cosigner backing), your profile looks like a <strong>strong fit</strong>.
+                Your income, credit authorization, and cosigner meet the landlord&apos;s published criteria.
               </p>
               <p className="text-[11px] text-blue-700 italic">
-                *Note: This compatibility score is an automated estimate only and does not constitute a guaranteed lease offer or formal pre-approval.
+                *Note: Estimate only; does not guarantee approval.
               </p>
             </div>
           </div>
@@ -126,7 +126,7 @@ export const SubmissionConfirmation: React.FC<SubmissionConfirmationProps> = ({
               onClick={onReturnToListing}
               className="w-full sm:w-auto px-5 py-3 border border-gray-300 rounded-xl text-xs font-semibold text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
             >
-              Return to Listing
+              Back to listing
             </button>
 
             <button
@@ -136,7 +136,7 @@ export const SubmissionConfirmation: React.FC<SubmissionConfirmationProps> = ({
               className="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer group"
             >
               <FileText className="w-4 h-4" />
-              <span>View your applications (Step 12)</span>
+              <span>View applications</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
           </div>
@@ -145,7 +145,7 @@ export const SubmissionConfirmation: React.FC<SubmissionConfirmationProps> = ({
 
       {/* Footer */}
       <div className="max-w-3xl w-full mx-auto text-center text-xs text-gray-500 py-2">
-        <span>Step 11: Submission Confirmation &amp; Match Likelihood</span>
+        <span>Rental Pass · Submission Confirmation &amp; Match Likelihood</span>
       </div>
     </div>
   );

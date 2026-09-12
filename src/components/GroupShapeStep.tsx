@@ -51,10 +51,29 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
   onNotify,
 }) => {
   const [view, setView] = useState<'choice' | 'invite'>('choice');
+  // Phase 3: Two-tap pattern for Group Shape selection
+  const [selectedShape, setSelectedShape] = useState<'solo' | 'roommates'>('roommates');
   const [roommates, setRoommates] = useState<Roommate[]>(initialRoommates);
   const [newName, setNewName] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [copiedLink, setCopiedLink] = useState(false);
+
+  const handleSelectShape = (shape: 'solo' | 'roommates') => {
+    setSelectedShape(shape);
+    onNotify(
+      shape === 'solo'
+        ? 'Selected: Applying alone. Click Continue below to proceed to your profile.'
+        : 'Selected: Applying with roommates. Click Continue below to setup roommate invitations.'
+    );
+  };
+
+  const handleContinueChoice = () => {
+    if (selectedShape === 'solo') {
+      onSelectSolo();
+    } else {
+      setView('invite');
+    }
+  };
 
   const handleAddRoommate = (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,12 +136,12 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
           className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>{view === 'invite' ? 'Back to applicant type' : 'Back to Step 5'}</span>
+          <span>{view === 'invite' ? 'Back to applicant type' : 'Back to application setup'}</span>
         </button>
 
         <div className="flex items-center gap-1.5 text-xs text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-medium">
           <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-          <span>Rental Pass · Step 6 of 12</span>
+          <span>Rental Pass · Roommate Setup</span>
         </div>
       </div>
 
@@ -134,14 +153,14 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
             <div className="text-center mb-8">
               <div className="inline-flex items-center gap-2 bg-blue-100/80 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
                 <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-                <span>Application Configuration</span>
+                <span>Application Type</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
                 Who will be living with you?
               </h2>
-              <p className="text-sm sm:text-base text-gray-600 mt-2 max-w-lg mx-auto">
-                Select your group structure for{' '}
-                <strong className="text-gray-900">{listing.address}</strong>. This determines whether roommate invitation links and group tracking are enabled.
+              <p className="text-sm text-gray-600 mt-2 max-w-lg mx-auto">
+                Choose whether you&apos;re applying alone or with roommates for{' '}
+                <strong className="text-gray-900">{listing.address}</strong>.
               </p>
             </div>
 
@@ -150,37 +169,50 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
               {/* Option A: Applying alone */}
               <div
                 id="card-applying-alone"
-                onClick={() => {
-                  onNotify('Selected: Applying alone. Skipping roommate invite screen ➔ proceeding to Step 7.');
-                  onSelectSolo();
-                }}
-                className="bg-white rounded-2xl p-6 border-2 border-gray-200 hover:border-blue-500 hover:shadow-xl transition-all cursor-pointer flex flex-col justify-between group"
+                onClick={() => handleSelectShape('solo')}
+                className={`rounded-2xl p-6 transition-all cursor-pointer flex flex-col justify-between group ${
+                  selectedShape === 'solo'
+                    ? 'bg-white border-2 border-[#006AFF] ring-4 ring-blue-100 shadow-lg'
+                    : 'bg-white border-2 border-gray-200 hover:border-gray-300 shadow-xs'
+                }`}
               >
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                    <User className="w-6 h-6" />
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#006AFF] flex items-center justify-center group-hover:scale-105 transition-transform">
+                      <User className="w-6 h-6" />
+                    </div>
+                    {/* Radio Indicator */}
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-all ${
+                        selectedShape === 'solo'
+                          ? 'border-[#006AFF] bg-[#006AFF] text-white'
+                          : 'border-gray-300 bg-white'
+                      }`}
+                    >
+                      {selectedShape === 'solo' && <CheckCircle2 className="w-4 h-4 fill-white text-[#006AFF]" />}
+                    </div>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-1">Applying alone</h3>
+
+                  <h3 className="text-lg font-black text-gray-900 mb-1">Applying alone</h3>
                   <p className="text-xs text-gray-600 mb-4 leading-relaxed">
-                    You are the sole applicant. No other tenant profiles or roommate coordination required.
+                    You are the only person on this lease. No roommate invites needed.
                   </p>
 
                   <div className="bg-gray-50 p-3 rounded-xl border border-gray-200 text-xs space-y-1 text-gray-600">
-                    <div className="flex items-center gap-1.5 font-medium text-gray-900">
+                    <div className="flex items-center gap-1.5 font-bold text-gray-900">
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                       <span>Single leaseholder</span>
                     </div>
                     <p className="text-[11px] text-gray-500">
-                      Skips roommate invite flow and routes directly to your profile.
+                      Direct route to your profile.
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                  <span className="text-xs text-gray-500 font-medium">Fast track</span>
-                  <span className="text-xs font-bold text-blue-600 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                    <span>Continue alone</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs">
+                  <span className="text-gray-500 font-medium">Fast track</span>
+                  <span className={`font-bold ${selectedShape === 'solo' ? 'text-[#006AFF]' : 'text-gray-500'}`}>
+                    {selectedShape === 'solo' ? 'Selected' : 'Select'}
                   </span>
                 </div>
               </div>
@@ -188,48 +220,75 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
               {/* Option B: Applying with roommates */}
               <div
                 id="card-applying-with-roommates"
-                onClick={() => {
-                  setView('invite');
-                  onNotify('Selected: Applying with roommates. Opening roommate invite setup screen.');
-                }}
-                className="bg-white rounded-2xl p-6 border-2 border-indigo-300 hover:border-indigo-600 hover:shadow-xl transition-all cursor-pointer flex flex-col justify-between group relative ring-2 ring-indigo-50"
+                onClick={() => handleSelectShape('roommates')}
+                className={`rounded-2xl p-6 transition-all cursor-pointer flex flex-col justify-between group relative ${
+                  selectedShape === 'roommates'
+                    ? 'bg-white border-2 border-[#006AFF] ring-4 ring-blue-100 shadow-lg'
+                    : 'bg-white border-2 border-gray-200 hover:border-gray-300 shadow-xs'
+                }`}
               >
-                <div className="absolute top-0 right-0 bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-bl-lg">
-                  Multi-Tenant
+                <div className="absolute top-0 right-0 flex items-center">
+                  <span className="bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-bl-lg">
+                    Multi-Tenant
+                  </span>
                 </div>
 
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                    <Users className="w-6 h-6" />
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                      <Users className="w-6 h-6" />
+                    </div>
+                    {/* Radio Indicator */}
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-all ${
+                        selectedShape === 'roommates'
+                          ? 'border-[#006AFF] bg-[#006AFF] text-white'
+                          : 'border-gray-300 bg-white'
+                      }`}
+                    >
+                      {selectedShape === 'roommates' && <CheckCircle2 className="w-4 h-4 fill-white text-[#006AFF]" />}
+                    </div>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-1">Applying with roommates</h3>
+
+                  <h3 className="text-lg font-black text-gray-900 mb-1">Applying with roommates</h3>
                   <p className="text-xs text-gray-600 mb-4 leading-relaxed">
-                    Split rent with roommates. Everyone submits a verified profile and you can track real-time group readiness.
+                    Apply together and track everyone&apos;s progress in one place.
                   </p>
 
                   <div className="bg-indigo-50/70 p-3 rounded-xl border border-indigo-100 text-xs space-y-1 text-indigo-950">
-                    <div className="flex items-center gap-1.5 font-semibold text-indigo-900">
+                    <div className="flex items-center gap-1.5 font-bold text-indigo-900">
                       <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-                      <span>Includes Step 10 Group Status Dashboard</span>
+                      <span>Group coordination</span>
                     </div>
-                    <p className="text-[11px] text-indigo-700">
-                      Sync profiles into a joint package before final landlord submission.
+                    <p className="text-[11px] text-indigo-700 leading-normal">
+                      We&apos;ll bundle everyone&apos;s applications together for the landlord.
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                  <span className="text-xs text-indigo-600 font-medium">Invite screen next</span>
-                  <span className="text-xs font-bold text-indigo-600 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                    <span>Configure roommates</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs">
+                  <span className="text-indigo-600 font-medium">Group dashboard</span>
+                  <span className={`font-bold ${selectedShape === 'roommates' ? 'text-[#006AFF]' : 'text-gray-500'}`}>
+                    {selectedShape === 'roommates' ? 'Selected' : 'Select'}
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="text-center text-xs text-gray-500">
-              Note: This branch determines whether the <strong>Step 10 Group Status Dashboard</strong> is enabled.
+            {/* Phase 3 Explicit Two-Tap Continue Action */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
+              <button
+                id="btn-continue-group-choice"
+                onClick={handleContinueChoice}
+                className="w-full sm:w-auto min-w-[280px] py-3.5 px-8 rounded-xl bg-[#006AFF] hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer group"
+              >
+                <span>
+                  {selectedShape === 'solo'
+                    ? 'Continue'
+                    : 'Continue to invite roommates'}
+                </span>
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </button>
             </div>
           </div>
         ) : (
@@ -238,13 +297,13 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
             <div className="mb-6">
               <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5 mb-1">
                 <Users className="w-4 h-4" />
-                Step 6: Roommate Invitations
+                Roommate Invitations
               </span>
               <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900">
                 Invite your roommates
               </h2>
               <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                Enter your roommates&apos; details so they receive an invitation link to attach their verified Rental Pass to this lease at {listing.address}.
+                Add roommates so they can join your application for {listing.address}.
               </p>
             </div>
 
@@ -366,7 +425,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
                 onClick={() => setView('choice')}
                 className="w-full sm:w-auto text-xs text-gray-600 hover:text-gray-900 font-semibold px-4 py-2.5 rounded-xl hover:bg-gray-100 transition-colors"
               >
-                Change to solo application
+                Back to applicant type
               </button>
 
               <button
@@ -375,7 +434,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
                 onClick={handleSendInvitesAndContinue}
                 className="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md shadow-indigo-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer group"
               >
-                <span>Send invites &amp; continue to profile</span>
+                <span>Continue to profile</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
@@ -385,7 +444,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
 
       {/* Footer Info */}
       <div className="max-w-3xl w-full mx-auto text-center text-xs text-gray-500 py-2 border-t border-gray-200/80">
-        <span>Target Listing: {listing.address}, {listing.unit} ({listing.managementCompany})</span>
+        <span>Applying to: {listing.address}, {listing.unit}</span>
       </div>
     </div>
   );

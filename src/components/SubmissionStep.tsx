@@ -46,9 +46,9 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
     }
 
     if (applicationType === 'solo') {
-      onNotify('Application submitted! Routing directly to Step 11 Confirmation.');
+      onNotify('Application submitted! Routing directly to Confirmation.');
     } else {
-      onNotify(`Your profile submitted! Routing to Step 10 Group Status Dashboard.`);
+      onNotify(`Your profile submitted! Routing to Group Status Dashboard.`);
     }
 
     onSubmit();
@@ -64,12 +64,12 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
           className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to edit profile (Step 7)</span>
+          <span>Back to profile</span>
         </button>
 
         <div className="flex items-center gap-1.5 text-xs text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-medium">
           <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-          <span>Rental Pass · Step 9 of 12</span>
+          <span>Rental Pass · Review &amp; Submit</span>
         </div>
       </div>
 
@@ -80,14 +80,14 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
           <div className="text-center mb-6">
             <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Profile Verified &amp; Complete</span>
+              <span>Profile Complete</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900">
-              Ready to submit your application
+              Review and submit
             </h1>
             <p className="text-xs sm:text-sm text-gray-600 mt-1 max-w-md mx-auto">
-              Review your submission packet for{' '}
-              <strong className="text-gray-900">{listing.address}, {listing.unit}</strong> before transmitting to {listing.managementCompany}.
+              Review your information for{' '}
+              <strong className="text-gray-900">{listing.address}, {listing.unit}</strong> before sending.
             </p>
           </div>
 
@@ -101,7 +101,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
                   <span>Applicant: {formData.fullName}</span>
                 </span>
                 <span className="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded text-[11px]">
-                  100% Ready
+                  Complete
                 </span>
               </div>
               <div className="grid grid-cols-2 gap-2 text-gray-600 pt-1">
@@ -118,9 +118,15 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
                 <div className="flex items-center justify-between font-bold">
                   <span className="flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 text-indigo-600" />
-                    <span>Cosigner / Guarantor: {formData.cosigner.fullName} ({formData.cosigner.relationship})</span>
+                    <span>Cosigner: {formData.cosigner.fullName} ({formData.cosigner.relationship})</span>
                   </span>
-                  <span className="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded text-[11px] font-semibold">
+                  <span
+                    className={
+                      formData.cosigner.status === 'confirmed'
+                        ? 'text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded text-[11px] font-semibold'
+                        : 'text-[#1D4ED8] bg-[#EFF6FF] border border-[#BFDBFE] px-2 py-0.5 rounded text-[11px] font-semibold'
+                    }
+                  >
                     {formData.cosigner.status === 'confirmed' ? 'Confirmed ✓' : 'Pending'}
                   </span>
                 </div>
@@ -136,13 +142,13 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
               <div className="text-xs text-blue-950 leading-relaxed">
                 {applicationType === 'solo' ? (
                   <div>
-                    <strong className="text-blue-900 font-bold block mb-0.5">Solo Application Workflow:</strong>
-                    Tapping submit transmits your file immediately to Lobos Management and proceeds directly to the <strong>Confirmation Screen (Step 11)</strong>.
+                    <strong className="text-blue-900 font-bold block mb-0.5">Solo Application:</strong>
+                    Your application will be sent directly to {listing.managementCompany}.
                   </div>
                 ) : (
                   <div>
-                    <strong className="text-indigo-900 font-bold block mb-0.5">Group Application Workflow ({roommates.length + 1} Renters):</strong>
-                    Tapping submit locks your individual profile and takes you to the <strong>Step 10 Group Status Dashboard</strong> to track Priya and Sam&apos;s submissions.
+                    <strong className="text-indigo-900 font-bold block mb-0.5">Group Application ({roommates.length + 1} Renters):</strong>
+                    Once you submit, you can track your roommates&apos; status before the final packet is sent to {listing.managementCompany}.
                   </div>
                 )}
               </div>
@@ -158,7 +164,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
               className="mt-0.5 rounded text-blue-600 focus:ring-blue-500 h-4 w-4"
             />
             <span className="leading-snug">
-              I certify that all self-reported information is true and accurate. I authorize {listing.managementCompany} to review my Rental Pass packet for unit {listing.unit}.
+              I certify that this information is accurate and authorize {listing.managementCompany} to review my application.
             </span>
           </label>
 
@@ -169,7 +175,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
               onClick={onBackToProfile}
               className="w-full sm:w-auto text-xs text-gray-600 hover:text-gray-900 font-semibold px-4 py-2.5 rounded-xl hover:bg-gray-100 transition-colors"
             >
-              Review again
+              Edit details
             </button>
 
             <button
@@ -187,7 +193,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
 
       {/* Footer */}
       <div className="max-w-3xl w-full mx-auto text-center text-xs text-gray-500 py-2">
-        <span>Step 9: Individual Application Submission</span>
+        <span>Rental Pass · Secure Submission</span>
       </div>
     </div>
   );

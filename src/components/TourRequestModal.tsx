@@ -60,7 +60,7 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
               <Calendar className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="font-bold text-base leading-tight">Request an In-Person Tour</h3>
+              <h3 className="font-bold text-base leading-tight">Request a Tour</h3>
               <p className="text-xs text-blue-100 mt-0.5">
                 {listing.address}, {listing.unit}
               </p>
@@ -90,7 +90,7 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
                   </div>
                 </div>
                 <span className="bg-blue-600 text-white font-medium px-2.5 py-1 rounded-md text-[11px]">
-                  Confirmed with PM
+                  Requested
                 </span>
               </div>
 
@@ -100,10 +100,10 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
                   <Sparkles className="w-6 h-6 text-amber-600" />
                 </div>
                 <h4 className="text-xl font-extrabold text-gray-900 tracking-tight">
-                  Want to save time later?
+                  Save time later
                 </h4>
                 <p className="text-sm text-gray-600 mt-1.5 max-w-sm mx-auto">
-                  Start your reusable profile now so you can apply in 1 click right after your tour — before another renter claims it.
+                  Set up your profile now so you can apply quickly after your tour.
                 </p>
               </div>
 
@@ -111,15 +111,15 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
               <div className="bg-gray-50 rounded-xl p-3.5 mb-6 border border-gray-200/70 text-xs text-gray-600 space-y-2">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Your info stays private until you submit</span>
+                  <span>Private until you submit</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>No hard credit check required to build your draft</span>
+                  <span>Soft credit check only</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Reusable across any supported rental listing</span>
+                  <span>Reusable across listings</span>
                 </div>
               </div>
 
@@ -157,7 +157,7 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
                 Tour requested!
               </h4>
               <p className="text-sm text-gray-600 max-w-sm mx-auto mb-6">
-                Your in-person tour for <strong className="text-gray-900">{listing.address}, {listing.unit}</strong> has been sent to {listing.managementCompany}. They will confirm shortly at your email.
+                Your request for <strong className="text-gray-900">{listing.address}, {listing.unit}</strong> was sent to {listing.managementCompany}. They will confirm by email.
               </p>
 
               <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 mb-6 text-left text-xs space-y-2">
@@ -171,7 +171,7 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Status</span>
-                  <span className="font-semibold text-blue-600">Awaiting Host Confirmation</span>
+                  <span className="font-semibold text-blue-600">Awaiting confirmation</span>
                 </div>
               </div>
 
@@ -194,7 +194,7 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
                   }}
                   className="w-full py-2 px-3 text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center justify-center gap-1 hover:underline cursor-pointer"
                 >
-                  <span>Changed your mind? Start your profile now</span>
+                  <span>Start rental profile</span>
                   <ChevronRight className="w-3.5 h-3.5" />
                 </button>
               </div>

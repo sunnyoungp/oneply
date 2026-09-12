@@ -98,12 +98,12 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
           className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Submission (Step 9)</span>
+          <span>Back to review</span>
         </button>
 
         <div className="flex items-center gap-1.5 text-xs text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full font-medium">
           <Users className="w-3.5 h-3.5 text-indigo-600" />
-          <span>Rental Pass · Step 10 of 12 (Group View)</span>
+          <span>Rental Pass · Group Status</span>
         </div>
       </div>
 
@@ -115,13 +115,13 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
             <div>
               <div className="inline-flex items-center gap-1.5 bg-indigo-100/80 text-indigo-800 text-xs font-semibold px-3 py-0.5 rounded-full mb-1">
                 <Users className="w-3.5 h-3.5" />
-                <span>Group Coordination Dashboard</span>
+                <span>Group Status</span>
               </div>
               <h1 className="text-xl sm:text-2xl font-black text-gray-900">
-                Group Application Readiness
+                Group application progress
               </h1>
-              <p className="text-xs text-gray-600 mt-0.5">
-                Target: <strong className="text-gray-900">{listing.address}, {listing.unit}</strong> (${listing.rent.toLocaleString()}/mo)
+              <p className="text-xs text-gray-600 mt-1 max-w-lg">
+                Track your roommates&apos; applications. Once all are complete, you can submit the group packet to {listing.managementCompany}.
               </p>
             </div>
 
@@ -133,14 +133,14 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
               title="Click to simulate all roommates finishing without manual input"
             >
               <Zap className="w-3.5 h-3.5 text-amber-600" />
-              <span>Simulate all roommates done</span>
+              <span>Mark all complete</span>
             </button>
           </div>
 
           {/* Group Status Cards */}
           <div className="space-y-4 mb-6">
             <div className="text-xs font-bold text-gray-700 uppercase tracking-wider">
-              Roommate Statuses ({groupState.length} Total applicants)
+              Roommates ({groupState.length})
             </div>
 
             {groupState.map((member) => (
@@ -164,17 +164,17 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
                     {member.status === 'submitted' ? (
                       <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>Submitted ✅</span>
+                        <span>Submitted</span>
                       </span>
                     ) : member.status === 'pending' ? (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
-                        <Clock className="w-3.5 h-3.5 text-amber-600" />
-                        <span>In Progress 🟡</span>
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE]">
+                        <Clock className="w-3.5 h-3.5 text-[#1D4ED8]" />
+                        <span>In progress</span>
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-100 text-rose-800">
-                        <AlertCircle className="w-3.5 h-3.5 text-rose-600" />
-                        <span>Not Started 🔴</span>
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+                        <AlertCircle className="w-3.5 h-3.5 text-gray-500" />
+                        <span>Not started</span>
                       </span>
                     )}
                   </div>
@@ -184,21 +184,21 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
                 {member.cosignerStatus !== 'none' && (
                   <div className="ml-12 p-2.5 bg-white rounded-xl border border-gray-200/80 flex items-center justify-between text-[11px]">
                     <div className="flex items-center gap-1.5 text-gray-700">
-                      <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
                       <span>
-                        Cosigner: <strong>{member.cosignerName || 'Delegated Guarantor'}</strong>
+                        Cosigner: <strong>{member.cosignerName || 'Guarantor'}</strong>
                       </span>
                     </div>
 
                     {member.cosignerStatus === 'confirmed' ? (
                       <span className="font-bold text-emerald-700 flex items-center gap-1">
                         <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                        <span>Cosigner Confirmed ✓</span>
+                        <span>Confirmed</span>
                       </span>
                     ) : (
-                      <span className="font-bold text-amber-700 flex items-center gap-1">
-                        <Clock className="w-3 h-3 text-amber-600" />
-                        <span>Cosigner Pending 🟡</span>
+                      <span className="font-bold text-[#1D4ED8] bg-[#EFF6FF] border border-[#BFDBFE] px-2 py-0.5 rounded-md flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-[#1D4ED8]" />
+                        <span>Pending sign-off</span>
                       </span>
                     )}
                   </div>
@@ -212,25 +212,25 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
             className={`p-4 rounded-2xl border text-xs flex items-center justify-between ${
               allCompleted
                 ? 'bg-emerald-50 border-emerald-300 text-emerald-950'
-                : 'bg-amber-50 border-amber-200 text-amber-950'
+                : 'bg-[#EFF6FF] border-[#BFDBFE] text-blue-950'
             }`}
           >
             <div className="flex items-center gap-2.5">
               {allCompleted ? (
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
               ) : (
-                <Clock className="w-5 h-5 text-amber-600 shrink-0" />
+                <Clock className="w-5 h-5 text-[#1D4ED8] shrink-0" />
               )}
               <div>
                 <span className="font-bold block">
                   {allCompleted
-                    ? 'Group package 100% complete!'
-                    : 'Waiting on group members to complete profiles'}
+                    ? 'Everyone is ready!'
+                    : 'Waiting on roommates'}
                 </span>
-                <span className="text-[11px] opacity-80">
+                <span className="text-[11px] opacity-85">
                   {allCompleted
-                    ? 'All 3 roommates have verified profiles and confirmed cosigners. Ready to submit.'
-                    : 'You can tap "Simulate all roommates done" above for rapid demo presentation.'}
+                    ? 'All roommates have completed their profiles and cosigners.'
+                    : 'All group members must finish before submitting to the landlord.'}
                 </span>
               </div>
             </div>
@@ -241,9 +241,9 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
             <button
               type="button"
               onClick={onBackToSubmit}
-              className="w-full sm:w-auto text-xs text-gray-600 hover:text-gray-900 font-semibold px-4 py-2.5 rounded-xl hover:bg-gray-100 transition-colors"
+              className="w-full sm:w-auto text-xs text-gray-600 hover:text-gray-900 font-semibold px-4 py-2.5 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
             >
-              Back to submission
+              Back to review
             </button>
 
             <button
@@ -251,9 +251,9 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
               type="button"
               disabled={!allCompleted}
               onClick={handleTransmit}
-              className="w-full sm:w-auto px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-600/25 transition-all flex items-center justify-center gap-2 cursor-pointer group"
+              className="w-full sm:w-auto px-8 py-3.5 bg-[#006AFF] hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer group"
             >
-              <span>Transmit complete group package</span>
+              <span>Submit group application</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
           </div>
@@ -262,7 +262,7 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
 
       {/* Footer */}
       <div className="max-w-3xl w-full mx-auto text-center text-xs text-gray-500 py-2">
-        <span>Step 10: Group Status Coordination · Only reachable on multi-roommate applications</span>
+        <span>Rental Pass · Group Application</span>
       </div>
     </div>
   );

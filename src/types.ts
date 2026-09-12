@@ -2,7 +2,6 @@ export type AppStep =
   | 'step-1-listing'
   | 'step-2-tour'
   | 'step-3-message'
-  | 'step-4-handoff'
   | 'step-5-decision'
   | 'step-6-group'
   | 'step-7-profile'
@@ -119,4 +118,5 @@ export interface HistoricalApplication {
   applicants: string[];
   cosignerName?: string;
   matchScore: string;
+  imageUrl?: string;
 }

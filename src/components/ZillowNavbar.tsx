@@ -33,22 +33,6 @@ export const ZillowNavbar: React.FC<ZillowNavbarProps> = ({ onNotify }) => {
 
   return (
     <header className="border-b border-gray-200 bg-white sticky top-0 z-30 shadow-xs">
-      {/* Demo bar notice */}
-      <div className="bg-blue-900 text-blue-100 text-xs py-1.5 px-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="font-semibold bg-blue-700 text-white px-1.5 py-0.5 rounded text-[11px] tracking-wide uppercase">
-            Hackathon Demo
-          </span>
-          <span className="hidden sm:inline text-blue-200">
-            Simulated Zillow listing entry — connected end-to-end into the Rental Pass application flow.
-          </span>
-        </div>
-        <div className="flex items-center gap-1 text-[11px] text-blue-300">
-          <Info className="w-3.5 h-3.5" />
-          <span>Step 1: Mock Zillow Listing</span>
-        </div>
-      </div>
-
       {/* Main Zillow Nav */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Left Nav items */}

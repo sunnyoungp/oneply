@@ -90,7 +90,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
           className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Group Shape (Step 6)</span>
+          <span>Back to roommate setup</span>
         </button>
 
         <div className="flex items-center gap-2">
@@ -112,7 +112,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
 
           <div className="flex items-center gap-1.5 text-xs text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-medium">
             <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-            <span>Rental Pass · Step 7 of 12</span>
+            <span>Rental Pass · Application Profile</span>
           </div>
         </div>
       </div>
@@ -125,13 +125,13 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-blue-600 flex items-center gap-1">
                 <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                Unified Reusable Tenant Profile
+                Rental Profile
               </span>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1">
-                {currentUser}&apos;s Application Profile
+                {currentUser}
               </h1>
               <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                Applying for <strong className="text-gray-900">{listing.address}, {listing.unit}</strong> (${listing.rent.toLocaleString()}/mo)
+                Applying for <strong className="text-gray-900">{listing.address}, {listing.unit}</strong>
               </p>
             </div>
 
@@ -139,8 +139,8 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
               <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-3.5 py-2 rounded-xl text-xs flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                 <div>
-                  <div className="font-bold">Saved Profile Active</div>
-                  <div className="text-[11px] text-emerald-700">Pre-filled with verified credentials</div>
+                  <div className="font-bold">Saved profile loaded</div>
+                  <div className="text-[11px] text-emerald-700">Pre-filled with your saved information</div>
                 </div>
               </div>
             )}
@@ -148,11 +148,11 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
 
           {/* Attention Banner if Saved Profile has flagged fields */}
           {isSavedProfile && (!isEmployerUpdated || !isPaystubUploaded) && (
-            <div className="mt-4 bg-amber-50 border-2 border-amber-300 rounded-xl p-3.5 text-xs text-amber-900 flex items-start gap-3">
+            <div className="mt-4 bg-amber-50 border border-amber-300 rounded-xl p-3.5 text-xs text-amber-900 flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
               <div className="flex-1">
-                <span className="font-bold text-amber-950">Action required on 2 flagged fields:</span>{' '}
-                Please review your current employer and attach a recent pay stub below to keep your reusable profile 100% verified.
+                <span className="font-bold text-amber-950">Update needed:</span>{' '}
+                Please update your employer and attach a recent pay stub.
               </div>
             </div>
           )}
@@ -172,7 +172,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                 </div>
                 <div>
                   <h2 className="text-base font-bold text-gray-900">1. Personal &amp; ID</h2>
-                  <p className="text-[11px] text-gray-500">Legal identity and verified credit check authorization</p>
+                  <p className="text-[11px] text-gray-500">Identity and credit check authorization</p>
                 </div>
               </div>
               <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
@@ -617,7 +617,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
               formData.cosigner?.status === 'confirmed'
                 ? 'bg-emerald-50/50 border-emerald-300 shadow-xs'
                 : formData.cosigner?.status === 'pending'
-                ? 'bg-amber-50/50 border-amber-300 shadow-xs'
+                ? 'bg-[#EFF6FF]/60 border-[#BFDBFE] shadow-xs'
                 : 'bg-white border-gray-200 shadow-xs'
             }`}
           >
@@ -628,7 +628,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                     formData.cosigner?.status === 'confirmed'
                       ? 'bg-emerald-100 text-emerald-700'
                       : formData.cosigner?.status === 'pending'
-                      ? 'bg-amber-100 text-amber-700'
+                      ? 'bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE]'
                       : 'bg-gray-100 text-gray-700'
                   }`}
                 >
@@ -643,10 +643,10 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                   </div>
                   <p className="text-xs text-gray-600 mt-0.5">
                     {formData.cosigner?.status === 'confirmed'
-                      ? `Confirmed: ${formData.cosigner.fullName} (${formData.cosigner.relationship}) — signed legal credit auth`
+                      ? `Confirmed: ${formData.cosigner.fullName} (${formData.cosigner.relationship})`
                       : formData.cosigner?.status === 'pending'
-                      ? `Draft sent to ${formData.cosigner.fullName} (${formData.cosigner.email}) · Awaiting their 1-click confirmation`
-                      : 'Strengthen your application with a delegated cosigner (fill out a draft on their behalf).'}
+                      ? `Awaiting confirmation from ${formData.cosigner.fullName}`
+                      : 'Add a cosigner to strengthen your application.'}
                   </p>
                 </div>
               </div>
@@ -657,7 +657,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-bold text-emerald-800 bg-emerald-100 border border-emerald-300 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      <span>Confirmed ✓</span>
+                      <span>Confirmed</span>
                     </span>
                     <button
                       type="button"
@@ -669,18 +669,18 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                   </div>
                 ) : formData.cosigner?.status === 'pending' ? (
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-amber-800 bg-amber-100 border border-amber-300 px-3 py-1.5 rounded-xl flex items-center gap-1.5 animate-pulse">
-                      <Clock className="w-4 h-4 text-amber-600" />
-                      <span>Pending Link</span>
+                    <span className="text-xs font-bold text-[#1D4ED8] bg-[#EFF6FF] border border-[#BFDBFE] px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+                      <Clock className="w-4 h-4 text-[#1D4ED8]" />
+                      <span>Pending</span>
                     </span>
                     <button
                       type="button"
                       id="btn-preview-cosigner-link"
                       onClick={onOpenCosignerPreview}
-                      className="text-xs font-bold text-blue-700 bg-blue-100 hover:bg-blue-200 border border-blue-300 px-3 py-1.5 rounded-xl flex items-center gap-1 transition-colors cursor-pointer"
+                      className="text-xs font-bold text-[#1D4ED8] bg-[#EFF6FF] hover:bg-blue-100 border border-[#BFDBFE] px-3 py-1.5 rounded-xl flex items-center gap-1 transition-colors cursor-pointer"
                     >
-                      <Eye className="w-3.5 h-3.5" />
-                      <span>Preview cosigner link</span>
+                      <Eye className="w-3.5 h-3.5 text-[#1D4ED8]" />
+                      <span>Preview link</span>
                     </button>
                   </div>
                 ) : (
@@ -703,11 +703,11 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
         <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-xs text-gray-500">
             {formData.cosigner?.status === 'pending' ? (
-              <span className="text-amber-800 font-medium">
-                Note: Cosigner draft is pending confirmation. You can still preview review screen or simulate signoff.
+              <span className="text-[#1D4ED8] bg-[#EFF6FF] px-2.5 py-1 rounded-lg border border-[#BFDBFE] font-medium inline-block">
+                Cosigner invitation is pending confirmation.
               </span>
             ) : (
-              <span>Your profile is complete and ready for application review.</span>
+              <span>Profile complete.</span>
             )}
           </div>
 
@@ -726,7 +726,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
               onClick={onContinueToSubmit}
               className="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer group"
             >
-              <span>Continue to review &amp; submit</span>
+              <span>Review and submit</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
           </div>
@@ -735,7 +735,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
 
       {/* Footer info */}
       <div className="max-w-4xl w-full mx-auto text-center text-xs text-gray-500 py-3 border-t border-gray-200">
-        <span>Step 7: Reusable Profile · Reusable across any participating rental listing</span>
+        <span>Rental Pass · Reusable Profile</span>
       </div>
     </div>
   );

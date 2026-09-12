@@ -74,5 +74,33 @@ export const mockListing: ListingDetails = {
       url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=80',
       caption: 'Building exterior on Centre Ave',
     },
+    {
+      url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1000&q=80',
+      caption: 'Second bedroom or bright home office space',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1000&q=80',
+      caption: 'Panoramic rooftop skydeck with gas grills and lounge',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1000&q=80',
+      caption: 'Fully equipped 24/7 fitness and wellness center',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1000&q=80',
+      caption: 'Secured resident lobby & ButterflyMX intercom entry',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=1000&q=80',
+      caption: 'Guest bathroom with ceramic subway tile finishes',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1626885930974-4b69aa21bbf9?auto=format&fit=crop&w=1000&q=80',
+      caption: 'In-unit stackable washer and dryer closet',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1000&q=80',
+      caption: 'Private corner balcony overlooking Bloomfield',
+    },
   ],
 };

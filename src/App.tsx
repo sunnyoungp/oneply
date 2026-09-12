@@ -3,12 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { ZillowNavbar } from './components/ZillowNavbar';
 import { ListingPage } from './components/ListingPage';
 import { TourRequestModal } from './components/TourRequestModal';
 import { MessageThread } from './components/MessageThread';
-import { HandoffInterstitial } from './components/HandoffInterstitial';
 import { ProfileDecisionStep } from './components/ProfileDecisionStep';
 import { GroupShapeStep } from './components/GroupShapeStep';
 import { ProfileStep } from './components/ProfileStep';
@@ -46,6 +45,8 @@ import {
   Users,
   User,
   ShieldCheck,
+  RotateCcw,
+  Sliders,
 } from 'lucide-react';
 
 export default function App() {
@@ -53,6 +54,7 @@ export default function App() {
   const [useSavedProfile, setUseSavedProfile] = useState<boolean>(true);
   const [applicationType, setApplicationType] = useState<ApplicationType>('solo');
   const [currentUser, setCurrentUser] = useState<string>('Jordan Reed');
+  const [isDebuggerOpen, setIsDebuggerOpen] = useState<boolean>(false);
   const [profileFormData, setProfileFormData] = useState<ProfileFormData>({
     ...mockJordanSavedProfile,
   });
@@ -90,29 +92,42 @@ export default function App() {
     }, 3500);
   };
 
-  // Step 1 -> Step 2: Request a tour clicked
+  // Global scroll restoration on step changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    if (document.documentElement) {
+      document.documentElement.scrollTop = 0;
+    }
+    if (document.body) {
+      document.body.scrollTop = 0;
+    }
+  }, [currentStep]);
+
+  // Tour request clicked
   const handleRequestTour = () => {
     setIsTourModalOpen(true);
-    triggerToast('Opened Step 2: In-Person Tour & Profile Prompt');
+    triggerToast('Opened Tour Request & Profile Prompt');
   };
 
-  // Step 1 -> Step 3: Message landlord clicked
+  // Message landlord clicked
   const handleMessageLandlord = () => {
     setCurrentStep('step-3-message');
-    triggerToast('Opened Step 3: Landlord Message Thread');
+    triggerToast('Opened Landlord Message Thread');
   };
 
-  // Step 1, 2, or 3 -> Step 4 Handoff Transition
+  // Directly to Profile Decision
   const handleApplyNow = () => {
-    setCurrentStep('step-4-handoff');
-    triggerToast('Transitioning to Rental Pass (Step 4 Handoff)');
+    setCurrentStep('step-5-decision');
+    triggerToast('Starting Rental Pass application');
   };
 
   const handleStartProfileFromTour = () => {
-    handleApplyNow();
+    setIsTourModalOpen(false);
+    setCurrentStep('step-5-decision');
+    triggerToast('Starting Rental Pass application from tour request');
   };
 
-  // Step 5 Decision Handlers -> Route to Step 6
+  // Decision Handlers -> Route to Roommates setup
   const handleChooseSavedProfile = () => {
     setUseSavedProfile(true);
     setProfileFormData({ ...mockJordanSavedProfile });
@@ -124,21 +139,21 @@ export default function App() {
     setUseSavedProfile(false);
     setProfileFormData({ ...mockBlankProfile });
     setCurrentStep('step-6-group');
-    triggerToast('Blank application started. Moving to Step 6.');
+    triggerToast('Blank application started. Continuing to roommate setup.');
   };
 
-  // Step 6 Handlers -> Route to Step 7
+  // Handlers -> Route to Profile
   const handleSelectSolo = () => {
     setApplicationType('solo');
     setCurrentStep('step-7-profile');
-    triggerToast('Applying alone. Moving directly to Step 7 Unified Profile.');
+    triggerToast('Applying alone. Continuing to Unified Profile.');
   };
 
   const handleSelectGroup = (updatedRoommates: Roommate[]) => {
     setApplicationType('group');
     setRoommates(updatedRoommates);
     setCurrentStep('step-7-profile');
-    triggerToast(`Group application with ${updatedRoommates.length} roommate(s). Moving to Step 7.`);
+    triggerToast(`Group application with ${updatedRoommates.length} roommate(s). Continuing to Unified Profile.`);
   };
 
   // Switch simulated user in Step 7 for group testing
@@ -194,7 +209,7 @@ export default function App() {
     setApplicationType('solo');
     setCurrentUser('Jordan Reed');
     setProfileFormData({ ...mockJordanSavedProfile });
-    triggerToast('Demo reset to Step 1 (Listing Page).');
+    triggerToast('Demo reset to listing page.');
   };
 
   return (
@@ -225,22 +240,6 @@ export default function App() {
           />
         )}
 
-        {/* STEP 4: Handoff Interstitial */}
-        {currentStep === 'step-4-handoff' && (
-          <HandoffInterstitial
-            listing={mockListing}
-            onContinue={() => {
-              setCurrentStep('step-5-decision');
-              triggerToast('Advanced to Step 5 (Profile Decision)');
-            }}
-            onCancel={() => {
-              setCurrentStep('step-1-listing');
-              triggerToast('Returned to listing page.');
-            }}
-            onNotify={triggerToast}
-          />
-        )}
-
         {/* STEP 5: Saved Profile Decision */}
         {currentStep === 'step-5-decision' && (
           <ProfileDecisionStep
@@ -248,7 +247,7 @@ export default function App() {
             mockSavedDate="August 14, 2026"
             onSelectSavedProfile={handleChooseSavedProfile}
             onSelectNewApplication={handleChooseNewApplication}
-            onBack={() => setCurrentStep('step-4-handoff')}
+            onBack={() => setCurrentStep('step-1-listing')}
             onNotify={triggerToast}
           />
         )}
@@ -377,19 +376,50 @@ export default function App() {
         onNotify={triggerToast}
       />
 
-      {/* Interactive Flow Navigation Control Bar (Audited Zero Dead Ends) */}
-      <div className="bg-white border-t border-gray-200 py-2.5 px-4 shadow-sm sticky bottom-0 z-40">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2.5 text-xs">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              <span>All 12 Steps Connected</span>
-            </span>
+      {/* Phase 4: Collapsible Floating Action Button (FAB) & Flow Debugger Modal */}
+      <div className="fixed bottom-4 left-4 z-40">
+        {!isDebuggerOpen ? (
+          <button
+            id="btn-open-flow-debugger"
+            onClick={() => setIsDebuggerOpen(true)}
+            className="bg-gray-900/95 hover:bg-gray-900 text-white shadow-xl hover:shadow-2xl border border-gray-700/80 px-3.5 py-2 rounded-full flex items-center gap-2.5 text-xs font-semibold cursor-pointer transition-all hover:scale-105 backdrop-blur-md group"
+            title="Open Demo Flow Navigator & State Inspector"
+          >
+            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <Layers className="w-3.5 h-3.5 text-blue-400 group-hover:rotate-12 transition-transform" />
+            <span className="hidden sm:inline font-bold">Screen Navigator</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          </button>
+        ) : (
+          <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-4 sm:p-5 w-[92vw] sm:w-96 text-xs text-gray-800 animate-in fade-in slide-in-from-bottom-3 duration-200">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 mb-3 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 bg-blue-50 text-[#006AFF] rounded-lg">
+                  <Sliders className="w-4 h-4 text-[#006AFF]" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-900 text-sm">Flow Navigator</h4>
+                  <p className="text-[11px] text-gray-500">Zero dead ends state manager</p>
+                </div>
+              </div>
+              <button
+                id="btn-close-flow-debugger"
+                onClick={() => setIsDebuggerOpen(false)}
+                className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
+                title="Collapse Navigator"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
 
-            {/* Step jump selector for demo flexibility */}
-            <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-lg">
-              <span className="text-gray-500 font-medium">Jump to step:</span>
+            {/* Jump To Screen */}
+            <div className="space-y-1.5 mb-3.5">
+              <label className="text-[11px] font-bold uppercase tracking-wider text-gray-400 block">
+                Jump to Screen:
+              </label>
               <select
+                id="select-jump-step"
                 value={currentStep}
                 onChange={(e) => {
                   const target = e.target.value as AppStep;
@@ -411,39 +441,115 @@ export default function App() {
                   setCurrentStep(target);
                   triggerToast(`Navigated to ${target}`);
                 }}
-                className="bg-transparent font-bold text-gray-900 cursor-pointer focus:outline-none"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-bold text-gray-900 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="step-1-listing">Step 1: Listing Page</option>
-                <option value="step-3-message">Step 3: Landlord Chat</option>
-                <option value="step-4-handoff">Step 4: Handoff Interstitial</option>
-                <option value="step-5-decision">Step 5: Saved Profile Decision</option>
-                <option value="step-6-group">Step 6: Who is Applying?</option>
-                <option value="step-7-profile">Step 7: Reusable Profile</option>
-                <option value="step-8-cosigner-preview">Step 8: Cosigner Link Preview</option>
-                <option value="step-9-submit">Step 9: Individual Submission</option>
-                <option value="step-10-group-status">Step 10: Group Status View</option>
-                <option value="step-11-confirmation">Step 11: Confirmation</option>
-                <option value="step-12-history">Step 12: Application History</option>
+                <option value="step-1-listing">Listing</option>
+                <option value="step-3-message">Landlord Chat</option>
+                <option value="step-5-decision">Profile Selection</option>
+                <option value="step-6-group">Application Type</option>
+                <option value="step-7-profile">Rental Profile</option>
+                <option value="step-8-cosigner-preview">Cosigner Review</option>
+                <option value="step-9-submit">Review &amp; Submit</option>
+                <option value="step-10-group-status">Group Status</option>
+                <option value="step-11-confirmation">Confirmation</option>
+                <option value="step-12-history">Application History</option>
               </select>
             </div>
-          </div>
 
-          <div className="flex items-center gap-3 text-gray-500 text-[11px]">
-            <span>Active Path: <strong className="text-gray-800">{applicationType === 'solo' ? 'Solo (Skips Step 10)' : 'Group (Activates Step 10)'}</strong></span>
-            <span>·</span>
-            <span>Profile: <strong className="text-gray-800">{useSavedProfile ? 'Saved (Pre-filled)' : 'New (Blank)'}</strong></span>
+            {/* State Inspector / Switchers */}
+            <div className="bg-gray-50 rounded-xl p-3 border border-gray-100 space-y-2 mb-3.5">
+              <div className="flex items-center justify-between text-[11px]">
+                <span className="text-gray-500 font-medium">Application Path:</span>
+                <div className="flex gap-1">
+                  <button
+                    onClick={() => {
+                      setApplicationType('solo');
+                      triggerToast('Switched path to: Solo');
+                    }}
+                    className={`px-2 py-0.5 rounded font-bold transition-colors cursor-pointer ${
+                      applicationType === 'solo' ? 'bg-[#006AFF] text-white' : 'bg-gray-200 text-gray-700'
+                    }`}
+                  >
+                    Solo
+                  </button>
+                  <button
+                    onClick={() => {
+                      setApplicationType('group');
+                      triggerToast('Switched path to: Group (Enables Group Dashboard)');
+                    }}
+                    className={`px-2 py-0.5 rounded font-bold transition-colors cursor-pointer ${
+                      applicationType === 'group' ? 'bg-[#006AFF] text-white' : 'bg-gray-200 text-gray-700'
+                    }`}
+                  >
+                    Group
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-[11px]">
+                <span className="text-gray-500 font-medium">Profile Data:</span>
+                <div className="flex gap-1">
+                  <button
+                    onClick={() => {
+                      setUseSavedProfile(true);
+                      setProfileFormData({ ...mockJordanSavedProfile });
+                      triggerToast('Switched to pre-filled Jordan Reed saved profile');
+                    }}
+                    className={`px-2 py-0.5 rounded font-bold transition-colors cursor-pointer ${
+                      useSavedProfile ? 'bg-emerald-600 text-white' : 'bg-gray-200 text-gray-700'
+                    }`}
+                  >
+                    Saved
+                  </button>
+                  <button
+                    onClick={() => {
+                      setUseSavedProfile(false);
+                      setProfileFormData({ ...mockBlankProfile });
+                      triggerToast('Switched to blank application template');
+                    }}
+                    className={`px-2 py-0.5 rounded font-bold transition-colors cursor-pointer ${
+                      !useSavedProfile ? 'bg-emerald-600 text-white' : 'bg-gray-200 text-gray-700'
+                    }`}
+                  >
+                    Blank
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Actions Footer */}
+            <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+              <button
+                id="btn-reset-demo"
+                onClick={() => {
+                  handleResetDemo();
+                  setIsDebuggerOpen(false);
+                }}
+                className="text-xs font-bold text-rose-600 hover:text-rose-800 flex items-center gap-1 cursor-pointer"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Reset Demo</span>
+              </button>
+
+              <button
+                onClick={() => setIsDebuggerOpen(false)}
+                className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs font-bold text-gray-700 transition-colors cursor-pointer"
+              >
+                Collapse
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-14 right-6 z-50 bg-gray-900 text-white text-xs px-4 py-3 rounded-xl shadow-xl border border-gray-700 flex items-center gap-2 animate-in slide-in-from-bottom-2 duration-200">
+        <div className="fixed bottom-4 right-4 sm:right-6 z-50 bg-gray-900 text-white text-xs px-4 py-3 rounded-xl shadow-xl border border-gray-700 flex items-center gap-2 animate-in slide-in-from-bottom-2 duration-200">
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
           <button
             onClick={() => setToastMessage(null)}
-            className="ml-2 text-gray-400 hover:text-white p-0.5"
+            className="ml-2 text-gray-400 hover:text-white p-0.5 cursor-pointer"
           >
             <X className="w-3.5 h-3.5" />
           </button>
