@@ -211,7 +211,7 @@ export const GroupStatusDashboard: React.FC<GroupStatusDashboardProps> = ({
             className={`p-4 rounded-2xl border text-xs flex items-center justify-between ${
               allCompleted
                 ? 'bg-emerald-50 border-emerald-300 text-emerald-950'
-                : 'bg-[#EFF6FF] border-[#BFDBFE] text-blue-950'
+                : 'bg-[#EFF6FF] border-[#BFDBFE] text-[#1D4ED8]'
             }`}
           >
             <div className="flex items-center gap-2.5">

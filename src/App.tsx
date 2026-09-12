@@ -424,7 +424,7 @@ export default function App() {
             {/* Header */}
             <div className="flex items-center justify-between pb-3 mb-3 border-b border-gray-100">
               <div className="flex items-center gap-2">
-                <div className="p-1.5 bg-blue-50 text-[#006AFF] rounded-lg">
+                <div className="p-1.5 bg-[#EFF6FF] text-[#006AFF] rounded-lg">
                   <Sliders className="w-4 h-4 text-[#006AFF]" />
                 </div>
                 <div>
