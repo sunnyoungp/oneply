@@ -105,7 +105,7 @@ export const ApplicationHistoryScreen: React.FC<ApplicationHistoryScreenProps> =
           className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to listing</span>
+          <span>Back</span>
         </button>
 
         <div className="flex items-center gap-2">
@@ -113,7 +113,7 @@ export const ApplicationHistoryScreen: React.FC<ApplicationHistoryScreenProps> =
             onClick={onResetDemo}
             className="text-xs font-semibold text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
           >
-            Reset demo
+            Reset
           </button>
           <div className="flex items-center gap-1.5 text-xs text-blue-800 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-medium">
             <FileText className="w-3.5 h-3.5 text-blue-600" />
@@ -171,7 +171,7 @@ export const ApplicationHistoryScreen: React.FC<ApplicationHistoryScreenProps> =
                       {app.managementCompany} — {app.propertyAddress} {app.unit}
                     </h3>
                     <span
-                      className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
+                      className={`text-[11px] font-bold px-3 py-1 rounded-full ${
                         app.status === 'Approved' || app.status === 'Lease Offered'
                           ? 'bg-emerald-100 text-emerald-800'
                           : app.status === 'Under Review'
@@ -201,7 +201,7 @@ export const ApplicationHistoryScreen: React.FC<ApplicationHistoryScreenProps> =
 
               <div className="flex items-center gap-2 shrink-0">
                 <span className="text-xs font-semibold text-blue-600 group-hover:translate-x-0.5 transition-transform hidden sm:inline">
-                  View record
+                  View
                 </span>
                 <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all" />
               </div>
@@ -229,7 +229,7 @@ export const ApplicationHistoryScreen: React.FC<ApplicationHistoryScreenProps> =
             onClick={onReturnToListing}
             className="shrink-0 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
           >
-            Explore more listings
+            Explore listings
           </button>
         </div>
       </div>
@@ -297,9 +297,9 @@ export const ApplicationHistoryScreen: React.FC<ApplicationHistoryScreenProps> =
               <button
                 type="button"
                 onClick={() => setSelectedApp(null)}
-                className="px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-xs font-bold rounded-xl"
+                className="px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-xs font-bold rounded-xl cursor-pointer"
               >
-                Close Record
+                Close
               </button>
             </div>
           </div>

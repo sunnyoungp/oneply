@@ -64,7 +64,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
           className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to profile</span>
+          <span>Back</span>
         </button>
 
         <div className="flex items-center gap-1.5 text-xs text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-medium">
@@ -100,7 +100,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
                   <User className="w-4 h-4 text-blue-600" />
                   <span>Applicant: {formData.fullName}</span>
                 </span>
-                <span className="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded text-[11px]">
+                <span className="text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-lg text-xs font-semibold">
                   Complete
                 </span>
               </div>
@@ -123,8 +123,8 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
                   <span
                     className={
                       formData.cosigner.status === 'confirmed'
-                        ? 'text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded text-[11px] font-semibold'
-                        : 'text-[#1D4ED8] bg-[#EFF6FF] border border-[#BFDBFE] px-2 py-0.5 rounded text-[11px] font-semibold'
+                        ? 'text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-lg text-xs font-semibold'
+                        : 'text-[#1D4ED8] bg-[#EFF6FF] border border-[#BFDBFE] px-2.5 py-1 rounded-lg text-xs font-semibold'
                     }
                   >
                     {formData.cosigner.status === 'confirmed' ? 'Confirmed ✓' : 'Pending'}
@@ -175,7 +175,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
               onClick={onBackToProfile}
               className="w-full sm:w-auto text-xs text-gray-600 hover:text-gray-900 font-semibold px-4 py-2.5 rounded-xl hover:bg-gray-100 transition-colors"
             >
-              Edit details
+              Back
             </button>
 
             <button
@@ -184,7 +184,7 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
               onClick={handleSubmit}
               className="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer group"
             >
-              <span>Submit application</span>
+              <span>Submit</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
           </div>

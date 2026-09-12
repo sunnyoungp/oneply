@@ -11,6 +11,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { ListingDetails } from '../types';
+import { Button } from './ui/Button';
 
 interface TourRequestModalProps {
   listing: ListingDetails;
@@ -96,8 +97,8 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
 
               {/* Core Step 2 Requirement: Low-commitment prompt */}
               <div className="text-center py-2 mb-6">
-                <div className="w-12 h-12 bg-amber-100 rounded-2xl mx-auto flex items-center justify-center mb-3">
-                  <Sparkles className="w-6 h-6 text-amber-600" />
+                <div className="w-12 h-12 bg-blue-100 rounded-2xl mx-auto flex items-center justify-center mb-3">
+                  <ShieldCheck className="w-6 h-6 text-blue-600" />
                 </div>
                 <h4 className="text-xl font-extrabold text-gray-900 tracking-tight">
                   Save time later
@@ -125,25 +126,29 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
 
               {/* Actions: "Start profile" vs "Not now" */}
               <div className="space-y-2.5">
-                <button
+                <Button
                   id="btn-tour-start-profile"
+                  variant="primary"
+                  size="md"
+                  fullWidth
+                  rightIcon={<ArrowRight className="w-4 h-4" />}
                   onClick={() => {
                     handleResetAndClose();
                     onStartProfile();
                   }}
-                  className="w-full py-3.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer group"
                 >
-                  <span>Start profile</span>
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </button>
+                  Start profile
+                </Button>
 
-                <button
+                <Button
                   id="btn-tour-not-now"
+                  variant="secondary"
+                  size="md"
+                  fullWidth
                   onClick={handleNotNow}
-                  className="w-full py-3 px-4 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 active:bg-gray-200 font-semibold text-sm transition-colors cursor-pointer"
                 >
                   Not now
-                </button>
+                </Button>
               </div>
             </div>
           ) : (
@@ -177,26 +182,30 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
 
               {/* No dead ends: Button back to the listing (Step 1) */}
               <div className="space-y-2">
-                <button
+                <Button
                   id="btn-return-to-listing-from-tour"
+                  variant="primary"
+                  size="md"
+                  fullWidth
                   onClick={handleResetAndClose}
-                  className="w-full py-3 px-4 rounded-xl bg-gray-900 hover:bg-gray-800 text-white font-semibold text-sm transition-colors cursor-pointer"
                 >
-                  Back to listing
-                </button>
+                  Back
+                </Button>
 
-                {/* Also connected to Step 4 if renter changes their mind */}
-                <button
+                {/* Also connected to setup modal if renter changes their mind */}
+                <Button
                   id="btn-changed-mind-start-profile"
+                  variant="ghost"
+                  size="sm"
+                  fullWidth
+                  rightIcon={<ChevronRight className="w-3.5 h-3.5" />}
                   onClick={() => {
                     handleResetAndClose();
                     onStartProfile();
                   }}
-                  className="w-full py-2 px-3 text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center justify-center gap-1 hover:underline cursor-pointer"
                 >
-                  <span>Start rental profile</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
+                  Start profile
+                </Button>
               </div>
             </div>
           )}

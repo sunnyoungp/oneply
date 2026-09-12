@@ -16,6 +16,7 @@ import {
   Info,
 } from 'lucide-react';
 import { CosignerData, ListingDetails } from '../types';
+import { Button } from './ui/Button';
 
 interface CosignerDraftModalProps {
   listing: ListingDetails;
@@ -203,7 +204,7 @@ export const CosignerDraftModal: React.FC<CosignerDraftModalProps> = ({
               className="px-2.5 py-1 bg-white border border-gray-300 hover:bg-gray-100 rounded-lg text-xs font-semibold text-gray-700 flex items-center gap-1 transition-colors"
             >
               {hasDocs ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> : <Upload className="w-3.5 h-3.5" />}
-              <span>{hasDocs ? 'W2_Attached.pdf' : 'Attach doc'}</span>
+              <span>{hasDocs ? 'Attached' : 'Attach doc'}</span>
             </button>
           </div>
 
@@ -217,22 +218,24 @@ export const CosignerDraftModal: React.FC<CosignerDraftModalProps> = ({
 
           {/* Modal Action Buttons */}
           <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-200">
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="md"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl border border-gray-300 text-xs font-semibold text-gray-700 hover:bg-gray-100 transition-colors"
             >
               Cancel
-            </button>
+            </Button>
 
-            <button
+            <Button
               id="btn-send-to-cosigner"
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all flex items-center gap-2 cursor-pointer"
+              variant="primary"
+              size="md"
+              leftIcon={<Send className="w-3.5 h-3.5" />}
             >
-              <Send className="w-3.5 h-3.5" />
-              <span>Send to {fullName.split(' ')[0] || 'Cosigner'}</span>
-            </button>
+              Send
+            </Button>
           </div>
         </form>
       </div>

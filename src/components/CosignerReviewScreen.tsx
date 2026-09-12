@@ -71,7 +71,7 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
           className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer shadow-xs"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to profile</span>
+          <span>Back</span>
         </button>
 
         <div className="flex items-center gap-2 bg-[#EFF6FF] border border-[#BFDBFE] text-[#1D4ED8] px-3.5 py-1.5 rounded-full text-xs font-semibold shadow-xs">
@@ -112,7 +112,7 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
                 className="text-xs text-[#006AFF] hover:text-blue-700 flex items-center gap-1 font-semibold cursor-pointer"
               >
                 <Edit2 className="w-3.5 h-3.5" />
-                <span>{isEditing ? 'Save changes' : 'Edit info'}</span>
+                <span>{isEditing ? 'Save' : 'Edit'}</span>
               </button>
             </div>
 
@@ -267,7 +267,7 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
               onClick={handleFinalConfirm}
               className="w-full sm:w-auto px-8 py-3.5 bg-[#006AFF] hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer group"
             >
-              <span>Sign and submit</span>
+              <span>Submit</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
           </div>

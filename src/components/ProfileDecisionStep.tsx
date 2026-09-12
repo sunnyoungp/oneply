@@ -61,7 +61,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
           className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to listing</span>
+          <span>Back</span>
         </button>
 
         <div className="flex items-center gap-1.5 text-xs text-[#1D4ED8] bg-[#EFF6FF] border border-[#BFDBFE] px-3 py-1 rounded-full font-bold">
@@ -138,7 +138,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                     <span>8 of 10 sections complete</span>
                   </span>
-                  <span className="text-[11px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-semibold">Fast track</span>
+                  <span className="text-[11px] bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-md font-bold">Fast track</span>
                 </div>
 
                 <div className="flex items-center gap-1.5 text-[#1D4ED8] text-[11px] font-medium">
@@ -225,7 +225,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
             onClick={handleContinue}
             className="w-full sm:w-auto min-w-[280px] py-3.5 px-8 rounded-xl bg-[#006AFF] hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer group"
           >
-            <span>Continue with {selectedChoice === 'saved' ? 'Saved Profile' : 'New Application'}</span>
+            <span>Continue</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </button>
         </div>

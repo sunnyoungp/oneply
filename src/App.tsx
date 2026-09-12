@@ -17,6 +17,8 @@ import { SubmissionStep } from './components/SubmissionStep';
 import { GroupStatusDashboard } from './components/GroupStatusDashboard';
 import { SubmissionConfirmation } from './components/SubmissionConfirmation';
 import { ApplicationHistoryScreen } from './components/ApplicationHistoryScreen';
+import { ApplicationSetupModal } from './components/ApplicationSetupModal';
+import { Button } from './components/ui/Button';
 import { mockListing } from './mockData';
 import {
   mockJordanSavedProfile,
@@ -83,6 +85,8 @@ export default function App() {
   ]);
 
   const [isTourModalOpen, setIsTourModalOpen] = useState(false);
+  const [isApplicationSetupModalOpen, setIsApplicationSetupModalOpen] = useState(false);
+  const [setupModalInitialStep, setSetupModalInitialStep] = useState<1 | 2>(1);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const triggerToast = (msg: string) => {
@@ -115,31 +119,48 @@ export default function App() {
     triggerToast('Opened Landlord Message Thread');
   };
 
-  // Directly to Profile Decision
+  // Flow Step 1: Living Arrangements -> Step 2: Profile Selection inside modal over listing background
   const handleApplyNow = () => {
-    setCurrentStep('step-5-decision');
-    triggerToast('Starting Rental Pass application');
+    setCurrentStep('step-1-listing');
+    setSetupModalInitialStep(1);
+    setIsApplicationSetupModalOpen(true);
+    triggerToast('Starting application setup: living arrangements');
   };
 
   const handleStartProfileFromTour = () => {
     setIsTourModalOpen(false);
-    setCurrentStep('step-5-decision');
-    triggerToast('Starting Rental Pass application from tour request');
+    setCurrentStep('step-1-listing');
+    setSetupModalInitialStep(1);
+    setIsApplicationSetupModalOpen(true);
+    triggerToast('Starting application setup: living arrangements');
   };
 
-  // Decision Handlers -> Route to Roommates setup
+  // When completing step 2 in setup modal -> transition to full-page profile form
+  const handleCompleteSetup = () => {
+    setIsApplicationSetupModalOpen(false);
+    setCurrentStep('step-7-profile');
+    if (useSavedProfile) {
+      setProfileFormData({ ...mockJordanSavedProfile });
+      triggerToast('Saved profile loaded. Continuing to rental application.');
+    } else {
+      setProfileFormData({ ...mockBlankProfile });
+      triggerToast('Blank application started. Continuing to rental application.');
+    }
+  };
+
+  // Legacy/fallback Decision Handlers
   const handleChooseSavedProfile = () => {
     setUseSavedProfile(true);
     setProfileFormData({ ...mockJordanSavedProfile });
-    setCurrentStep('step-6-group');
+    setCurrentStep('step-7-profile');
     triggerToast('Saved profile loaded (with 2 flagged fields for verification).');
   };
 
   const handleChooseNewApplication = () => {
     setUseSavedProfile(false);
     setProfileFormData({ ...mockBlankProfile });
-    setCurrentStep('step-6-group');
-    triggerToast('Blank application started. Continuing to roommate setup.');
+    setCurrentStep('step-7-profile');
+    triggerToast('Blank application started.');
   };
 
   // Handlers -> Route to Profile
@@ -219,8 +240,8 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1">
-        {/* STEP 1: Listing Page */}
-        {currentStep === 'step-1-listing' && (
+        {/* STEP 1: Listing Page (and background for Application Setup Modal) */}
+        {(currentStep === 'step-1-listing' || currentStep === 'step-5-decision' || currentStep === 'step-6-group') && (
           <ListingPage
             listing={mockListing}
             onRequestTour={handleRequestTour}
@@ -240,30 +261,6 @@ export default function App() {
           />
         )}
 
-        {/* STEP 5: Saved Profile Decision */}
-        {currentStep === 'step-5-decision' && (
-          <ProfileDecisionStep
-            listing={mockListing}
-            mockSavedDate="August 14, 2026"
-            onSelectSavedProfile={handleChooseSavedProfile}
-            onSelectNewApplication={handleChooseNewApplication}
-            onBack={() => setCurrentStep('step-1-listing')}
-            onNotify={triggerToast}
-          />
-        )}
-
-        {/* STEP 6: Who is Applying (Solo vs Roommates) */}
-        {currentStep === 'step-6-group' && (
-          <GroupShapeStep
-            listing={mockListing}
-            initialRoommates={roommates}
-            onSelectSolo={handleSelectSolo}
-            onSelectGroup={handleSelectGroup}
-            onBack={() => setCurrentStep('step-5-decision')}
-            onNotify={triggerToast}
-          />
-        )}
-
         {/* STEP 7: Full Reusable Profile */}
         {currentStep === 'step-7-profile' && (
           <ProfileStep
@@ -278,7 +275,11 @@ export default function App() {
             onOpenCosignerDraft={() => setIsCosignerDraftOpen(true)}
             onOpenCosignerPreview={() => setCurrentStep('step-8-cosigner-preview')}
             onContinueToSubmit={() => setCurrentStep('step-9-submit')}
-            onBack={() => setCurrentStep('step-6-group')}
+            onBack={() => {
+              setCurrentStep('step-1-listing');
+              setSetupModalInitialStep(2);
+              setIsApplicationSetupModalOpen(true);
+            }}
             onNotify={triggerToast}
           />
         )}
@@ -365,6 +366,24 @@ export default function App() {
         onNotify={triggerToast}
       />
 
+      {/* Step 1 & Step 2 Application Setup Flow (Living Arrangements -> Profile Selection Modal) */}
+      <ApplicationSetupModal
+        isOpen={isApplicationSetupModalOpen}
+        onClose={() => setIsApplicationSetupModalOpen(false)}
+        listing={mockListing}
+        initialStep={setupModalInitialStep}
+        applicationType={applicationType}
+        onUpdateApplicationType={setApplicationType}
+        roommates={roommates}
+        onUpdateRoommates={setRoommates}
+        useSavedProfile={useSavedProfile}
+        onUpdateUseSavedProfile={setUseSavedProfile}
+        savedProfileData={mockJordanSavedProfile}
+        mockSavedDate="August 14, 2026"
+        onCompleteSetup={handleCompleteSetup}
+        onNotify={triggerToast}
+      />
+
       {/* Step 8: Cosigner Draft Modal */}
       <CosignerDraftModal
         listing={mockListing}
@@ -377,7 +396,7 @@ export default function App() {
       />
 
       {/* Phase 4: Collapsible Floating Action Button (FAB) & Flow Debugger Modal */}
-      <div className="fixed bottom-4 left-4 z-40">
+      <div className={`fixed ${currentStep === 'step-1-listing' ? 'bottom-20 lg:bottom-4' : 'bottom-4'} left-4 z-40`}>
         {!isDebuggerOpen ? (
           <button
             id="btn-open-flow-debugger"
@@ -387,7 +406,7 @@ export default function App() {
           >
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <Layers className="w-3.5 h-3.5 text-blue-400 group-hover:rotate-12 transition-transform" />
-            <span className="hidden sm:inline font-bold">Screen Navigator</span>
+            <span className="hidden sm:inline font-bold">Navigator</span>
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           </button>
         ) : (
@@ -423,6 +442,20 @@ export default function App() {
                 value={currentStep}
                 onChange={(e) => {
                   const target = e.target.value as AppStep;
+                  if (target === 'step-6-group') {
+                    setCurrentStep('step-1-listing');
+                    setSetupModalInitialStep(1);
+                    setIsApplicationSetupModalOpen(true);
+                    triggerToast('Opened Setup Modal: Step 1 (Living Arrangements)');
+                    return;
+                  }
+                  if (target === 'step-5-decision') {
+                    setCurrentStep('step-1-listing');
+                    setSetupModalInitialStep(2);
+                    setIsApplicationSetupModalOpen(true);
+                    triggerToast('Opened Setup Modal: Step 2 (Profile Selection)');
+                    return;
+                  }
                   if (target === 'step-8-cosigner-preview' && !profileFormData.cosigner) {
                     setProfileFormData((prev) => ({
                       ...prev,
@@ -443,16 +476,16 @@ export default function App() {
                 }}
                 className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-bold text-gray-900 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="step-1-listing">Listing</option>
-                <option value="step-3-message">Landlord Chat</option>
-                <option value="step-5-decision">Profile Selection</option>
-                <option value="step-6-group">Application Type</option>
-                <option value="step-7-profile">Rental Profile</option>
+                <option value="step-1-listing">Listing Page</option>
+                <option value="step-6-group">Setup Modal: Step 1 (Roommates)</option>
+                <option value="step-5-decision">Setup Modal: Step 2 (Profile Source)</option>
+                <option value="step-7-profile">Rental Profile (Full Form)</option>
                 <option value="step-8-cosigner-preview">Cosigner Review</option>
                 <option value="step-9-submit">Review &amp; Submit</option>
-                <option value="step-10-group-status">Group Status</option>
-                <option value="step-11-confirmation">Confirmation</option>
+                <option value="step-10-group-status">Group Status Dashboard</option>
+                <option value="step-11-confirmation">Submission Confirmation</option>
                 <option value="step-12-history">Application History</option>
+                <option value="step-3-message">Landlord Chat</option>
               </select>
             </div>
 
@@ -528,7 +561,7 @@ export default function App() {
                 className="text-xs font-bold text-rose-600 hover:text-rose-800 flex items-center gap-1 cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Reset Demo</span>
+                <span>Reset</span>
               </button>
 
               <button

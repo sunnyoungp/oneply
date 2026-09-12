@@ -45,12 +45,12 @@ export const ZillowNavbar: React.FC<ZillowNavbarProps> = ({ onNotify, onOpenGrou
           {/* Landlord Portal (Rental Manager) */}
           <button
             id="btn-landlord-portal"
-            onClick={() => onNotify('Landlord Portal (Rental Manager) simulated')}
+            onClick={() => onNotify('Rental Manager simulated')}
             className="hidden md:flex items-center gap-2 border border-gray-300 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-gray-800 bg-white hover:bg-gray-50 transition-colors cursor-pointer shadow-2xs"
           >
             <Building2 className="w-4 h-4 text-gray-600" />
-            <span>Landlord Portal (Rental Manager)</span>
-            <span className="bg-[#006AFF] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider">
+            <span>Rental Manager</span>
+            <span className="bg-[#006AFF] text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
               NEW
             </span>
           </button>

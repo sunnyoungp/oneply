@@ -21,6 +21,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { ListingDetails, ProfileFormData, ApplicationType, Roommate, CosignerData } from '../types';
+import { Button } from './ui/Button';
 
 interface ProfileStepProps {
   listing: ListingDetails;
@@ -83,36 +84,39 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between p-3 sm:p-8 font-sans">
       {/* Top sticky navigation bar (Zero dead ends) */}
-      <div className="max-w-4xl w-full mx-auto flex items-center justify-between pb-4 border-b border-gray-200">
-        <button
-          id="btn-back-to-step-6"
-          onClick={onBack}
-          className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to roommate setup</span>
-        </button>
+      <div className="sticky top-0 z-30 bg-slate-50/95 backdrop-blur-md pb-4 pt-2 border-b border-gray-200 -mx-3 sm:-mx-8 px-3 sm:px-8 shadow-2xs">
+        <div className="max-w-4xl w-full mx-auto flex items-center justify-between">
+          <Button
+            id="btn-back-to-step-6"
+            variant="secondary"
+            size="sm"
+            leftIcon={<ArrowLeft className="w-4 h-4" />}
+            onClick={onBack}
+          >
+            Back
+          </Button>
 
-        <div className="flex items-center gap-2">
-          {applicationType === 'group' && (
-            <div className="flex items-center gap-1.5 bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs px-2.5 py-1 rounded-full font-medium">
-              <Users className="w-3.5 h-3.5 text-indigo-600" />
-              <span className="hidden sm:inline">Roommate Session:</span>
-              <select
-                value={currentUser}
-                onChange={(e) => onSwitchUser(e.target.value)}
-                className="bg-transparent font-bold cursor-pointer focus:outline-none"
-              >
-                <option value="Jordan Reed">Jordan Reed (You)</option>
-                <option value="Priya Sharma">Priya Sharma</option>
-                <option value="Sam Chen">Sam Chen</option>
-              </select>
+          <div className="flex items-center gap-2">
+            {applicationType === 'group' && (
+              <div className="flex items-center gap-1.5 bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs px-2.5 py-1 rounded-full font-medium">
+                <Users className="w-3.5 h-3.5 text-indigo-600" />
+                <span className="hidden sm:inline">Roommate Session:</span>
+                <select
+                  value={currentUser}
+                  onChange={(e) => onSwitchUser(e.target.value)}
+                  className="bg-transparent font-bold cursor-pointer focus:outline-none"
+                >
+                  <option value="Jordan Reed">Jordan Reed (You)</option>
+                  <option value="Priya Sharma">Priya Sharma</option>
+                  <option value="Sam Chen">Sam Chen</option>
+                </select>
+              </div>
+            )}
+
+            <div className="flex items-center gap-1.5 text-xs text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-medium">
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+              <span>Rental Pass · Application Profile</span>
             </div>
-          )}
-
-          <div className="flex items-center gap-1.5 text-xs text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-medium">
-            <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-            <span>Rental Pass · Application Profile</span>
           </div>
         </div>
       </div>
@@ -124,7 +128,6 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-blue-600 flex items-center gap-1">
-                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                 Rental Profile
               </span>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1">
@@ -175,7 +178,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                   <p className="text-[11px] text-gray-500">Identity and credit check authorization</p>
                 </div>
               </div>
-              <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+              <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
                 Verified ✓
               </span>
             </div>
@@ -231,7 +234,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                   TransUnion &amp; Experian Soft Credit-Check Authorization
                 </span>
               </div>
-              <span className="font-bold text-emerald-700 flex items-center gap-1 bg-emerald-100/80 px-2 py-0.5 rounded">
+              <span className="font-bold text-xs text-emerald-700 flex items-center gap-1 bg-emerald-100/80 px-2.5 py-1 rounded-lg">
                 <Check className="w-3.5 h-3.5" />
                 <span>Signed ✓</span>
               </span>
@@ -252,7 +255,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
               </div>
 
               {isSavedProfile && !isEmployerUpdated && (
-                <span className="text-[11px] font-bold text-amber-800 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                <span className="text-[11px] font-bold text-amber-800 bg-amber-100 border border-amber-300 px-2.5 py-1 rounded-full flex items-center gap-1.5 animate-pulse">
                   <AlertCircle className="w-3 h-3" />
                   <span>Update Flagged</span>
                 </span>
@@ -314,14 +317,15 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                     <span>Sept_2026_Paystub.pdf Attached</span>
                   </span>
                 ) : (
-                  <button
+                  <Button
                     type="button"
+                    variant="primary"
+                    size="sm"
+                    leftIcon={<Upload className="w-3.5 h-3.5" />}
                     onClick={handleSimulateDocUpload}
-                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
                   >
-                    <Upload className="w-3.5 h-3.5" />
-                    <span>Attach recent paystub</span>
-                  </button>
+                    Attach paystub
+                  </Button>
                 )}
               </div>
             </div>
@@ -466,7 +470,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                   <p className="text-[11px] text-gray-500">Standard self-reported yes/no rows</p>
                 </div>
               </div>
-              <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+              <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
                 Self-Reported ✓
               </span>
             </div>
@@ -637,7 +641,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                 <div>
                   <div className="flex items-center gap-2">
                     <h2 className="text-base font-bold text-gray-900">7. Cosigner / Guarantor</h2>
-                    <span className="text-[11px] bg-gray-100 text-gray-600 px-2 py-0.2 rounded font-medium">
+                    <span className="text-[11px] bg-gray-100 text-gray-600 px-2.5 py-0.5 rounded-full font-medium">
                       Optional
                     </span>
                   </div>
@@ -664,7 +668,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                       onClick={onOpenCosignerDraft}
                       className="text-xs text-gray-600 hover:text-gray-900 font-semibold underline p-1"
                     >
-                      Edit draft
+                      Edit
                     </button>
                   </div>
                 ) : formData.cosigner?.status === 'pending' ? (
@@ -673,26 +677,28 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
                       <Clock className="w-4 h-4 text-[#1D4ED8]" />
                       <span>Pending</span>
                     </span>
-                    <button
+                    <Button
                       type="button"
                       id="btn-preview-cosigner-link"
+                      variant="outline"
+                      size="sm"
+                      leftIcon={<Eye className="w-3.5 h-3.5 text-[#1D4ED8]" />}
                       onClick={onOpenCosignerPreview}
-                      className="text-xs font-bold text-[#1D4ED8] bg-[#EFF6FF] hover:bg-blue-100 border border-[#BFDBFE] px-3 py-1.5 rounded-xl flex items-center gap-1 transition-colors cursor-pointer"
                     >
-                      <Eye className="w-3.5 h-3.5 text-[#1D4ED8]" />
-                      <span>Preview link</span>
-                    </button>
+                      Preview
+                    </Button>
                   </div>
                 ) : (
-                  <button
+                  <Button
                     type="button"
                     id="btn-add-cosigner"
+                    variant="primary"
+                    size="sm"
+                    leftIcon={<UserPlus className="w-4 h-4" />}
                     onClick={onOpenCosignerDraft}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
                   >
-                    <UserPlus className="w-4 h-4" />
-                    <span>+ Add cosigner</span>
-                  </button>
+                    Add cosigner
+                  </Button>
                 )}
               </div>
             </div>
@@ -712,23 +718,27 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
           </div>
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="md"
+              className="w-full sm:w-auto"
               onClick={onBack}
-              className="w-full sm:w-auto px-4 py-3 border border-gray-300 rounded-xl text-xs font-semibold text-gray-700 hover:bg-gray-100 transition-colors"
             >
               Back
-            </button>
+            </Button>
 
-            <button
+            <Button
               id="btn-continue-to-submit"
               type="button"
+              variant="primary"
+              size="lg"
+              className="w-full sm:w-auto"
+              rightIcon={<ArrowRight className="w-4 h-4" />}
               onClick={onContinueToSubmit}
-              className="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer group"
             >
-              <span>Review and submit</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </button>
+              Continue
+            </Button>
           </div>
         </div>
       </div>

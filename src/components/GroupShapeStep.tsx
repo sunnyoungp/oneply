@@ -136,7 +136,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
           className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>{view === 'invite' ? 'Back to applicant type' : 'Back to application setup'}</span>
+          <span>Back</span>
         </button>
 
         <div className="flex items-center gap-1.5 text-xs text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-medium">
@@ -282,11 +282,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
                 onClick={handleContinueChoice}
                 className="w-full sm:w-auto min-w-[280px] py-3.5 px-8 rounded-xl bg-[#006AFF] hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer group"
               >
-                <span>
-                  {selectedShape === 'solo'
-                    ? 'Continue'
-                    : 'Continue to invite roommates'}
-                </span>
+                <span>Continue</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
@@ -324,7 +320,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
                     <div className="text-gray-500 text-[11px]">jordan.reed@example.com · Initiator</div>
                   </div>
                 </div>
-                <span className="text-xs font-semibold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">
+                <span className="text-xs font-semibold text-blue-700 bg-blue-100 px-2.5 py-1 rounded-lg">
                   Lead Renter
                 </span>
               </div>
@@ -351,7 +347,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="text-[11px] font-medium text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
+                    <span className="text-[11px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg">
                       Ready to invite
                     </span>
                     <button
@@ -398,7 +394,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
                 className="w-full sm:w-auto px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
-                <span>Add to group</span>
+                <span>Add</span>
               </button>
             </form>
 
@@ -425,7 +421,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
                 onClick={() => setView('choice')}
                 className="w-full sm:w-auto text-xs text-gray-600 hover:text-gray-900 font-semibold px-4 py-2.5 rounded-xl hover:bg-gray-100 transition-colors"
               >
-                Back to applicant type
+                Back
               </button>
 
               <button
@@ -434,7 +430,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
                 onClick={handleSendInvitesAndContinue}
                 className="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md shadow-indigo-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer group"
               >
-                <span>Continue to profile</span>
+                <span>Continue</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
             </div>

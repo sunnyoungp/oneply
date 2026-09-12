@@ -28,6 +28,7 @@ import {
   X,
 } from 'lucide-react';
 import { ListingDetails } from '../types';
+import { Button } from './ui/Button';
 
 interface ListingPageProps {
   listing: ListingDetails;
@@ -57,7 +58,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
   const [selectedSessionDateIdx, setSelectedSessionDateIdx] = useState(0);
   const [selectedSessionTime, setSelectedSessionTime] = useState('10:30 AM');
   const [timeSlotPage, setTimeSlotPage] = useState(0);
-  const [showAllDates, setShowAllDates] = useState(false);
+  const [isAllDatesModalOpen, setIsAllDatesModalOpen] = useState(false);
 
   const openLightbox = (index: number) => {
     setLightboxIdx(index);
@@ -309,7 +310,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
         </div>
 
         {/* --- DESKTOP GALLERY (md:grid) --- */}
-        <div className="hidden md:grid grid-cols-4 gap-3 h-[460px] lg:h-[520px] xl:h-[580px] mb-8 w-full">
+        <div className="hidden md:grid grid-cols-4 gap-3 h-[460px] lg:h-[520px] xl:h-[580px] mb-8 w-full overflow-hidden rounded-2xl">
           {/* Column 1: Main Large Photo (col-span-2) */}
           <div
             id="gallery-main-photo"
@@ -333,11 +334,11 @@ export const ListingPage: React.FC<ListingPageProps> = ({
           </div>
 
           {/* Column 2: 2 Stacked Photos (col-span-1) */}
-          <div className="col-span-1 flex flex-col gap-3 h-full">
+          <div className="col-span-1 flex flex-col gap-3 h-full min-h-0">
             <div
               id="gallery-photo-1"
               onClick={() => openLightbox(1)}
-              className="flex-1 relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 shadow-2xs"
+              className="flex-1 min-h-0 relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 shadow-2xs"
             >
               <img
                 src={listing.photos[1]?.url || listing.photos[0].url}
@@ -353,7 +354,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
             <div
               id="gallery-photo-2"
               onClick={() => openLightbox(2)}
-              className="flex-1 relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 shadow-2xs"
+              className="flex-1 min-h-0 relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 shadow-2xs"
             >
               <img
                 src={listing.photos[2]?.url || listing.photos[0].url}
@@ -369,11 +370,11 @@ export const ListingPage: React.FC<ListingPageProps> = ({
           </div>
 
           {/* Column 3: 2 Stacked Photos (col-span-1) */}
-          <div className="col-span-1 flex flex-col gap-3 h-full">
+          <div className="col-span-1 flex flex-col gap-3 h-full min-h-0">
             <div
               id="gallery-photo-3"
               onClick={() => openLightbox(3)}
-              className="flex-1 relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 shadow-2xs"
+              className="flex-1 min-h-0 relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 shadow-2xs"
             >
               <img
                 src={listing.photos[3]?.url || listing.photos[0].url}
@@ -389,7 +390,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
             <div
               id="gallery-photo-4"
               onClick={() => openLightbox(4)}
-              className="flex-1 relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 shadow-2xs"
+              className="flex-1 min-h-0 relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 shadow-2xs"
             >
               <img
                 src={listing.photos[4]?.url || listing.photos[0].url}
@@ -481,7 +482,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
       </div>
 
       {/* Main Content Layout Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 mt-2 relative z-0">
         {/* ========================================================
             MAIN CONTENT LAYOUT:
             Left (lg:col-span-2): Property Info, Description, MATCH ESTIMATE CARD, Features
@@ -501,7 +502,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                       ${listing.rent.toLocaleString()}
                     </span>
                     <span className="text-gray-500 font-medium text-lg">/mo</span>
-                    <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span className="ml-2 text-xs font-semibold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
                       $2.05 / sq ft
                     </span>
                   </div>
@@ -597,10 +598,10 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 </div>
 
                 {/* Interactive Scenario Switcher for the Demo */}
-                <div className="flex items-center gap-1 bg-gray-100 p-0.5 rounded-lg text-[11px]">
+                <div className="flex items-center gap-1.5 bg-gray-100 p-1 rounded-xl text-xs">
                   <button
                     onClick={() => setActiveMatchTier('strong')}
-                    className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${
+                    className={`px-3 py-1 rounded-lg font-semibold transition-colors cursor-pointer ${
                       activeMatchTier === 'strong' ? 'bg-white text-gray-900 shadow-2xs' : 'text-gray-500 hover:text-gray-800'
                     }`}
                   >
@@ -608,7 +609,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                   </button>
                   <button
                     onClick={() => setActiveMatchTier('moderate')}
-                    className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${
+                    className={`px-3 py-1 rounded-lg font-semibold transition-colors cursor-pointer ${
                       activeMatchTier === 'moderate' ? 'bg-white text-gray-900 shadow-2xs' : 'text-gray-500 hover:text-gray-800'
                     }`}
                   >
@@ -616,7 +617,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                   </button>
                   <button
                     onClick={() => setActiveMatchTier('neutral')}
-                    className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${
+                    className={`px-3 py-1 rounded-lg font-semibold transition-colors cursor-pointer ${
                       activeMatchTier === 'neutral' ? 'bg-white text-gray-900 shadow-2xs' : 'text-gray-500 hover:text-gray-800'
                     }`}
                   >
@@ -627,7 +628,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
 
               {/* Match Score Display with SPECIFIC COLOR BANDS */}
               <div
-                className={`p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
+                className={`p-4 sm:p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 ${
                   activeMatchTier === 'strong'
                     ? 'bg-[#DCFCE7] border-[#86EFAC] text-[#15803D]'
                     : activeMatchTier === 'moderate'
@@ -635,9 +636,9 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                     : 'bg-[#F1F5F9] border-[#CBD5E1] text-[#64748B]'
                 }`}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3.5">
                   <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center font-black text-lg ${
+                    className={`min-w-[58px] h-11 px-3 rounded-xl flex items-center justify-center font-black text-sm tracking-normal shadow-2xs shrink-0 ${
                       activeMatchTier === 'strong'
                         ? 'bg-emerald-600 text-white'
                         : activeMatchTier === 'moderate'
@@ -648,14 +649,14 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                     {activeMatchTier === 'strong' ? '94%' : activeMatchTier === 'moderate' ? '76%' : '—'}
                   </div>
                   <div>
-                    <span className="font-bold text-sm block">
+                    <span className="font-bold text-sm block leading-snug">
                       {activeMatchTier === 'strong'
                         ? 'High Compatibility Match'
                         : activeMatchTier === 'moderate'
                         ? 'Moderate Compatibility Match'
                         : 'Standard Review Profile'}
                     </span>
-                    <span className="text-xs opacity-90 block mt-0.5">
+                    <span className="text-xs opacity-90 block mt-1 leading-relaxed">
                       {activeMatchTier === 'strong'
                         ? 'Income meets 3x rent ratio ($6,450/mo required) · Excellent credit bracket · Preferred lease start'
                         : activeMatchTier === 'moderate'
@@ -665,9 +666,9 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                   </div>
                 </div>
 
-                <div className="shrink-0 text-right">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider block opacity-75">Criteria Score</span>
-                  <span className="font-extrabold text-xs">
+                <div className="shrink-0 text-right self-end sm:self-center">
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider block opacity-75">Criteria Score</span>
+                  <span className="font-extrabold text-xs sm:text-sm mt-0.5 block">
                     {activeMatchTier === 'strong' ? '3 of 3 Met' : activeMatchTier === 'moderate' ? '2 of 3 Met' : 'Pending input'}
                   </span>
                 </div>
@@ -675,31 +676,31 @@ export const ListingPage: React.FC<ListingPageProps> = ({
 
               {/* Requirement Checklist */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
-                <div className="p-2.5 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-2">
+                <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-2.5">
                   <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                     <Check className="w-3.5 h-3.5" />
                   </div>
                   <div>
                     <div className="font-bold text-gray-900">Income 3x Rent</div>
-                    <div className="text-[11px] text-gray-500">$6,450/mo minimum</div>
+                    <div className="text-[11px] text-gray-500 mt-0.5">$6,450/mo minimum</div>
                   </div>
                 </div>
-                <div className="p-2.5 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-2">
+                <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-2.5">
                   <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                     <Check className="w-3.5 h-3.5" />
                   </div>
                   <div>
                     <div className="font-bold text-gray-900">Credit 650+</div>
-                    <div className="text-[11px] text-gray-500">Soft check only</div>
+                    <div className="text-[11px] text-gray-500 mt-0.5">Soft check only</div>
                   </div>
                 </div>
-                <div className="p-2.5 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-2">
+                <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-2.5">
                   <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                     <Check className="w-3.5 h-3.5" />
                   </div>
                   <div>
                     <div className="font-bold text-gray-900">Clean History</div>
-                    <div className="text-[11px] text-gray-500">No recent evictions</div>
+                    <div className="text-[11px] text-gray-500 mt-0.5">No recent evictions</div>
                   </div>
                 </div>
               </div>
@@ -728,7 +729,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 onClick={() => setShowFullDesc(!showFullDesc)}
                 className="mt-3 text-xs sm:text-sm font-semibold text-[#006AFF] hover:underline flex items-center gap-1 cursor-pointer"
               >
-                <span>{showFullDesc ? 'Show less' : 'Read full description'}</span>
+                <span>{showFullDesc ? 'Show less' : 'Read more'}</span>
                 {showFullDesc ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </button>
             </div>
@@ -781,12 +782,12 @@ export const ListingPage: React.FC<ListingPageProps> = ({
 
           {/* ========================================================
               RIGHT COLUMN: FIXED STICKY CONTAINER WITH ACTION RAIL
-              - lg:sticky lg:top-6 self-start
+              - lg:sticky lg:top-[112px] self-start
               - "Powered by Rental Pass" badge
               - Usable tour date selector chips
               - Primary "Request a tour", Secondary "Message landlord", Tertiary "Apply now"
              ======================================================== */}
-          <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-6 self-start w-full">
+          <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-[112px] z-10 self-start w-full">
             <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-sm relative">
               
               {/* Header section matching reference */}
@@ -809,29 +810,33 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 </p>
               </div>
 
-              {/* Date Options Row with "View all" link */}
-              <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-1 scrollbar-none mb-5">
-                {(showAllDates ? tourSessionDates : tourSessionDates.slice(0, 4)).map((item, idx) => {
+              {/* Date Options Row with "View all" button (Fit without overflowing text) */}
+              <div className="w-full flex items-center justify-between gap-1 sm:gap-2 mb-5">
+                {tourSessionDates.slice(0, 4).map((item, idx) => {
                   const isSelected = selectedSessionDateIdx === idx;
+                  // If 4th item (idx === 3), show only on screens large enough to fit it (xl:flex), otherwise hide so 3 cards have ample space and zero text overflow
+                  const isFourth = idx === 3;
                   return (
                     <button
                       key={item.date}
                       type="button"
                       id={`btn-session-date-${item.day.toLowerCase()}-${item.date.replace(/\s+/g, '')}`}
                       onClick={() => handleSelectDate(idx)}
-                      className={`flex flex-col items-center justify-center py-2.5 px-2.5 sm:px-3 rounded-xl min-w-[70px] sm:min-w-[74px] transition-all cursor-pointer ${
+                      className={`flex-1 min-w-0 ${
+                        isFourth ? 'hidden xl:flex' : 'flex'
+                      } flex-col items-center justify-center py-2.5 sm:py-3 px-1.5 sm:px-2 rounded-xl transition-all cursor-pointer ${
                         isSelected
-                          ? 'border-2 border-gray-900 bg-white shadow-xs'
+                          ? 'border-2 border-gray-900 bg-white shadow-2xs'
                           : 'border border-gray-200 bg-white hover:border-gray-300'
                       }`}
                     >
-                      <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                      <span className="text-[10px] sm:text-[11px] font-bold text-gray-400 uppercase tracking-wider leading-none">
                         {item.day}
                       </span>
-                      <span className="text-sm sm:text-base font-black text-gray-900 mt-0.5 whitespace-nowrap">
+                      <span className="text-xs sm:text-sm font-black text-gray-900 mt-1 whitespace-nowrap leading-tight">
                         {item.date}
                       </span>
-                      <span className="text-[11px] font-bold text-[#16A34A] mt-1 whitespace-nowrap">
+                      <span className="text-[10px] sm:text-[11px] font-bold text-[#16A34A] mt-1 whitespace-nowrap leading-none">
                         {item.slots} slots
                       </span>
                     </button>
@@ -842,13 +847,13 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                   type="button"
                   id="btn-toggle-all-dates"
                   onClick={() => {
-                    setShowAllDates(!showAllDates);
-                    onNotify(!showAllDates ? 'Viewing all available session dates' : 'Showing standard session dates');
+                    setIsAllDatesModalOpen(true);
+                    onNotify('Opened all available session dates');
                   }}
-                  className="text-[#087F7B] hover:text-[#066562] font-bold text-xs sm:text-sm flex items-center gap-0.5 shrink-0 ml-1 cursor-pointer select-none transition-colors"
+                  className="shrink-0 flex items-center gap-0.5 text-[#087F7B] hover:text-[#066562] font-bold text-xs sm:text-xs md:text-sm pl-1 sm:pl-2 pr-0.5 py-2 cursor-pointer select-none transition-colors"
                 >
-                  <span>{showAllDates ? 'Show less' : 'View all'}</span>
-                  <ChevronRight className={`w-3.5 h-3.5 transition-transform ${showAllDates ? 'rotate-90' : ''}`} />
+                  <span className="whitespace-nowrap text-xs font-bold">View all</span>
+                  <ChevronRight className="w-3.5 h-3.5 stroke-[2.5]" />
                 </button>
               </div>
 
@@ -904,35 +909,39 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 })}
               </div>
 
-              {/* Primary Booking Button matching reference image */}
-              <button
-                type="button"
-                id="btn-book-session"
-                onClick={handleBookSession}
-                className="w-full py-3.5 sm:py-4 px-4 rounded-xl bg-[#087F7B] hover:bg-[#066562] active:bg-[#05504E] text-white font-bold text-sm sm:text-base shadow-sm shadow-[#087F7B]/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <span>Book Session for {currentSessionDate.date} 2026</span>
-              </button>
-
-              {/* Secondary actions */}
-              <div className="mt-4 pt-3.5 border-t border-gray-100 space-y-2">
-                <button
-                  id="btn-message-landlord-secondary"
-                  onClick={onMessageLandlord}
-                  className="w-full py-2.5 px-4 rounded-xl border border-gray-200 hover:border-gray-300 text-gray-700 hover:bg-gray-50 font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <MessageSquare className="w-4 h-4 text-gray-500" />
-                  <span>Message property manager</span>
-                </button>
-
-                <button
-                  id="btn-apply-now-secondary"
+              {/* Main "Apply Now" Primary Action Button - Clean, standard primary styling, NO AI icons */}
+              <div className="space-y-2.5">
+                <Button
+                  id="btn-apply-now-primary"
+                  variant="primary"
+                  size="lg"
+                  fullWidth
                   onClick={onApplyNow}
-                  className="w-full py-2.5 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-[#006AFF] font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-[#006AFF]" />
-                  <span>Apply with Rental Pass</span>
-                </button>
+                  Apply now
+                </Button>
+
+                {/* Secondary Actions: Book Session & Message */}
+                <Button
+                  id="btn-book-session"
+                  variant="teal"
+                  size="md"
+                  fullWidth
+                  onClick={handleBookSession}
+                >
+                  Book session
+                </Button>
+
+                <Button
+                  id="btn-message-landlord-secondary"
+                  variant="secondary"
+                  size="md"
+                  fullWidth
+                  leftIcon={<MessageSquare className="w-4 h-4 text-gray-500" />}
+                  onClick={onMessageLandlord}
+                >
+                  Message
+                </Button>
               </div>
 
               {/* Trust badges footer */}
@@ -983,31 +992,97 @@ export const ListingPage: React.FC<ListingPageProps> = ({
       {/* Mobile Sticky Bottom Action Bar (< lg) */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 p-3 z-20 shadow-lg">
         <div className="max-w-md mx-auto flex items-center gap-2">
-          <button
-            id="mobile-btn-request-tour"
-            onClick={onRequestTour}
-            className="flex-1 py-3 px-3 rounded-xl bg-[#006AFF] active:bg-blue-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-sm"
-          >
-            <Calendar className="w-4 h-4" />
-            <span>Request a tour</span>
-          </button>
-          <button
-            id="mobile-btn-message"
-            onClick={onMessageLandlord}
-            aria-label="Message landlord"
-            className="p-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 flex items-center justify-center"
-          >
-            <MessageSquare className="w-4 h-4 text-blue-600" />
-          </button>
-          <button
+          <Button
             id="mobile-btn-apply"
+            variant="primary"
+            size="md"
+            className="flex-1"
             onClick={onApplyNow}
-            className="py-3 px-3 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] text-[#1D4ED8] text-xs font-bold hover:bg-blue-100"
           >
-            Apply
-          </button>
+            Apply now
+          </Button>
+          <Button
+            id="mobile-btn-request-tour"
+            variant="secondary"
+            size="md"
+            leftIcon={<Calendar className="w-4 h-4" />}
+            onClick={onRequestTour}
+          >
+            Request tour
+          </Button>
+          <Button
+            id="mobile-btn-message"
+            variant="secondary"
+            size="icon"
+            aria-label="Message landlord"
+            onClick={onMessageLandlord}
+          >
+            <MessageSquare className="w-4 h-4 text-gray-700" />
+          </Button>
         </div>
       </div>
+      {/* All Available Sessions Modal Dialog */}
+      {isAllDatesModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+              <div>
+                <h3 className="text-lg font-black text-[#0F172A]">All Available Sessions</h3>
+                <p className="text-xs text-gray-500 mt-0.5">Select a date to preview open time slots</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAllDatesModalOpen(false)}
+                className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2.5 py-5">
+              {tourSessionDates.map((item, idx) => {
+                const isSelected = selectedSessionDateIdx === idx;
+                return (
+                  <button
+                    key={item.date}
+                    type="button"
+                    onClick={() => {
+                      handleSelectDate(idx);
+                      setIsAllDatesModalOpen(false);
+                    }}
+                    className={`flex flex-col items-center justify-center py-3.5 px-2 rounded-xl transition-all cursor-pointer ${
+                      isSelected
+                        ? 'border-2 border-gray-900 bg-white shadow-xs'
+                        : 'border border-gray-200 bg-white hover:border-gray-400 hover:bg-gray-50'
+                    }`}
+                  >
+                    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                      {item.day}
+                    </span>
+                    <span className="text-base font-black text-gray-900 mt-0.5">
+                      {item.date}
+                    </span>
+                    <span className="text-xs font-bold text-[#16A34A] mt-1">
+                      {item.slots} slots
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="pt-3 border-t border-gray-100 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setIsAllDatesModalOpen(false)}
+                className="px-4 py-2 rounded-xl border border-gray-200 text-gray-700 text-xs font-bold hover:bg-gray-50 cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

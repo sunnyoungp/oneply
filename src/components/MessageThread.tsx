@@ -12,6 +12,7 @@ import {
   Info,
 } from 'lucide-react';
 import { ListingDetails } from '../types';
+import { Button } from './ui/Button';
 
 interface MessageThreadProps {
   listing: ListingDetails;
@@ -56,7 +57,7 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
               className="p-2 -ml-2 rounded-xl text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition-colors flex items-center gap-1.5 text-sm font-semibold cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Back to listing</span>
+              <span>Back</span>
             </button>
 
             <div className="h-5 w-px bg-gray-300 hidden sm:block" />
@@ -84,9 +85,9 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
           <button
             id="btn-view-listing-summary"
             onClick={onBackToListing}
-            className="hidden sm:flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium hover:underline"
+            className="hidden sm:flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium hover:underline cursor-pointer"
           >
-            <span>View listing page</span>
+            <span>View listing</span>
             <ExternalLink className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -200,15 +201,16 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
                   {listing.address}, {listing.unit} · {listing.managementCompany}
                 </div>
 
-                {/* THE CORE EMBEDDED BUTTON: Must route into Step 4 (handoff) */}
-                <button
+                {/* THE CORE EMBEDDED BUTTON: Clean standard primary action button */}
+                <Button
                   id="btn-apply-from-message-thread"
+                  variant="primary"
+                  size="lg"
+                  fullWidth
                   onClick={onApplyNow}
-                  className="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer group"
                 >
-                  <Sparkles className="w-4 h-4 text-amber-300" />
-                  <span>Apply now with Rental Pass</span>
-                </button>
+                  Apply now
+                </Button>
 
                 <div className="flex items-center justify-center gap-2 text-[11px] text-gray-500 mt-2.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
@@ -246,24 +248,25 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
               onChange={(e) => setInputText(e.target.value)}
               className="flex-1 bg-gray-100 border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
             />
-            <button
+            <Button
               id="btn-send-chat-message"
               type="submit"
+              size="icon"
+              variant="primary"
               disabled={!inputText.trim()}
-              className="p-2.5 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               aria-label="Send message"
             >
               <Send className="w-4 h-4" />
-            </button>
+            </Button>
           </form>
           <div className="flex items-center justify-between text-[11px] text-gray-500 mt-2 px-1">
             <span>Simulated conversation with Landlord</span>
             <button
               id="btn-quick-apply-link"
               onClick={onApplyNow}
-              className="text-blue-600 font-semibold hover:underline flex items-center gap-1"
+              className="text-blue-600 font-semibold hover:underline flex items-center gap-1 cursor-pointer"
             >
-              <span>Ready to submit? Apply now ➔</span>
+              <span>Apply now ➔</span>
             </button>
           </div>
         </div>
