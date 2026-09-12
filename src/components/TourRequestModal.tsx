@@ -55,14 +55,14 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
         className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-gray-100 overflow-hidden relative"
       >
         {/* Modal Header */}
-        <div className="bg-blue-600 px-6 py-4 text-white flex items-center justify-between">
+        <div className="bg-[#006AFF] px-6 py-4 text-white flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-blue-500 rounded-lg">
+            <div className="p-1.5 bg-white/15 rounded-lg">
               <Calendar className="w-5 h-5 text-white" />
             </div>
             <div>
               <h3 className="font-bold text-base leading-tight">Request a Tour</h3>
-              <p className="text-xs text-blue-100 mt-0.5">
+              <p className="text-xs text-white/80 mt-0.5">
                 {listing.address}, {listing.unit}
               </p>
             </div>
@@ -70,7 +70,7 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
           <button
             id="btn-close-tour-modal"
             onClick={handleResetAndClose}
-            className="text-blue-200 hover:text-white p-1.5 rounded-lg hover:bg-blue-700 transition-colors"
+            className="text-white/70 hover:text-white p-1.5 rounded-lg hover:bg-white/15 transition-colors"
             aria-label="Close tour dialog"
           >
             <X className="w-5 h-5" />
@@ -82,23 +82,23 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
           {viewState === 'prompt' ? (
             <div>
               {/* Tour Appointment Summary Pill */}
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-3.5 mb-5 flex items-center justify-between text-xs">
+              <div className="bg-[#EFF6FF] border border-[#BFDBFE] rounded-xl p-3.5 mb-5 flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2.5">
-                  <Clock className="w-4 h-4 text-blue-600 shrink-0" />
+                  <Clock className="w-4 h-4 text-[#1D4ED8] shrink-0" />
                   <div>
                     <span className="text-gray-500 block">Requested time</span>
                     <span className="font-bold text-gray-900 text-sm">{selectedDate}</span>
                   </div>
                 </div>
-                <span className="bg-blue-600 text-white font-medium px-2.5 py-1 rounded-md text-[11px]">
+                <span className="bg-[#006AFF] text-white font-medium px-2.5 py-1 rounded-md text-[11px]">
                   Requested
                 </span>
               </div>
 
               {/* Core Step 2 Requirement: Low-commitment prompt */}
               <div className="text-center py-2 mb-6">
-                <div className="w-12 h-12 bg-blue-100 rounded-2xl mx-auto flex items-center justify-center mb-3">
-                  <ShieldCheck className="w-6 h-6 text-blue-600" />
+                <div className="w-12 h-12 bg-[#EFF6FF] rounded-2xl mx-auto flex items-center justify-center mb-3">
+                  <ShieldCheck className="w-6 h-6 text-[#006AFF]" />
                 </div>
                 <h4 className="text-xl font-extrabold text-gray-900 tracking-tight">
                   Save time later
@@ -176,7 +176,7 @@ export const TourRequestModal: React.FC<TourRequestModalProps> = ({
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Status</span>
-                  <span className="font-semibold text-blue-600">Awaiting confirmation</span>
+                  <span className="font-semibold text-[#1D4ED8]">Awaiting confirmation</span>
                 </div>
               </div>
 

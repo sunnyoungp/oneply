@@ -84,7 +84,7 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
 
       {/* Main Review Container */}
       <div className="max-w-2xl w-full mx-auto my-auto py-6 sm:py-8">
-        <div className="bg-white rounded-3xl border border-gray-200 p-6 sm:p-8 shadow-sm">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-xs">
           {/* Header */}
           <div className="mb-6 pb-5 border-b border-gray-100">
             <div className="inline-flex items-center gap-1.5 bg-[#EFF6FF] text-[#1D4ED8] text-xs font-bold px-3 py-1 rounded-full mb-3 border border-[#BFDBFE]">
@@ -206,7 +206,7 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
             id="distinct-credit-auth-section"
             className="bg-[#EFF6FF] rounded-2xl p-5 border-2 border-[#BFDBFE] mb-6 space-y-4 shadow-xs"
           >
-            <div className="flex items-center gap-2 text-[#1D4ED8] pb-2 border-b border-blue-200">
+            <div className="flex items-center gap-2 text-[#1D4ED8] pb-2 border-b border-[#BFDBFE]">
               <PenTool className="w-4 h-4 text-[#006AFF]" />
               <span className="text-xs font-bold uppercase tracking-wider">
                 Guarantor Consent &amp; Soft Credit Check
@@ -245,7 +245,7 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
                   placeholder="Your full name..."
                   className="w-full bg-white border-2 border-[#006AFF] rounded-xl px-4 py-2.5 text-base font-serif italic text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-100 tracking-wider shadow-xs"
                 />
-                <span className="absolute right-3 top-3 text-[10px] bg-blue-100 text-[#006AFF] font-bold px-2 py-0.5 rounded font-mono">
+                <span className="absolute right-3 top-3 text-[10px] bg-[#EFF6FF] text-[#006AFF] font-bold px-2 py-0.5 rounded font-mono">
                   E-SIGNED
                 </span>
               </div>
