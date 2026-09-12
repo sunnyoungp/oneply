@@ -66,7 +66,7 @@ export const ProfileDecisionStep: React.FC<ProfileDecisionStepProps> = ({
 
         <div className="flex items-center gap-1.5 text-xs text-[#1D4ED8] bg-[#EFF6FF] border border-[#BFDBFE] px-3 py-1 rounded-full font-bold">
           <ShieldCheck className="w-3.5 h-3.5 text-[#1D4ED8]" />
-          <span>Rental Pass · Application Setup</span>
+          <span>Application Setup</span>
         </div>
       </div>
 

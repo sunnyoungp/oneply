@@ -249,27 +249,26 @@ export const ListingPage: React.FC<ListingPageProps> = ({
 
             {/* Save & Share Buttons */}
             <div className="flex items-center gap-2.5 shrink-0 self-start sm:self-auto">
-              <button
+              <Button
                 id="btn-listing-save"
+                variant="secondary"
+                size="sm"
                 onClick={handleToggleHeart}
-                className={`flex items-center gap-2 border rounded-xl px-4 py-2 text-sm font-semibold transition-colors cursor-pointer shadow-2xs ${
-                  isSaved
-                    ? 'border-red-300 text-red-600 bg-red-50'
-                    : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
-                }`}
+                leftIcon={<Heart className={`w-4 h-4 ${isSaved ? 'fill-red-600 text-red-600' : 'text-gray-600'}`} />}
+                className={isSaved ? 'border-red-200 text-red-600 bg-red-50 hover:bg-red-100' : ''}
               >
-                <Heart className={`w-4 h-4 ${isSaved ? 'fill-red-600 text-red-600' : 'text-gray-600'}`} />
-                <span>{isSaved ? 'Saved' : 'Save'}</span>
-              </button>
+                {isSaved ? 'Saved' : 'Save'}
+              </Button>
 
-              <button
+              <Button
                 id="btn-listing-share"
+                variant="secondary"
+                size="sm"
                 onClick={handleShareClick}
-                className="flex items-center gap-2 border border-gray-300 rounded-xl px-4 py-2 text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 shadow-2xs transition-colors cursor-pointer"
+                leftIcon={<Share2 className="w-4 h-4 text-gray-600" />}
               >
-                <Share2 className="w-4 h-4 text-gray-600" />
-                <span>Share</span>
-              </button>
+                Share
+              </Button>
             </div>
           </div>
         </div>
@@ -592,7 +591,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                     <Sparkles className="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm text-gray-900">Rental Pass Match Estimate</h3>
+                    <h3 className="font-bold text-sm text-gray-900">Application Match Estimate</h3>
                     <p className="text-[11px] text-gray-500">Compatibility against published leasing requirements</p>
                   </div>
                 </div>
@@ -795,7 +794,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                 <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-gray-100">
                   <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#1D4ED8] bg-[#EFF6FF] border border-[#BFDBFE] px-2.5 py-1 rounded-full">
                     <ShieldCheck className="w-3.5 h-3.5 text-[#1D4ED8]" />
-                    <span>Powered by Rental Pass</span>
+                    <span>Verified Rental</span>
                   </div>
                   <span className="text-[11px] text-gray-400 font-medium truncate max-w-[150px]">
                     {listing.managementCompany}
@@ -961,7 +960,7 @@ export const ListingPage: React.FC<ListingPageProps> = ({
                   <span>•</span>
                   <button
                     id="btn-help-faq"
-                    onClick={() => onNotify('Rental Pass FAQ: Learn how reusable profiles work.')}
+                    onClick={() => onNotify('Application FAQ: Learn how the application process works.')}
                     className="hover:text-gray-600 hover:underline flex items-center gap-0.5 cursor-pointer"
                   >
                     <HelpCircle className="w-3 h-3" />

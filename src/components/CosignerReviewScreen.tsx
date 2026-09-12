@@ -14,6 +14,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { CosignerData, ListingDetails } from '../types';
+import { Button } from './ui/Button';
 
 interface CosignerReviewScreenProps {
   listing: ListingDetails;
@@ -65,14 +66,15 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
     <div className="min-h-screen bg-slate-50 text-gray-900 flex flex-col justify-between p-4 sm:p-8 font-sans">
       {/* Top Navigation & Simulation Indicator */}
       <div className="max-w-3xl w-full mx-auto flex items-center justify-between flex-wrap gap-3">
-        <button
+        <Button
           id="btn-return-applicant-profile"
+          variant="secondary"
+          size="sm"
+          leftIcon={<ArrowLeft className="w-4 h-4" />}
           onClick={onReturnToApplicantProfile}
-          className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer shadow-xs"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back</span>
-        </button>
+          Back
+        </Button>
 
         <div className="flex items-center gap-2 bg-[#EFF6FF] border border-[#BFDBFE] text-[#1D4ED8] px-3.5 py-1.5 rounded-full text-xs font-semibold shadow-xs">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -252,24 +254,26 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="md"
               onClick={onReturnToApplicantProfile}
-              className="w-full sm:w-auto text-xs text-gray-500 hover:text-gray-800 px-4 py-2.5 rounded-xl transition-colors cursor-pointer"
             >
               Cancel
-            </button>
+            </Button>
 
-            <button
+            <Button
               id="btn-confirm-cosigner-guarantee"
               type="button"
+              variant="primary"
+              size="lg"
               disabled={!canSubmitSignoff}
               onClick={handleFinalConfirm}
-              className="w-full sm:w-auto px-8 py-3.5 bg-[#006AFF] hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer group"
+              rightIcon={<ArrowRight className="w-4 h-4" />}
             >
-              <span>Submit</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </button>
+              Submit
+            </Button>
           </div>
         </div>
       </div>
@@ -277,7 +281,7 @@ export const CosignerReviewScreen: React.FC<CosignerReviewScreenProps> = ({
       {/* Footer */}
       <div className="max-w-2xl w-full mx-auto text-center text-xs text-gray-500 py-2 flex items-center justify-center gap-1.5">
         <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-        <span>Encrypted &amp; secure · Rental Pass</span>
+        <span>Encrypted &amp; secure</span>
       </div>
     </div>
   );

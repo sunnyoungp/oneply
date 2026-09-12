@@ -141,7 +141,7 @@ export const GroupShapeStep: React.FC<GroupShapeStepProps> = ({
 
         <div className="flex items-center gap-1.5 text-xs text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-medium">
           <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-          <span>Rental Pass · Roommate Setup</span>
+          <span>Roommate Setup</span>
         </div>
       </div>
 

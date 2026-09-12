@@ -8,8 +8,6 @@ import { ZillowNavbar } from './components/ZillowNavbar';
 import { ListingPage } from './components/ListingPage';
 import { TourRequestModal } from './components/TourRequestModal';
 import { MessageThread } from './components/MessageThread';
-import { ProfileDecisionStep } from './components/ProfileDecisionStep';
-import { GroupShapeStep } from './components/GroupShapeStep';
 import { ProfileStep } from './components/ProfileStep';
 import { CosignerDraftModal } from './components/CosignerDraftModal';
 import { CosignerReviewScreen } from './components/CosignerReviewScreen';

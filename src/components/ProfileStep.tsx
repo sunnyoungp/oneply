@@ -83,8 +83,8 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between p-3 sm:p-8 font-sans">
-      {/* Top sticky navigation bar (Zero dead ends) */}
-      <div className="sticky top-0 z-30 bg-slate-50/95 backdrop-blur-md pb-4 pt-2 border-b border-gray-200 -mx-3 sm:-mx-8 px-3 sm:px-8 shadow-2xs">
+      {/* Top navigation bar with simple back button */}
+      <div className="pb-4 pt-2 border-b border-gray-200">
         <div className="max-w-4xl w-full mx-auto flex items-center justify-between">
           <Button
             id="btn-back-to-step-6"
@@ -95,29 +95,6 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
           >
             Back
           </Button>
-
-          <div className="flex items-center gap-2">
-            {applicationType === 'group' && (
-              <div className="flex items-center gap-1.5 bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs px-2.5 py-1 rounded-full font-medium">
-                <Users className="w-3.5 h-3.5 text-indigo-600" />
-                <span className="hidden sm:inline">Roommate Session:</span>
-                <select
-                  value={currentUser}
-                  onChange={(e) => onSwitchUser(e.target.value)}
-                  className="bg-transparent font-bold cursor-pointer focus:outline-none"
-                >
-                  <option value="Jordan Reed">Jordan Reed (You)</option>
-                  <option value="Priya Sharma">Priya Sharma</option>
-                  <option value="Sam Chen">Sam Chen</option>
-                </select>
-              </div>
-            )}
-
-            <div className="flex items-center gap-1.5 text-xs text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-medium">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-              <span>Rental Pass · Application Profile</span>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -717,17 +694,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
             )}
           </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <Button
-              type="button"
-              variant="outline"
-              size="md"
-              className="w-full sm:w-auto"
-              onClick={onBack}
-            >
-              Back
-            </Button>
-
+          <div className="flex items-center justify-end w-full sm:w-auto">
             <Button
               id="btn-continue-to-submit"
               type="button"
@@ -745,7 +712,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
 
       {/* Footer info */}
       <div className="max-w-4xl w-full mx-auto text-center text-xs text-gray-500 py-3 border-t border-gray-200">
-        <span>Rental Pass · Reusable Profile</span>
+        <span>Application Profile</span>
       </div>
     </div>
   );

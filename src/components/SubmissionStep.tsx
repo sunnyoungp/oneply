@@ -14,6 +14,7 @@ import {
   Lock,
 } from 'lucide-react';
 import { ListingDetails, ProfileFormData, ApplicationType, Roommate } from '../types';
+import { Button } from './ui/Button';
 
 interface SubmissionStepProps {
   listing: ListingDetails;
@@ -58,19 +59,15 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between p-4 sm:p-8 font-sans">
       {/* Top Bar */}
       <div className="max-w-3xl w-full mx-auto flex items-center justify-between pb-4 border-b border-gray-200">
-        <button
+        <Button
           id="btn-back-from-submit"
+          variant="secondary"
+          size="sm"
+          leftIcon={<ArrowLeft className="w-4 h-4" />}
           onClick={onBackToProfile}
-          className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back</span>
-        </button>
-
-        <div className="flex items-center gap-1.5 text-xs text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-medium">
-          <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-          <span>Rental Pass · Review &amp; Submit</span>
-        </div>
+          Back
+        </Button>
       </div>
 
       {/* Main Review Card */}
@@ -170,30 +167,32 @@ export const SubmissionStep: React.FC<SubmissionStepProps> = ({
 
           {/* Action buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-gray-200">
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="md"
               onClick={onBackToProfile}
-              className="w-full sm:w-auto text-xs text-gray-600 hover:text-gray-900 font-semibold px-4 py-2.5 rounded-xl hover:bg-gray-100 transition-colors"
             >
               Back
-            </button>
+            </Button>
 
-            <button
+            <Button
               id="btn-submit-application"
               type="button"
+              variant="primary"
+              size="lg"
+              rightIcon={<ArrowRight className="w-4 h-4" />}
               onClick={handleSubmit}
-              className="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer group"
             >
-              <span>Submit</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </button>
+              Submit
+            </Button>
           </div>
         </div>
       </div>
 
       {/* Footer */}
       <div className="max-w-3xl w-full mx-auto text-center text-xs text-gray-500 py-2">
-        <span>Rental Pass · Secure Submission</span>
+        <span>Application Submission</span>
       </div>
     </div>
   );

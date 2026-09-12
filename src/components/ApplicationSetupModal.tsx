@@ -412,7 +412,7 @@ export const ApplicationSetupModal: React.FC<ApplicationSetupModalProps> = ({
                   Choose your profile source
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                  We located your saved Rental Pass profile from {mockSavedDate}. Select how you would like to apply.
+                  We located your saved application profile from {mockSavedDate}. Select how you would like to apply.
                 </p>
               </div>
 

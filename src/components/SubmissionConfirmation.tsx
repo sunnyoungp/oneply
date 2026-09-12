@@ -5,6 +5,7 @@ import {
   Building,
   ShieldCheck,
   ArrowRight,
+  ArrowLeft,
   TrendingUp,
   FileText,
   Mail,
@@ -14,6 +15,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { ListingDetails, ApplicationType, ProfileFormData } from '../types';
+import { Button } from './ui/Button';
 
 interface SubmissionConfirmationProps {
   listing: ListingDetails;
@@ -36,18 +38,15 @@ export const SubmissionConfirmation: React.FC<SubmissionConfirmationProps> = ({
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between p-4 sm:p-8 font-sans">
       {/* Top Bar */}
       <div className="max-w-3xl w-full mx-auto flex items-center justify-between pb-4 border-b border-gray-200">
-        <button
+        <Button
+          id="btn-confirm-return-listing"
+          variant="secondary"
+          size="sm"
+          leftIcon={<ArrowLeft className="w-4 h-4" />}
           onClick={onReturnToListing}
-          className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
         >
-          <Home className="w-4 h-4" />
-          <span>Back</span>
-        </button>
-
-        <div className="flex items-center gap-1.5 text-xs text-emerald-800 bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-full font-medium">
-          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-          <span>Rental Pass · Application Sent</span>
-        </div>
+          Back
+        </Button>
       </div>
 
       {/* Main Confirmation Card */}
@@ -120,32 +119,34 @@ export const SubmissionConfirmation: React.FC<SubmissionConfirmationProps> = ({
 
           {/* Action Navigation (Zero dead ends) */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-            <button
+            <Button
               id="btn-return-to-listing"
               type="button"
+              variant="secondary"
+              size="md"
               onClick={onReturnToListing}
-              className="w-full sm:w-auto px-5 py-3 border border-gray-300 rounded-xl text-xs font-semibold text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
             >
               Back
-            </button>
+            </Button>
 
-            <button
+            <Button
               id="btn-view-applications"
               type="button"
+              variant="primary"
+              size="lg"
+              leftIcon={<FileText className="w-4 h-4" />}
+              rightIcon={<ArrowRight className="w-4 h-4" />}
               onClick={onViewApplications}
-              className="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer group"
             >
-              <FileText className="w-4 h-4" />
-              <span>Applications</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </button>
+              Applications
+            </Button>
           </div>
         </div>
       </div>
 
       {/* Footer */}
       <div className="max-w-3xl w-full mx-auto text-center text-xs text-gray-500 py-2">
-        <span>Rental Pass · Submission Confirmation &amp; Match Likelihood</span>
+        <span>Submission Confirmation &amp; Match Likelihood</span>
       </div>
     </div>
   );

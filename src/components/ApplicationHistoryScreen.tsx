@@ -16,6 +16,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { HistoricalApplication, ListingDetails } from '../types';
+import { Button } from './ui/Button';
 
 interface ApplicationHistoryScreenProps {
   listing: ListingDetails;
@@ -99,25 +100,28 @@ export const ApplicationHistoryScreen: React.FC<ApplicationHistoryScreenProps> =
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between p-4 sm:p-8 font-sans">
       {/* Top Bar */}
       <div className="max-w-4xl w-full mx-auto flex items-center justify-between pb-4 border-b border-gray-200">
-        <button
+        <Button
           id="btn-history-back-to-listing"
+          variant="secondary"
+          size="sm"
+          leftIcon={<ArrowLeft className="w-4 h-4" />}
           onClick={onReturnToListing}
-          className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back</span>
-        </button>
+          Back
+        </Button>
 
         <div className="flex items-center gap-2">
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={onResetDemo}
-            className="text-xs font-semibold text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+            className="bg-gray-100 hover:bg-gray-200 text-gray-700"
           >
             Reset
-          </button>
+          </Button>
           <div className="flex items-center gap-1.5 text-xs text-blue-800 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-medium">
             <FileText className="w-3.5 h-3.5 text-blue-600" />
-            <span>Rental Pass · Applications</span>
+            <span>Applications</span>
           </div>
         </div>
       </div>
@@ -125,11 +129,7 @@ export const ApplicationHistoryScreen: React.FC<ApplicationHistoryScreenProps> =
       {/* Main Content */}
       <div className="max-w-4xl w-full mx-auto py-6">
         <div className="mb-6">
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            Rental Pass
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900">
             Application history
           </h1>
           <p className="text-xs sm:text-sm text-gray-600 mt-1">
@@ -217,7 +217,7 @@ export const ApplicationHistoryScreen: React.FC<ApplicationHistoryScreenProps> =
             </div>
             <div>
               <h4 className="text-sm font-bold text-blue-950">
-                Your Rental Pass is active and ready for other listings
+                Your application profile is active and ready for other listings
               </h4>
               <p className="text-xs text-blue-800 mt-0.5">
                 No need to re-enter paystubs, credit authorizations, or cosigners for future applications.
@@ -225,12 +225,13 @@ export const ApplicationHistoryScreen: React.FC<ApplicationHistoryScreenProps> =
             </div>
           </div>
 
-          <button
+          <Button
+            variant="primary"
+            size="sm"
             onClick={onReturnToListing}
-            className="shrink-0 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
           >
             Explore listings
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -294,13 +295,14 @@ export const ApplicationHistoryScreen: React.FC<ApplicationHistoryScreenProps> =
             </div>
 
             <div className="flex justify-end gap-3">
-              <button
+              <Button
                 type="button"
+                variant="primary"
+                size="md"
                 onClick={() => setSelectedApp(null)}
-                className="px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-xs font-bold rounded-xl cursor-pointer"
               >
                 Close
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -308,7 +310,7 @@ export const ApplicationHistoryScreen: React.FC<ApplicationHistoryScreenProps> =
 
       {/* Footer */}
       <div className="max-w-4xl w-full mx-auto text-center text-xs text-gray-500 py-2 border-t border-gray-200">
-        <span>Rental Pass · Submitted Applications &amp; Immutable Records</span>
+        <span>Submitted Applications &amp; Immutable Records</span>
       </div>
     </div>
   );
