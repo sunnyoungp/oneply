@@ -10,8 +10,10 @@ export function useShortcuts(): void {
     const onKey = (e: KeyboardEvent) => {
       const meta = e.metaKey || e.ctrlKey;
       if (meta && e.key.toLowerCase() === 'k') {
+        if (isTypingTarget(e.target) && !(e.target as HTMLElement).closest?.('[data-command-root]')) {
+          return;
+        }
         e.preventDefault();
-        if (isTypingTarget(e.target) && (e.target as HTMLElement).closest('[data-command-root]')) return;
         open({ type: 'command' });
         return;
       }
@@ -27,7 +29,14 @@ export function useShortcuts(): void {
       }
       if (isTypingTarget(e.target)) return;
       if (meta || e.altKey) return;
+      const overlayType = state.overlay?.type;
+      const creating =
+        overlayType === 'task_composer' ||
+        overlayType === 'event_composer' ||
+        overlayType === 'focus_picker' ||
+        overlayType === 'schedule_task';
       const key = e.key.toLowerCase();
+      if (creating && ['n', 't', 'e', 'f'].includes(key)) return;
       if (key === 'n') {
         e.preventDefault();
         open({ type: 'create_chooser', via: 'shortcut' });

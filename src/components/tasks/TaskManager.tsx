@@ -4,6 +4,7 @@ import {
   Circle,
   Flag,
   Folder,
+  GripVertical,
   Inbox,
   Search,
   Tag as TagIcon,
@@ -19,6 +20,7 @@ import {
   type TaskListView,
 } from '../../domain';
 import { useStore } from '../../state/store';
+import { useTaskDrag } from '../../state/task-drag';
 import { Button, TextInput, cx } from '../ui/primitives';
 
 const VIEWS: { id: TaskListView; label: string; icon: React.ReactNode }[] = [
@@ -271,6 +273,7 @@ function ProjectManager() {
 
 function TaskRow({ task, onOpen }: { task: Task; onOpen: () => void }) {
   const { state, dispatch, open } = useStore();
+  const { begin } = useTaskDrag();
   const project = state.projects.find((p) => p.id === task.projectId);
   const tags = task.tagIds.map((id) => state.tags.find((t) => t.id === id)?.name).filter(Boolean);
   const sessions = sessionCount(state, task.id);
@@ -292,14 +295,24 @@ function TaskRow({ task, onOpen }: { task: Task; onOpen: () => void }) {
       className={cx(
         'flex items-start gap-2 rounded-xl border border-transparent px-1.5 py-1.5 hover:border-line hover:bg-surface',
         task.syncState === 'needs_attention' && 'border-[#ead2ce] bg-[#fbf4f3]',
+        !task.completed && 'cursor-grab active:cursor-grabbing',
       )}
+      onPointerDown={(e) => {
+        if (task.completed) return;
+        if ((e.target as HTMLElement).closest('button')) return;
+        begin(task.id, task.title, e);
+      }}
       draggable={!task.completed}
       onDragStart={(e) => {
         e.dataTransfer.setData('application/x-notcal-task', task.id);
+        e.dataTransfer.setData('text/plain', `notcal-task:${task.id}`);
         e.dataTransfer.effectAllowed = 'copy';
         dispatch({ type: 'track', name: 'task_drag_started', props: { taskId: task.id } });
       }}
     >
+      {!task.completed ? (
+        <GripVertical className="mt-0.5 h-4 w-4 shrink-0 text-ink-muted" aria-hidden />
+      ) : null}
       <button
         type="button"
         aria-label={task.completed ? 'Restore task' : 'Complete task'}

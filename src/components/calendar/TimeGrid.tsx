@@ -11,9 +11,10 @@ import {
   type FocusSession,
 } from '../../domain';
 import { useStore } from '../../state/store';
+import { HOUR_PX } from './constants';
 import { EventBlock, FocusBlock, layoutTimed, blockMeta } from './Blocks';
 
-export const HOUR_PX = 56;
+export { HOUR_PX };
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
 
 function yFor(iso: string): number {
@@ -73,6 +74,7 @@ export function TimeGrid({ dates }: { dates: string[] }) {
           <div
             key={date}
             className="relative flex-1 border-l border-line/80"
+            data-drop-date={date}
             style={{ height: 24 * HOUR_PX }}
             onPointerDown={(e) => {
               if ((e.target as HTMLElement).closest('[data-block]')) return;
@@ -90,15 +92,17 @@ export function TimeGrid({ dates }: { dates: string[] }) {
             }}
             onPointerUp={finishRange}
             onDragOver={(e) => {
-              if (![...e.dataTransfer.types].includes('application/x-notcal-task')) return;
               e.preventDefault();
+              e.dataTransfer.dropEffect = 'copy';
               const pos = offsetFromEvent(e, e.currentTarget);
               setDropHint({ date, ...pos });
             }}
             onDragLeave={() => setDropHint(null)}
             onDrop={(e) => {
               e.preventDefault();
-              const taskId = e.dataTransfer.getData('application/x-notcal-task');
+              const taskId =
+                e.dataTransfer.getData('application/x-notcal-task') ||
+                e.dataTransfer.getData('text/plain').replace(/^notcal-task:/, '');
               const pos = dropHint ?? { ...offsetFromEvent(e, e.currentTarget), date };
               setDropHint(null);
               if (!taskId) return;

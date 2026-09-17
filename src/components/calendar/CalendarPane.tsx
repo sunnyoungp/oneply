@@ -165,6 +165,7 @@ function MonthView() {
               !inMonth && 'bg-paper/60 text-ink-muted',
               date === today && 'bg-accent-soft/40',
             )}
+            data-month-date={date}
           >
             <span className={cx('text-[12px] font-medium', date === today && 'text-accent')}>{Number(date.slice(8))}</span>
             {deadlines.slice(0, 1).map((t) => (

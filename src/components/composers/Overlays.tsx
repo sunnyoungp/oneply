@@ -5,9 +5,11 @@ import {
   addMinutes,
   emptyEventDraft,
   emptyTaskDraft,
+  formatDayHeading,
   formatRangeLabel,
   fromZoned,
   parseQuickEntry,
+  weekDates,
   zonedParts,
   type EventDraft,
   type TaskDraft,
@@ -409,9 +411,45 @@ function ScheduleDialog({ taskId }: { taskId: string }) {
   const [start, setStart] = useState('10:00');
   const [end, setEnd] = useState('11:30');
   const calId = state.calendars.find((c) => c.kind === 'work')?.id ?? state.calendars[0].id;
+  const days = weekDates(state.focusedDate);
+  const times = [
+    { start: '09:00', end: '10:00', label: '9–10 AM' },
+    { start: '10:00', end: '11:30', label: '10–11:30 AM' },
+    { start: '14:00', end: '15:00', label: '2–3 PM' },
+    { start: '16:00', end: '17:00', label: '4–5 PM' },
+  ];
   return (
     <Dialog title={`Schedule · ${task?.title ?? 'Task'}`} onClose={closeOverlay}>
       <p className="mb-3 text-[13px] text-ink-muted">Creates a focus session. Will not add or change a deadline.</p>
+      <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-ink-muted">Day</p>
+      <div className="mb-3 flex flex-wrap gap-1">
+        {days.map((d) => (
+          <button
+            key={d}
+            type="button"
+            className={`rounded-full px-2.5 py-1 text-[12px] ${date === d ? 'bg-ink text-white' : 'bg-paper-2 text-ink-soft'}`}
+            onClick={() => setDate(d)}
+          >
+            {formatDayHeading(d).slice(0, 6)}
+          </button>
+        ))}
+      </div>
+      <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-ink-muted">Time</p>
+      <div className="mb-3 flex flex-wrap gap-1">
+        {times.map((t) => (
+          <button
+            key={t.start}
+            type="button"
+            className={`rounded-full px-2.5 py-1 text-[12px] ${start === t.start ? 'bg-ink text-white' : 'bg-paper-2 text-ink-soft'}`}
+            onClick={() => {
+              setStart(t.start);
+              setEnd(t.end);
+            }}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
       <div className="mb-3 grid grid-cols-3 gap-2">
         <Field label="Date">
           <TextInput type="date" value={date} onChange={(e) => setDate(e.target.value)} />

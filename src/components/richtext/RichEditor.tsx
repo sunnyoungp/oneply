@@ -54,7 +54,7 @@ export function RichEditor({
       </div>
       <div
         ref={ref}
-        contentEditable
+        contentEditable="true"
         role="textbox"
         aria-multiline="true"
         aria-label={placeholder ?? 'Description'}

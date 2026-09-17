@@ -15,9 +15,9 @@ export function useIsDesktop(query = '(min-width: 900px)'): boolean {
 }
 
 export function isTypingTarget(target: EventTarget | null): boolean {
-  if (!(target instanceof HTMLElement)) return false;
-  const tag = target.tagName;
-  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return true;
-  if (target.isContentEditable) return true;
-  return Boolean(target.closest('[contenteditable="true"]'));
+  const el =
+    target instanceof HTMLElement ? target : target instanceof Node ? target.parentElement : null;
+  if (!el) return false;
+  if (el.closest('input, textarea, select, [contenteditable], [role="textbox"]')) return true;
+  return el.isContentEditable;
 }
