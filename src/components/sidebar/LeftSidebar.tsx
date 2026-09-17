@@ -89,7 +89,7 @@ export function LeftSidebar() {
           )}
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              <span className="truncate text-[12px] font-medium">{state.accountHealth.label}</span>
+              <span className="text-[12px] font-medium leading-tight">{state.accountHealth.label}</span>
               <SyncPill state={state.accountHealth.state} />
             </div>
             <p className="text-[11px] text-ink-muted">{state.accountHealth.detail}</p>

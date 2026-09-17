@@ -325,7 +325,7 @@ function TaskRow({ task, onOpen }: { task: Task; onOpen: () => void }) {
       </button>
       <button
         type="button"
-        className="rounded-md px-1.5 py-1 text-[11px] font-medium text-accent hover:bg-accent-soft"
+          className="rounded-md px-1.5 py-1 text-[11px] font-medium text-ink-soft hover:bg-paper-2 hover:text-ink"
         title="Schedule focus without dragging"
         onClick={() => open({ type: 'schedule_task', taskId: task.id })}
       >

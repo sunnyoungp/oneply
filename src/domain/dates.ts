@@ -79,11 +79,18 @@ export function compareIso(a: string, b: string): number {
 
 /** Convert a wall-clock date+time in a zone to ISO. */
 export function fromZoned(date: string, hours: number, minutes: number, timeZone = TIME_ZONE): string {
-  const guess = new Date(`${date}T${pad(hours)}:${pad(minutes)}:00Z`);
-  const parts = zonedParts(guess.toISOString(), timeZone);
-  const desired = hours * 60 + minutes;
-  const actual = parts.hour * 60 + parts.minute;
-  return addMinutes(guess.toISOString(), desired - actual);
+  const want = Date.parse(`${date}T${pad(hours)}:${pad(minutes)}:00.000Z`);
+  let utc = want;
+  for (let i = 0; i < 8; i++) {
+    const parts = zonedParts(new Date(utc).toISOString(), timeZone);
+    const got = Date.parse(`${parts.date}T${pad(parts.hour)}:${pad(parts.minute)}:00.000Z`);
+    const delta = want - got;
+    if (delta === 0 && parts.date === date && parts.hour === hours && parts.minute === minutes) {
+      return new Date(utc).toISOString();
+    }
+    utc += delta;
+  }
+  return new Date(utc).toISOString();
 }
 
 export function startOfDay(date: string, timeZone = TIME_ZONE): string {

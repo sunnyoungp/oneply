@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { detectConflicts } from './conflicts';
-import { fromZoned } from './dates';
+import { dateKey, fromZoned, zonedParts } from './dates';
 import { parseUrl } from './links';
 import { parseQuickEntry } from './quick-entry';
 import { reducer, sessionsForTask } from './reducer';
@@ -253,6 +253,14 @@ describe('supporting domain rules', () => {
     expect(state.taskView).toBe('upcoming');
     expect(state.search).toBe('faq');
     expect(state.taskScroll).toBe(80);
+  });
+});
+
+describe('dates', () => {
+  it('maps midnight in New York onto the intended calendar date', () => {
+    const iso = fromZoned('2026-09-18', 0, 0);
+    expect(dateKey(iso)).toBe('2026-09-18');
+    expect(zonedParts(iso).hour).toBe(0);
   });
 });
 

@@ -5,15 +5,15 @@ import {
   dateKey,
   formatDayHeading,
   formatMonthYear,
+  formatTime,
   monthGrid,
   startOfMonth,
   weekDates,
-  addDays,
   type CalendarView,
 } from '../../domain';
 import { useStore } from '../../state/store';
 import { Button, IconButton, cx } from '../ui/primitives';
-import { DatabaseChip, DeadlineChip, EventBlock, FocusBlock, blockMeta } from './Blocks';
+import { DatabaseChip, DeadlineChip, blockMeta } from './Blocks';
 import { HOUR_PX, TimeGrid } from './TimeGrid';
 
 const VIEWS: CalendarView[] = ['day', 'week', 'month', 'agenda'];
@@ -93,7 +93,7 @@ function AllDayRow({ dates }: { dates: string[] }) {
         {dates.map((date) => {
           const { events, items, deadlines } = allDayForDate(state, date);
           return (
-            <div key={date} className="flex min-h-[52px] flex-1 flex-col gap-1 border-l border-line px-1 py-1">
+            <div key={date} className="flex min-h-[64px] min-w-0 flex-1 flex-col gap-1 overflow-hidden border-l border-line px-1 py-1">
               <div className="text-[11px] font-medium text-ink-muted">{formatDayHeading(date).split(' ')[0]} {date.slice(8)}</div>
               {events.map((event) => (
                 <button
@@ -131,7 +131,7 @@ function MonthView() {
   const month = startOfMonth(state.focusedDate).slice(0, 7);
   const today = dateKey(state.now);
   return (
-    <div className="grid min-h-0 flex-1 grid-cols-7 grid-rows-6">
+    <div className="grid min-h-0 flex-1 grid-cols-7 [grid-template-rows:auto_repeat(6,minmax(0,1fr))]">
       {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => (
         <div key={d} className="border-b border-line px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
           {d}
@@ -168,16 +168,16 @@ function MonthView() {
           >
             <span className={cx('text-[12px] font-medium', date === today && 'text-accent')}>{Number(date.slice(8))}</span>
             {deadlines.slice(0, 1).map((t) => (
-              <span key={t.id} className="truncate text-[10px] text-deadline">Due · {t.title}</span>
+              <span key={t.id} className="w-full truncate text-[10px] text-deadline">Due · {t.title}</span>
             ))}
-            {sessions.slice(0, 2).map((s) => (
-              <span key={s.id} className="truncate text-[10px] text-focus-ink">Focus · {state.tasks.find((t) => t.id === s.taskId)?.title}</span>
+            {sessions.slice(0, 1).map((s) => (
+              <span key={s.id} className="w-full truncate text-[10px] text-focus-ink">Focus · {state.tasks.find((t) => t.id === s.taskId)?.title}</span>
             ))}
-            {timedEvents.slice(0, 2).map((e) => (
-              <span key={e.id} className="truncate text-[10px]" style={{ color: state.calendars.find((c) => c.id === e.calendarId)?.color }}>{e.title}</span>
+            {timedEvents.slice(0, 1).map((e) => (
+              <span key={e.id} className="w-full truncate text-[10px]" style={{ color: state.calendars.find((c) => c.id === e.calendarId)?.color }}>{e.title}</span>
             ))}
             {items.slice(0, 1).map((i) => (
-              <span key={i.id} className="truncate text-[10px] text-ink-muted">{i.title}</span>
+              <span key={i.id} className="w-full truncate text-[10px] text-ink-muted">{i.title}</span>
             ))}
           </button>
         );
@@ -188,20 +188,19 @@ function MonthView() {
 
 function AgendaView() {
   const { state, select } = useStore();
-  const start = state.focusedDate;
-  const days = Array.from({ length: 7 }, (_, i) => addDays(start, i));
+  const days = weekDates(state.focusedDate);
   return (
-    <div className="cal-scroll min-h-0 flex-1 overflow-auto p-3">
+    <div className="cal-scroll min-h-0 flex-1 overflow-auto p-4">
       {days.map((date) => {
         const { events, items, deadlines } = allDayForDate(state, date);
         const timed = state.events.filter((e) => !e.allDay && dateKey(e.start) === date && state.calendars.find((c) => c.id === e.calendarId)?.visible);
         const sessions = state.focusSessions.filter((s) => dateKey(s.start) === date && state.calendars.find((c) => c.id === s.calendarId)?.visible);
         const empty = !events.length && !items.length && !deadlines.length && !timed.length && !sessions.length;
         return (
-          <section key={date} className="mb-5">
+          <section key={date} className="mb-6">
             <h2 className="mb-2 text-[13px] font-semibold">{formatDayHeading(date)}</h2>
             {empty ? <p className="text-[13px] text-ink-muted">Nothing scheduled</p> : null}
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {deadlines.map((t) => (
                 <DeadlineChip key={t.id} task={t} onClick={() => select({ kind: 'deadline', taskId: t.id })} />
               ))}
@@ -216,19 +215,35 @@ function AgendaView() {
               {sessions.map((s) => {
                 const meta = blockMeta(state, s);
                 return (
-                  <div key={s.id} className="h-16">
-                    <FocusBlock session={s} task={meta.task} project={meta.project} onClick={() => select({ kind: 'focus_session', id: s.id })} />
-                  </div>
+                  <button
+                    key={s.id}
+                    type="button"
+                    className="hatch-focus flex w-full max-w-xl items-start gap-3 rounded-lg border border-focus-ink/20 px-3 py-2 text-left"
+                    onClick={() => select({ kind: 'focus_session', id: s.id })}
+                  >
+                    <span className="w-16 shrink-0 text-[11px] text-ink-muted">{formatTime(s.start)}</span>
+                    <span>
+                      <span className="block text-[10px] font-semibold uppercase tracking-wide text-focus-ink">Focus</span>
+                      <span className="text-[13px] font-medium">{meta.task?.title}</span>
+                      {meta.project ? <span className="block text-[11px] text-ink-muted">{meta.project}</span> : null}
+                    </span>
+                  </button>
                 );
               })}
               {timed.map((event) => (
-                <div key={event.id} className="h-16">
-                  <EventBlock
-                    event={event}
-                    calendarColor={state.calendars.find((c) => c.id === event.calendarId)?.color ?? '#3d6b8a'}
-                    onClick={() => select({ kind: 'event', id: event.id })}
-                  />
-                </div>
+                <button
+                  key={event.id}
+                  type="button"
+                  className="flex w-full max-w-xl items-start gap-3 rounded-lg px-3 py-2 text-left text-white"
+                  style={{ background: state.calendars.find((c) => c.id === event.calendarId)?.color ?? '#3d6b8a' }}
+                  onClick={() => select({ kind: 'event', id: event.id })}
+                >
+                  <span className="w-16 shrink-0 text-[11px] opacity-90">{formatTime(event.start)}</span>
+                  <span>
+                    <span className="block text-[10px] font-semibold uppercase tracking-wide opacity-90">Event</span>
+                    <span className="text-[13px] font-medium">{event.title}</span>
+                  </span>
+                </button>
               ))}
             </div>
           </section>
