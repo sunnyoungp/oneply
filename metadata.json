@@ -1,6 +1,6 @@
 {
-  "name": "Rental Application Demo",
-  "description": "Interactive hackathon demo simulating a Zillow rental listing handoff into a reusable renter profile, group application, and delegated cosigner flow.",
+  "name": "notcal",
+  "description": "Interactive prototype of Notion Calendar redesigned as Plan & Do: calendar plus first-class tasks, focus sessions, and optional deadlines.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": []
 }
