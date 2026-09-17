@@ -162,6 +162,12 @@ export function formatDayHeading(date: string): string {
   return `${weekday} ${MONTHS[m - 1]} ${d}`;
 }
 
+export function shortDayLabel(date: string): string {
+  const [y, m, d] = date.split('-').map(Number);
+  const utc = new Date(Date.UTC(y, m - 1, d));
+  return `${WEEKDAYS[utc.getUTCDay()]} ${d}`;
+}
+
 export function formatMonthYear(date: string): string {
   const [y, m] = date.split('-').map(Number);
   return `${MONTHS[m - 1]} ${y}`;

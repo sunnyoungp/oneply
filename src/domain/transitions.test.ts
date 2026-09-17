@@ -280,3 +280,15 @@ describe('focus session type', () => {
     );
   });
 });
+
+describe('undo complete', () => {
+  it('restores a completed task and leaves completed view', () => {
+    const state = createSeedState();
+    const removed = reducer(state, { type: 'complete_task', id: 'task-faq', futureMode: 'remove' });
+    expect(removed.tasks.find((t) => t.id === 'task-faq')?.completed).toBe(true);
+    const onCompleted: AppState = { ...removed, taskView: 'completed' };
+    const restored = reducer(onCompleted, removed.undo!);
+    expect(restored.tasks.find((t) => t.id === 'task-faq')?.completed).toBe(false);
+    expect(restored.taskView).toBe('inbox');
+  });
+});

@@ -348,7 +348,9 @@ export function reducer(state: AppState, action: AppAction): AppState {
             : t,
         ),
         focusSessions: [...state.focusSessions, ...restoredSessions],
-        toast: { id: 'undone', message: 'Task restored' },
+        taskView: state.taskView === 'completed' ? 'inbox' : state.taskView,
+        rightMode: 'tasks',
+        toast: { id: 'undone', message: 'Task restored to Inbox' },
         undo: null,
         overlay: null,
       };

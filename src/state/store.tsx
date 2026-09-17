@@ -179,6 +179,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         }
         dispatch({ type: 'mark_saved', objectId: change.objectId, objectKind: change.objectKind });
         dispatch({ type: 'track', name: 'sync_recovered', props: { objectId: change.objectId } });
+        dispatch({
+          type: 'toast',
+          toast: { id: uid('toast'), message: 'Saved to Personal Tasks' },
+        });
+        if (stateRef.current.failedChanges.filter((c) => c.objectId !== change.objectId).length === 0) {
+          dispatch({ type: 'close_overlay' });
+        }
       }, 420);
     },
     [],
@@ -201,7 +208,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const id = window.setTimeout(() => {
       if (state.toast) dispatch({ type: 'toast', toast: null });
-    }, 4200);
+    }, 8000);
     return () => window.clearTimeout(id);
   }, [state.toast]);
 

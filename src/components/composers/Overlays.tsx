@@ -9,6 +9,7 @@ import {
   formatRangeLabel,
   fromZoned,
   parseQuickEntry,
+  shortDayLabel,
   weekDates,
   zonedParts,
   type EventDraft,
@@ -87,34 +88,40 @@ export function OverlayHost() {
   if (overlay.type === 'command') return <CommandMenu />;
   if (overlay.type === 'shortcuts') return <ShortcutsDialog />;
   if (overlay.type === 'recovery') {
-    const change = state.failedChanges.find((c) => c.objectId === overlay.objectId) ?? state.failedChanges[0];
-    if (!change) {
+    const changes = state.failedChanges;
+    if (changes.length === 0) {
       return (
         <Dialog title="All caught up" onClose={closeOverlay}>
-          <p className="text-[13px]">There are no failed changes.</p>
+          <p className="text-[13px]">Every change is saved.</p>
         </Dialog>
       );
     }
     return (
-      <Dialog title="Needs attention" onClose={closeOverlay}>
-        <p className="mb-2 text-[13px]">{change.message}</p>
-        <p className="mb-3 text-[12px] text-ink-muted">The item is still visible. Nothing was deleted.</p>
-        <pre className="mb-3 max-h-32 overflow-auto rounded-lg bg-paper-2 p-2 text-[11px]">{change.pendingJson.slice(0, 400)}</pre>
-        <div className="flex flex-wrap gap-2">
-          <Button onClick={() => retry(change.id)}>Retry</Button>
-          <Button variant="ghost" onClick={() => discard(change.id)}>
-            Discard change
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={() => {
-              void navigator.clipboard?.writeText(change.pendingJson);
-              dispatch({ type: 'toast', toast: { id: 'copied', message: 'Unsaved content copied' } });
-            }}
-          >
-            Copy unsaved content
-          </Button>
-        </div>
+      <Dialog title="Needs attention" onClose={closeOverlay} width="w-[520px]">
+        <p className="mb-3 text-[13px] text-ink-muted">Failed changes stay on this device until you retry or discard. Nothing was deleted.</p>
+        <ul className="space-y-3">
+          {changes.map((change) => (
+            <li key={change.id} className="rounded-xl border border-line p-3">
+              <p className="text-[13px] font-medium">{change.objectKind.replace('_', ' ')}</p>
+              <p className="mb-2 text-[12px] text-ink-muted">{change.message}</p>
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={() => retry(change.id)}>Retry</Button>
+                <Button variant="ghost" onClick={() => discard(change.id)}>
+                  Discard change
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    void navigator.clipboard?.writeText(change.pendingJson);
+                    dispatch({ type: 'toast', toast: { id: 'copied', message: 'Unsaved content copied' } });
+                  }}
+                >
+                  Copy unsaved content
+                </Button>
+              </div>
+            </li>
+          ))}
+        </ul>
       </Dialog>
     );
   }
@@ -430,7 +437,7 @@ function ScheduleDialog({ taskId }: { taskId: string }) {
             className={`rounded-full px-2.5 py-1 text-[12px] ${date === d ? 'bg-ink text-white' : 'bg-paper-2 text-ink-soft'}`}
             onClick={() => setDate(d)}
           >
-            {formatDayHeading(d).slice(0, 6)}
+            {shortDayLabel(d)}
           </button>
         ))}
       </div>

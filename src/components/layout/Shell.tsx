@@ -30,8 +30,8 @@ export function AppShell() {
               type="button"
               className="font-semibold text-accent-soft"
               onClick={() => {
-                dispatch(state.toast!.action!);
-                dispatch({ type: 'toast', toast: null });
+                const action = state.toast?.action;
+                if (action) dispatch(action);
               }}
             >
               {state.toast.actionLabel}
