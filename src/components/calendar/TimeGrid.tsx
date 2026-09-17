@@ -59,7 +59,7 @@ export function TimeGrid({ dates }: { dates: string[] }) {
   };
 
   return (
-    <div className="flex min-w-[720px]">
+    <div className="flex min-w-0 sm:min-w-[720px]">
       <div className="w-14 shrink-0 pt-2 text-right">
         {HOURS.map((h) => (
           <div key={h} className="pr-2 text-[11px] text-ink-muted" style={{ height: HOUR_PX }}>

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useEffect } from 'react';
 import { CalendarDays, CheckSquare, ListChecks, Plus } from 'lucide-react';
 import { useStore } from '../../state/store';
 import { useIsDesktop } from '../../hooks/useMedia';
@@ -88,9 +89,14 @@ function DesktopLayout() {
 
 function MobileLayout() {
   const { state, dispatch, open } = useStore();
+  useEffect(() => {
+    if (state.view === 'week') dispatch({ type: 'set_view', view: 'day' });
+    // Intentionally once on mount so users can still switch to week.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
-    <div className="flex min-h-0 flex-1 flex-col" data-testid="mobile-shell">
-      <header className="flex items-center justify-between border-b border-line px-3 py-2">
+    <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden" data-testid="mobile-shell">
+      <header className="flex shrink-0 items-center justify-between border-b border-line px-3 py-2">
         <div>
           <div className="font-display text-[16px] font-semibold">notcal</div>
           <div className="text-[11px] text-ink-muted">Plan & Do</div>
@@ -99,14 +105,14 @@ function MobileLayout() {
           <Plus className="h-4 w-4" />
         </Button>
       </header>
-      <main id="main" className="min-h-0 flex-1">
+      <main id="main" className="min-h-0 flex-1 overflow-hidden">
         {state.mobileTab === 'tasks' ? (
           state.rightMode === 'details' ? <DetailsPanel /> : <TaskManager />
         ) : (
           <CalendarPane />
         )}
       </main>
-      <nav className="grid grid-cols-4 border-t border-line bg-surface pb-[env(safe-area-inset-bottom)]" aria-label="Primary">
+      <nav className="z-30 grid shrink-0 grid-cols-4 border-t border-line bg-surface pb-[env(safe-area-inset-bottom)]" aria-label="Primary">
         <Tab
           label="Agenda"
           icon={<ListChecks className="h-4 w-4" />}
@@ -120,7 +126,10 @@ function MobileLayout() {
           label="Calendar"
           icon={<CalendarDays className="h-4 w-4" />}
           active={state.mobileTab === 'calendar'}
-          onClick={() => dispatch({ type: 'set_mobile_tab', tab: 'calendar' })}
+          onClick={() => {
+            dispatch({ type: 'set_mobile_tab', tab: 'calendar' });
+            if (state.view === 'agenda') dispatch({ type: 'set_view', view: 'day' });
+          }}
         />
         <Tab
           label="Tasks"

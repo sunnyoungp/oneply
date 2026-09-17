@@ -22,14 +22,14 @@ export function CalendarPane() {
   const { state, dispatch, open } = useStore();
   const scroller = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (scroller.current) scroller.current.scrollTop = 7 * HOUR_PX;
+    if (scroller.current) scroller.current.scrollTop = 8 * HOUR_PX;
   }, [state.view]);
   const dates = state.view === 'day' ? [state.focusedDate] : weekDates(state.focusedDate);
   const heading =
     state.view === 'month' ? formatMonthYear(state.focusedDate) : state.view === 'day' ? formatDayHeading(state.focusedDate) : `${formatDayHeading(dates[0])} – ${formatDayHeading(dates[6])}`;
 
   return (
-    <section className="flex min-w-0 flex-1 flex-col bg-surface" aria-label="Calendar">
+    <section className="flex h-full min-h-0 min-w-0 flex-1 flex-col bg-surface" aria-label="Calendar">
       <header className="flex flex-wrap items-center gap-2 border-b border-line px-3 py-2">
         <Button variant="ghost" onClick={() => dispatch({ type: 'go_today' })}>
           Today
@@ -58,10 +58,7 @@ export function CalendarPane() {
             </button>
           ))}
         </div>
-        <Button
-          title="Create (N)"
-          onClick={() => open({ type: 'create_chooser', via: 'button' })}
-        >
+        <Button className="max-sm:hidden" title="Create (N)" onClick={() => open({ type: 'create_chooser', via: 'button' })}>
           <Plus className="h-4 w-4" />
           New
         </Button>
@@ -73,7 +70,7 @@ export function CalendarPane() {
       ) : (
         <div className="flex min-h-0 flex-1 flex-col">
           <div className="cal-scroll min-h-0 flex-1 overflow-auto" ref={scroller}>
-            <div className="sticky top-0 z-20 min-w-[720px] bg-surface">
+            <div className="sticky top-0 z-20 min-w-0 bg-surface sm:min-w-[720px]">
               <AllDayRow dates={dates} />
             </div>
             <TimeGrid dates={dates} />
@@ -87,7 +84,7 @@ export function CalendarPane() {
 function AllDayRow({ dates }: { dates: string[] }) {
   const { state, select } = useStore();
   return (
-    <div className="flex min-w-[720px] border-b border-line bg-surface-2/80 backdrop-blur-sm">
+    <div className="flex min-w-0 border-b border-line bg-surface-2/80 backdrop-blur-sm sm:min-w-[720px]">
       <div className="w-14 shrink-0 px-1 py-2 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">All day</div>
       <div className="flex min-w-0 flex-1">
         {dates.map((date) => {
